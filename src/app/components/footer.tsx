@@ -97,7 +97,7 @@ const FooterContact: FC = () => {
 
       <div className="text-sm text-gray-500 bg-gray-50 py-6">
         <p>
-          © 2024 | Designed and coded with ❤️ by Noman
+          © 2024 | Designed and coded with ❤️ by Noman Khaliq
         </p>
       </div>
     </footer>
