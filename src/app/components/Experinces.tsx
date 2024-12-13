@@ -41,7 +41,7 @@ const experiences: Experience[] = [
 
 const ExperienceSection: FC = () => {
   return (
-    <div className="px-6 py-16 bg-gray-50">
+    <div className="px-6 py-20 bg-gray-50">
       <div className="text-center mb-6">
         <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
           Experience
