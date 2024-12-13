@@ -36,10 +36,10 @@ const FooterContact: FC = () => {
         <div className="flex flex-col items-center space-y-4 mb-8">
           <div className="flex items-center space-x-3 text-lg">
             <FaEnvelope className="text-gray-600" />
-            <span className="text-gray-800 font-medium">youremail@example.com</span>
+            <span className="text-gray-800 font-medium">nomanghouri.dev@gmail.com</span>
             <FaRegCopy
               className="text-gray-500 cursor-pointer hover:text-gray-800"
-              onClick={() => copyToClipboard("youremail@example.com")}
+              onClick={() => copyToClipboard("nomanghouri.dev@gmail.com")}
             />
           </div>
           {copied === "youremail@example.com" && (
@@ -47,10 +47,10 @@ const FooterContact: FC = () => {
           )}
           <div className="flex items-center space-x-3 text-lg">
             <FaPhone className="text-gray-600" />
-            <span className="text-gray-800 font-medium">+123 456 7890</span>
+            <span className="text-gray-800 font-medium">+92 308 2452547</span>
             <FaRegCopy
               className="text-gray-500 cursor-pointer hover:text-gray-800"
-              onClick={() => copyToClipboard("+123 456 7890")}
+              onClick={() => copyToClipboard("+92 308 2452547")}
             />
           </div>
           {copied === "+123 456 7890" && (
