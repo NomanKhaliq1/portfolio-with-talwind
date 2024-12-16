@@ -22,7 +22,7 @@ const testimonials: Testimonial[] = [
     companyLogo: "/reveiws/company-logos/awesometechinc.webp",
     image: "/reveiws/persons/ahsan-raza.jpeg",
     review:
-      "I want to express my admiration for Noman Khaliq, an exceptional developer who has recently worked on React projects that truly inspired me. I firmly believe that Noman has the potential to make Pakistan proud in the future. His dedication and consistent efforts are commendable, and he has proven himself to be a highly capable developer.",
+      "I want to express my admiration for Noman Khaliq, an exceptional developer who has recently worked on React projects that truly inspired me. I firmly believe that Noman has the potential to make Pakistan proud in the future. His dedication and consistent efforts are commendable, and he has proven himself to be a highly capable developer. Ignoring such a talented individual would be equivalent to hindering the growth of someone with immense potential. Noman is not only an outstanding developer but also a great human being, and there is no doubt about his remarkable abilities. I am confident that he is destined to become one of the most successful individuals in the times to come.",
     rating: 5,
   },
   {
