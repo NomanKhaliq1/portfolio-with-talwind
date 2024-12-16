@@ -17,11 +17,19 @@ const FooterContact: FC = () => {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopied(text);
-    setTimeout(() => setCopied(null), 2000);
+    setTimeout(() => setCopied(null), 2000); // Clear popup after 2 seconds
   };
 
   return (
-    <footer id="contact" className="text-center">
+    <footer id="contact" className="text-center relative">
+      {/* Popup Message */}
+      {copied && (
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md z-50">
+          {copied} copied to clipboard!
+        </div>
+      )}
+
+      {/* Main Content */}
       <div className="px-6 py-20">
         <div className="mb-6">
           <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
@@ -33,7 +41,9 @@ const FooterContact: FC = () => {
           developer, have a query, or simply want to connect.
         </p>
 
+        {/* Contact Information */}
         <div className="flex flex-col items-center space-y-4 mb-8">
+          {/* Email */}
           <div className="flex items-center space-x-3 text-lg">
             <FaEnvelope className="text-gray-600" />
             <span className="text-gray-800 font-medium">nomanghouri.dev@gmail.com</span>
@@ -42,9 +52,8 @@ const FooterContact: FC = () => {
               onClick={() => copyToClipboard("nomanghouri.dev@gmail.com")}
             />
           </div>
-          {copied === "youremail@example.com" && (
-            <span className="text-sm text-green-500">Email copied!</span>
-          )}
+
+          {/* Phone */}
           <div className="flex items-center space-x-3 text-lg">
             <FaPhone className="text-gray-600" />
             <span className="text-gray-800 font-medium">+92 308 2452547</span>
@@ -53,11 +62,9 @@ const FooterContact: FC = () => {
               onClick={() => copyToClipboard("+92 308 2452547")}
             />
           </div>
-          {copied === "+123 456 7890" && (
-            <span className="text-sm text-green-500">Phone number copied!</span>
-          )}
         </div>
 
+        {/* Social Links */}
         <p className="text-gray-600 mb-4">You may also find me on these platforms!</p>
         <div className="flex justify-center space-x-6 mb-6">
           <a
@@ -95,6 +102,7 @@ const FooterContact: FC = () => {
         </div>
       </div>
 
+      {/* Footer Note */}
       <div className="text-sm text-gray-500 bg-gray-50 py-6">
         <p>
           © 2024 | Designed and coded with ❤️ by Noman Khaliq
