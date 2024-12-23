@@ -27,7 +27,7 @@ export default function Home() {
                       Hi, I&apos;m Noman Khaliq <span className="animate-waving-hand">👋</span>
                     </h1>
                     <p className="text-base md:text-xl text-gray-600">
-                      A Full Stack Developer with expertise in designing modern, scalable, and user-centric web applications. I leverage cutting-edge technologies like generative AI, responsive design principles, and advanced frameworks to deliver innovative solutions aligned with the latest global tech trends.
+                      A Full-Stack Web Developer specializing in React, Next.js, and WordPress, with expertise in creating modern, scalable, and user-centric web applications. I leverage cutting-edge technologies, responsive design principles, and advanced frameworks to deliver innovative solutions tailored to global tech trends.
                     </p>
                   </div>
                   <ul className="list-none space-y-2">
