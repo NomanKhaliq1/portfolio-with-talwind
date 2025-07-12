@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { FaStar } from "react-icons/fa";
+import Image from "next/image"; // ✅ Next.js optimized image
 
 type Testimonial = {
   name: string;
@@ -24,7 +25,7 @@ const testimonials: Testimonial[] = [
     companyLogo: "/reveiws/company-logos/awesometechinc.webp",
     image: "/reveiws/persons/ahsan-raza.jpeg",
     review:
-      "I want to express my admiration for Noman Khaliq, an exceptional developer who has recently worked on React projects that truly inspired me. I firmly believe that Noman has the potential to make Pakistan proud in the future. His dedication and consistent efforts are commendable, and he has proven himself to be a highly capable developer. Ignoring such a talented individual would be equivalent to hindering the growth of someone with immense potential. Noman is not only an outstanding developer but also a great human being, and there is no doubt about his remarkable abilities. I am confident that he is destined to become one of the most successful individuals in the times to come.",
+      "I want to express my admiration for Noman Khaliq, an exceptional developer who has recently worked on React projects that truly inspired me. I firmly believe that Noman has the potential to make Pakistan proud in the future. His dedication and consistent efforts are commendable, and he has proven himself to be a highly capable developer.",
     rating: 5,
   },
   {
@@ -33,7 +34,7 @@ const testimonials: Testimonial[] = [
     role: "awesometechinc.com",
     companyLogo: "/reveiws/company-logos/awesometechinc.webp",
     image: "/reveiws/persons/adnan-habib.jpeg",
-    review: "Noman is a skilled and reliable web developer who consistently delivers quality work. He’s quick to learn, detail-oriented, and always approaches tasks with a positive, problem-solving attitude. A great team player and a valuable asset to any project.",
+    review: `Noman is a skilled and reliable web developer who consistently delivers quality work. He’s quick to learn, detail-oriented, and always approaches tasks with a positive, problem-solving attitude. A great team player and a valuable asset to any project.`,
     rating: 5,
   },
   {
@@ -101,25 +102,28 @@ const TestimonialSlider: FC = () => {
           {testimonials.map((testimonial, index) => (
             <SwiperSlide key={index} className="py-6">
               <div className="p-6 bg-white rounded-2xl shadow-lg flex flex-col w-full max-w-md mx-auto h-[560px] text-center">
-
                 {/* Banner and Company Logo */}
                 <div className="relative w-full">
                   <div className="bg-indigo-100 w-full h-36 rounded-t-xl flex items-center justify-center relative">
                     {testimonial.companyLogo && (
-                      <img
+                      <Image
                         src={testimonial.companyLogo}
                         alt="Company Logo"
-                        className="w-[150px] object-contain absolute top-5 left-1/2 -translate-x-1/2 z-10"
+                        width={150}
+                        height={40}
+                        className="object-contain absolute top-5 left-1/2 -translate-x-1/2 z-10"
                       />
                     )}
                   </div>
 
                   {/* Person Image */}
                   <div className="absolute -bottom-[60px] left-1/2 -translate-x-1/2 z-20">
-                    <img
+                    <Image
                       src={testimonial.image || placeholderImage}
                       alt={testimonial.name}
-                      className="w-[120px] h-[120px] rounded-full object-cover shadow border-4 border-white"
+                      width={120}
+                      height={120}
+                      className="rounded-full object-cover shadow border-4 border-white"
                     />
                   </div>
                 </div>
@@ -144,7 +148,7 @@ const TestimonialSlider: FC = () => {
                       }}
                       className="text-gray-700 font-medium text-base leading-relaxed line-clamp-6"
                     >
-                      &quot;{testimonial.review}&quot;
+                      {testimonial.review}
                     </p>
                   </div>
 
@@ -167,25 +171,29 @@ const TestimonialSlider: FC = () => {
         {selectedReview && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full text-center">
-              <img
+              <Image
                 src={selectedReview.image || placeholderImage}
                 alt={selectedReview.name}
-                className="w-20 h-20 rounded-full mb-4 mx-auto object-cover"
+                width={80}
+                height={80}
+                className="rounded-full mb-4 mx-auto object-cover"
               />
               <h3 className="text-xl font-bold mb-1">{selectedReview.name}</h3>
               <p className="text-sm text-gray-500">{selectedReview.designation}</p>
               <p className="text-sm text-gray-500 mb-4">{selectedReview.role}</p>
-              <p className="text-gray-700 mb-6">"{selectedReview.review}"</p>
+              <p className="text-gray-700 mb-6">{selectedReview.review}</p>
               <div className="flex items-center justify-center mb-4">
                 {[...Array(selectedReview.rating)].map((_, i) => (
                   <FaStar key={i} className="text-yellow-500" />
                 ))}
               </div>
               {selectedReview.companyLogo && (
-                <img
+                <Image
                   src={selectedReview.companyLogo}
                   alt="Company Logo"
-                  className="w-[200px] object-contain mx-auto mb-4"
+                  width={160}
+                  height={40}
+                  className="object-contain mx-auto mb-4"
                 />
               )}
               <button
