@@ -30,6 +30,7 @@ export default function Home() {
                       A Full-Stack Web Developer specializing in React, Next.js, and WordPress, with expertise in creating modern, scalable, and user-centric web applications. I leverage cutting-edge technologies, responsive design principles, and advanced frameworks to deliver innovative solutions tailored to global tech trends.
                     </p>
                   </div>
+
                   <ul className="list-none space-y-2">
                     <li className="flex items-center">
                       <i className="fas fa-map-marker-alt text-gray-700 text-xl mr-2"></i>
@@ -51,6 +52,8 @@ export default function Home() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-indigo-600"
+                      title="GitHub Profile"
+                      aria-label="GitHub Profile"
                     >
                       <FaGithub size={24} />
                     </a>
@@ -59,6 +62,8 @@ export default function Home() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-indigo-600"
+                      title="LinkedIn Profile"
+                      aria-label="LinkedIn Profile"
                     >
                       <FaLinkedin size={24} />
                     </a>
@@ -67,6 +72,8 @@ export default function Home() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-indigo-600"
+                      title="Instagram Profile"
+                      aria-label="Instagram Profile"
                     >
                       <FaInstagram size={24} />
                     </a>
@@ -75,12 +82,15 @@ export default function Home() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-indigo-600"
+                      title="Twitter Profile"
+                      aria-label="Twitter Profile"
                     >
                       <FaTwitter size={24} />
                     </a>
                   </div>
                 </div>
               </div>
+
               <div className="w-full md:w-1/3">
                 <div className="relative w-full aspect-square">
                   <Image
@@ -103,6 +113,7 @@ export default function Home() {
                 About Me
               </span>
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="flex items-center">
                 <Image
@@ -121,12 +132,14 @@ export default function Home() {
                 <p className="text-gray-600 leading-relaxed">
                   I&apos;m a passionate full-stack developer who specializes in creating modern, user-friendly, and scalable web applications. Leveraging my expertise in frontend technologies like <span className="font-semibold">React.js</span>, <span className="font-semibold">Next.js</span>, and <span className="font-semibold">TailwindCSS</span>, alongside backend frameworks like <span className="font-semibold">Node.js</span>, I enjoy bringing innovative ideas to life with seamless technical solutions.
                 </p>
+
                 <h3 className="text-xl font-semibold text-gray-800">
                   My Journey:
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
                   My development journey began a few years ago, driven by curiosity and a desire to solve real-world problems through technology. Since then, I’ve continuously enhanced my skills by embracing challenges and mastering tools like <span className="font-semibold">TypeScript</span>, RESTful APIs, and modern JavaScript frameworks. Today, I focus on building highly efficient, maintainable, and impactful web applications.
                 </p>
+
                 <h3 className="text-xl font-semibold text-gray-800">
                   What I Work With:
                 </h3>
@@ -151,9 +164,11 @@ export default function Home() {
 
         <Skills />
         <ExperienceSection />
+
         <section id="work" className="bg-white">
           <ProjectShowcase />
         </section>
+
         <section id="testimonials" className="bg-gray-50">
           <TestimonialSlider />
         </section>
