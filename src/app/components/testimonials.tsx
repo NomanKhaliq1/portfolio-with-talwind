@@ -5,7 +5,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { FaStar } from "react-icons/fa";
-import Image from "next/image"; // ✅ Next.js optimized image
+import Image from "next/image";
+import ClientOnly from "./ClientOnly";
 
 type Testimonial = {
   name: string;
@@ -84,89 +85,74 @@ const TestimonialSlider: FC = () => {
             What people are saying about my work
           </p>
         </div>
-
-        <Swiper
-          spaceBetween={30}
-          slidesPerView={1}
-          loop={true}
-          speed={1000}
-          centeredSlides
-          autoplay={{ delay: 5000 }}
-          breakpoints={{
+        
+      <ClientOnly>
+        <Swiper spaceBetween={30} slidesPerView={1} loop={true} speed={1000} centeredSlides autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: false 
+          }} breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
-          }}
-          modules={[Autoplay]}
-          className="w-full"
-        >
+          }} modules={[Autoplay]} className="w-full">
           {testimonials.map((testimonial, index) => (
-            <SwiperSlide key={index} className="py-6">
-              <div className="p-6 bg-white rounded-2xl shadow-lg flex flex-col w-full max-w-md mx-auto h-[560px] text-center">
-                {/* Banner and Company Logo */}
-                <div className="relative w-full">
-                  <div className="bg-indigo-100 w-full h-36 rounded-t-xl flex items-center justify-center relative">
-                    {testimonial.companyLogo && (
-                      <Image
-                        src={testimonial.companyLogo}
-                        alt="Company Logo"
-                        width={150}
-                        height={40}
-                        className="object-contain absolute top-5 left-1/2 -translate-x-1/2 z-10"
-                      />
-                    )}
-                  </div>
-
-                  {/* Person Image */}
-                  <div className="absolute -bottom-[60px] left-1/2 -translate-x-1/2 z-20">
-                    <Image
-                      src={testimonial.image || placeholderImage}
-                      alt={testimonial.name}
-                      width={120}
-                      height={120}
-                      className="rounded-full object-cover shadow border-4 border-white"
-                    />
-                  </div>
-                </div>
-
-                {/* Body */}
-                <div className="mt-[70px] flex flex-col justify-between flex-1">
-                  <div>
-                    <div className="font-bold text-gray-800 mt-2">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-sm text-gray-500">{testimonial.designation}</div>
-                    <div className="flex items-center justify-center mt-1 mb-3">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <FaStar key={i} className="text-yellow-500" />
-                      ))}
-                    </div>
-
-                    {/* Review Text */}
-                    <p
-                      ref={(el: HTMLParagraphElement | null) => {
-                        refs.current[index] = el;
-                      }}
-                      className="text-gray-700 font-medium text-base leading-relaxed line-clamp-6"
-                    >
-                      {testimonial.review}
-                    </p>
-                  </div>
-
-                  {/* Read More Button */}
-                  {overflowIndexes.includes(index) && (
-                    <button
-                      onClick={() => setSelectedReview(testimonial)}
-                      className="text-sm mt-2 text-indigo-600 font-semibold hover:underline transition duration-150"
-                    >
-                      Read More
-                    </button>
+          <SwiperSlide key={index} className="py-6">
+            <div
+              className="p-6 bg-white rounded-2xl shadow-lg flex flex-col w-full max-w-md mx-auto h-[560px] text-center">
+              {/* Banner and Company Logo */}
+              <div className="relative w-full">
+                <div className="bg-indigo-100 w-full h-36 rounded-t-xl flex items-center justify-center relative">
+                  {testimonial.companyLogo && (
+                  <Image src={testimonial.companyLogo} alt="Company Logo" width={150} height={40}
+                    className="object-contain absolute top-5 left-1/2 -translate-x-1/2 z-10" />
                   )}
                 </div>
+
+                {/* Person Image */}
+                <div className="absolute -bottom-[60px] left-1/2 -translate-x-1/2 z-20">
+                  <Image src={testimonial.image || placeholderImage} alt={testimonial.name} width={120} height={120}
+                    className="rounded-full object-cover shadow border-4 border-white" />
+                </div>
               </div>
-            </SwiperSlide>
+
+              {/* Body */}
+              <div className="mt-[70px] flex flex-col justify-between flex-1">
+                <div>
+                  <div className="font-bold text-gray-800 mt-2">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-sm text-gray-500">{testimonial.designation}</div>
+                  <div className="flex items-center justify-center mt-1 mb-3">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                    <FaStar key={i} className="text-yellow-500" />
+                    ))}
+                  </div>
+
+                  {/* Review Text */}
+                  <p ref={(el: HTMLParagraphElement | null)=> {
+                    refs.current[index] = el;
+                    }}
+                    className="text-gray-700 font-medium text-base leading-relaxed line-clamp-6"
+                    >
+                    {testimonial.review}
+                  </p>
+                </div>
+
+                {/* Read More Button */}
+                {overflowIndexes.includes(index) && (
+                <button onClick={()=> setSelectedReview(testimonial)}
+                  className="text-sm mt-2 text-indigo-600 font-semibold hover:underline transition duration-150"
+                  >
+                  Read More
+                </button>
+                )}
+              </div>
+            </div>
+          </SwiperSlide>
           ))}
         </Swiper>
+      </ClientOnly>
 
         {/* Modal */}
         {selectedReview && (
