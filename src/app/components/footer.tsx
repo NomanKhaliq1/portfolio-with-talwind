@@ -72,7 +72,7 @@ const FooterContact: FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-600 hover:text-indigo-600"
-          >
+            aria-label="GitHub">
             <FaGithub size={24} />
           </a>
           <a
@@ -80,7 +80,7 @@ const FooterContact: FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-600 hover:text-indigo-600"
-          >
+            aria-label="LinkedIn">
             <FaLinkedin size={24} />
           </a>
           <a
@@ -88,7 +88,7 @@ const FooterContact: FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-600 hover:text-indigo-600"
-          >
+            aria-label="Instagram">
             <FaInstagram size={24} />
           </a>
           <a
@@ -96,7 +96,7 @@ const FooterContact: FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-600 hover:text-indigo-600"
-          >
+            aria-label="Twitter">
             <FaTwitter size={24} />
           </a>
         </div>
