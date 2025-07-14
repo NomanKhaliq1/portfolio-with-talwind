@@ -88,9 +88,10 @@ const TestimonialSlider: FC = () => {
         <Swiper
           spaceBetween={30}
           slidesPerView={1}
-          loop
+          loop={true}
           speed={1000}
           centeredSlides
+          autoplay={{ delay: 5000 }}
           breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
