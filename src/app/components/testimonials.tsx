@@ -34,7 +34,7 @@ const testimonials: Testimonial[] = [
     role: "awesometechinc.com",
     companyLogo: "/reveiws/company-logos/awesometechinc.webp",
     image: "/reveiws/persons/adnan-habib.jpeg",
-    review: `Noman is a skilled and reliable web developer who consistently delivers quality work. He’s quick to learn, detail-oriented, and always approaches tasks with a positive, problem-solving attitude. A great team player and a valuable asset to any project.`,
+    review: "Noman is a skilled and reliable web developer who consistently delivers quality work. He’s quick to learn, detail-oriented, and always approaches tasks with a positive, problem-solving attitude. A great team player and a valuable asset to any project.",
     rating: 5,
   },
   {

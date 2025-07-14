@@ -25,18 +25,6 @@ const experiences: Experience[] = [
       "Worked on CMS-based projects, implementing content updates, and managing website functionalities for various industries.",
     ],
   },
-  {
-    title: "Team Lead",
-    company: "Upwork",
-    logo: "/experience-logos/upwork.png",
-    date: "Jul 2017 - Oct 2021",
-    description: [
-      "Sed quis justo ac magna.",
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "Sed quis justo ac magna.",
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    ],
-  },
 ];
 
 const ExperienceSection: FC = () => {

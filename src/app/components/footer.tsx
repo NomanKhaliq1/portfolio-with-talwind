@@ -103,9 +103,9 @@ const FooterContact: FC = () => {
       </div>
 
       {/* Footer Note */}
-      <div className="text-sm text-gray-500 bg-gray-50 py-6">
+      <div className="text-sm text-gray-500 bg-gray-50 py-6 px-4 text-center sm:text-base">
         <p>
-          © 2024 | Designed and coded with ❤️ by Noman Khaliq
+          © {new Date().getFullYear()} | Designed and coded with ❤️ by Noman Khaliq
         </p>
       </div>
     </footer>

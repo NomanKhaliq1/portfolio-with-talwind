@@ -6,6 +6,7 @@
   --background: #ffffff;
   --foreground: #171717;
   --font-montserrat: 'Montserrat', sans-serif;
+  --accent-purple: #7c3aed; /* added for custom purple */
 }
 
 @keyframes wave {
@@ -18,6 +19,7 @@
   60% { transform: rotate(0deg); }
   100% { transform: rotate(0deg); }
 }
+
 .animate-waving-hand {
   display: inline-block;
   animation: wave 2.5s infinite;
@@ -28,6 +30,7 @@
   :root {
     --background: #ffffff;
     --foreground: #171717;
+    /* optionally override --accent-purple here */
   }
 }
 
@@ -35,4 +38,21 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-montserrat);
+}
+
+.swiper-pagination-bullet {
+  width: 0.5rem !important; /* w-2 */
+  height: 0.5rem !important; /* h-2 */
+  background-color: #d1d5db !important; /* bg-gray-300 */
+  opacity: 0.6 !important;
+  margin: 0 0.25rem !important; /* mx-1 */
+  transition: all 0.3s ease-in-out !important;
+}
+
+.swiper-pagination-bullet-active {
+  width: 2rem !important; /* w-5 */
+  height: 0.5rem !important; /* h-2 */
+  border-radius: 50px !important; /* rounded-full */
+  opacity: 1 !important;
+  background-color: var(--accent-purple) !important;
 }

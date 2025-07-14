@@ -12,6 +12,7 @@ import Skills from "./components/skills";
 import ExperienceSection from "./components/Experinces";
 import ProjectShowcase from "./components/ProjectShowcase";
 import TestimonialSlider from "./components/testimonials";
+import { Code2, Server, Wrench, Database } from "lucide-react";
 
 export default function Home() {
   return (
@@ -27,7 +28,7 @@ export default function Home() {
                       Hi, I&apos;m Noman Khaliq <span className="animate-waving-hand">👋</span>
                     </h1>
                     <p className="text-base md:text-xl text-gray-600">
-                      A Full-Stack Web Developer specializing in React, Next.js, and WordPress, with expertise in creating modern, scalable, and user-centric web applications. I leverage cutting-edge technologies, responsive design principles, and advanced frameworks to deliver innovative solutions tailored to global tech trends.
+                      Full-Stack Web Developer specializing in React, Next.js, TailwindCSS, and WordPress, with expertise in creating modern, scalable, and user-centric web applications. I leverage cutting-edge technologies, responsive design principles, and advanced frameworks to deliver innovative solutions tailored to global tech trends.
                     </p>
                   </div>
 
@@ -88,6 +89,12 @@ export default function Home() {
                       <FaTwitter size={24} />
                     </a>
                   </div>
+                  <a href="#contact"
+                    className="group inline-block mt-4 w-max bg-indigo-600 text-white px-6 py-3 rounded-lg text-sm font-semibold 
+                              shadow hover:bg-indigo-700 hover:-translate-y-1 hover:shadow-lg transform transition-all duration-300">
+                    Let’s Work Together
+                    <span className="ml-2 text-base group-hover:animate-bounce inline-block">🤝</span>
+                  </a>
                 </div>
               </div>
 
@@ -143,18 +150,30 @@ export default function Home() {
                 <h3 className="text-xl font-semibold text-gray-800">
                   What I Work With:
                 </h3>
-                <ul className="list-disc list-inside text-gray-600 space-y-2">
-                  <li>
-                    Frontend: <span className="font-semibold">React.js</span>,{" "}
-                    <span className="font-semibold">Next.js</span>,{" "}
-                    <span className="font-semibold">TailwindCSS</span>
+                <ul className="space-y-3 text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <Code2 className="w-5 h-5 mt-1 text-gray-500" />
+                    <span>
+                      <span className="font-semibold text-gray-800">Frontend:</span> JavaScript, TypeScript, React.js, Next.js, TailwindCSS
+                    </span>
                   </li>
-                  <li>
-                    Backend: <span className="font-semibold">Node.js</span>
+                  <li className="flex items-start gap-2">
+                    <Server className="w-5 h-5 mt-1 text-gray-500" />
+                    <span>
+                      <span className="font-semibold text-gray-800">Backend:</span> Node.js, PHP (Core & WordPress), Python
+                    </span>
                   </li>
-                  <li>
-                    Technologies:{" "}
-                    <span className="font-semibold">TypeScript</span>, REST APIs
+                  <li className="flex items-start gap-2">
+                    <Database className="w-5 h-5 mt-1 text-gray-500" />
+                    <span>
+                      <span className="font-semibold text-gray-800">Database:</span> PostgreSQL, MongoDB
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Wrench className="w-5 h-5 mt-1 text-gray-500" />
+                    <span>
+                      <span className="font-semibold text-gray-800">Tools & Technologies:</span> Figma, REST APIs, Git, Storybook, Cypress
+                    </span>
                   </li>
                 </ul>
               </div>
