@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import ClientOnly from './ClientOnly'; // adjust path if needed
+import ClientOnly from './ClientOnly';
 
 // Dummy project data
 const projects = [
@@ -65,6 +65,7 @@ const ProjectShowcase: FC = () => {
       </p>
 
       <div className="relative max-w-5xl mx-auto">
+        <ClientOnly>
         <Swiper
           modules={[Pagination, Autoplay]}
           pagination={{ clickable: true }}
@@ -135,6 +136,7 @@ const ProjectShowcase: FC = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+        </ClientOnly>
       </div>
 
       {/* Modal */}
