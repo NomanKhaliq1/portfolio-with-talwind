@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import {
-  FaTwitter,
-  FaGithub,
-  FaLinkedin,
-  FaInstagram,
+FaTwitter,
+FaGithub,
+FaLinkedin,
+FaInstagram,
 } from "react-icons/fa";
 
 import Skills from "./components/skills";
@@ -13,185 +13,180 @@ import ExperienceSection from "./components/Experinces";
 import ProjectShowcase from "./components/ProjectShowcase";
 import TestimonialSlider from "./components/testimonials";
 import { Code2, Server, Wrench, Database } from "lucide-react";
+import FadeInOnView from "./components/FadeInOnView";
 
 export default function Home() {
-  return (
-    <>
-      <main className="min-h-screen bg-white">
-        <section className="bg-white py-32 md:py-32">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center justify-between">
-              <div className="w-full md:w-2/3 mb-8 md:mb-0">
-                <div className="space-y-8">
-                  <div className="space-y-4">
-                    <h1 className="text-3xl md:text-6xl font-bold">
-                      Hi, I&apos;m Noman Khaliq <span className="animate-waving-hand">👋</span>
-                    </h1>
-                    <p className="text-base md:text-xl text-gray-600">
-                      Full-Stack Web Developer specializing in React, Next.js, TailwindCSS, and WordPress, with expertise in creating modern, scalable, and user-centric web applications. I leverage cutting-edge technologies, responsive design principles, and advanced frameworks to deliver innovative solutions tailored to global tech trends.
-                    </p>
-                  </div>
-
-                  <ul className="list-none space-y-2">
-                    <li className="flex items-center">
-                      <i className="fas fa-map-marker-alt text-gray-700 text-xl mr-2"></i>
-                      <span className="text-gray-700 text-base font-medium">
-                        Karachi, Pakistan
-                      </span>
-                    </li>
-                    <li className="flex items-center">
-                      <i className="fas fa-circle text-green-500 text-xs mr-2"></i>
-                      <span className="text-gray-700 text-base font-medium">
-                        Available for new projects
-                      </span>
-                    </li>
-                  </ul>
-
-                  <div className="flex space-x-4">
-                    <a
-                      href="https://github.com/NomanKhaliq1"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-600 hover:text-indigo-600"
-                      title="GitHub Profile"
-                      aria-label="GitHub Profile"
-                    >
-                      <FaGithub size={24} />
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/in/nomanghouri-dev/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-600 hover:text-indigo-600"
-                      title="LinkedIn Profile"
-                      aria-label="LinkedIn Profile"
-                    >
-                      <FaLinkedin size={24} />
-                    </a>
-                    <a
-                      href="https://www.instagram.com/nomanghouri2/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-600 hover:text-indigo-600"
-                      title="Instagram Profile"
-                      aria-label="Instagram Profile"
-                    >
-                      <FaInstagram size={24} />
-                    </a>
-                    <a
-                      href="https://twitter.com/yourprofile"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-600 hover:text-indigo-600"
-                      title="Twitter Profile"
-                      aria-label="Twitter Profile"
-                    >
-                      <FaTwitter size={24} />
-                    </a>
-                  </div>
-                  <a href="#contact"
-                    className="group inline-block mt-4 w-max bg-indigo-600 text-white px-6 py-3 rounded-lg text-sm font-semibold 
-                              shadow hover:bg-indigo-700 hover:-translate-y-1 hover:shadow-lg transform transition-all duration-300">
-                    Let’s Work Together
-                    <span className="ml-2 text-base group-hover:animate-bounce inline-block">🤝</span>
-                  </a>
+return (
+<>
+  <main className="min-h-screen bg-white">
+    <FadeInOnView>
+      <section className="bg-white py-32 md:py-32">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="w-full md:w-2/3 mb-8 md:mb-0">
+              <div className="space-y-8">
+                <div className="space-y-4">
+                  <h1 className="text-3xl md:text-6xl font-bold">
+                    Hi, I&apos;m Noman Khaliq <span className="animate-waving-hand">👋</span>
+                  </h1>
+                  <p className="text-base md:text-xl text-gray-600">
+                    Full-Stack Web Developer specializing in React, Next.js, TailwindCSS, and WordPress, with expertise
+                    in creating modern, scalable, and user-centric web applications. I leverage cutting-edge
+                    technologies, responsive design principles, and advanced frameworks to deliver innovative solutions
+                    tailored to global tech trends.
+                  </p>
                 </div>
-              </div>
 
-              <div className="w-full md:w-1/3">
-                <div className="relative w-full aspect-square">
-                  <Image
-                    src="/hero-sec-img.png"
-                    alt="Hero Image"
-                    fill
-                    className="object-cover rounded-lg"
-                    priority
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="about" className="py-20 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
-                About Me
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="flex items-center">
-                <Image
-                  src="/aboutme.jpeg"
-                  alt="About Me Image"
-                  width={500}
-                  height={500}
-                  className="object-cover rounded-lg mx-auto"
-                />
-              </div>
-
-              <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-gray-800">
-                  Curious about me? Here you have it:
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  I&apos;m a passionate full-stack developer who specializes in creating modern, user-friendly, and scalable web applications. Leveraging my expertise in frontend technologies like <span className="font-semibold">React.js</span>, <span className="font-semibold">Next.js</span>, and <span className="font-semibold">TailwindCSS</span>, alongside backend frameworks like <span className="font-semibold">Node.js</span>, I enjoy bringing innovative ideas to life with seamless technical solutions.
-                </p>
-
-                <h3 className="text-xl font-semibold text-gray-800">
-                  My Journey:
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  My development journey began a few years ago, driven by curiosity and a desire to solve real-world problems through technology. Since then, I’ve continuously enhanced my skills by embracing challenges and mastering tools like <span className="font-semibold">TypeScript</span>, RESTful APIs, and modern JavaScript frameworks. Today, I focus on building highly efficient, maintainable, and impactful web applications.
-                </p>
-
-                <h3 className="text-xl font-semibold text-gray-800">
-                  What I Work With:
-                </h3>
-                <ul className="space-y-3 text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <Code2 className="w-5 h-5 mt-1 text-gray-500" />
-                    <span>
-                      <span className="font-semibold text-gray-800">Frontend:</span> JavaScript, TypeScript, React.js, Next.js, TailwindCSS
+                <ul className="list-none space-y-2">
+                  <li className="flex items-center">
+                    <i className="fas fa-map-marker-alt text-gray-700 text-xl mr-2"></i>
+                    <span className="text-gray-700 text-base font-medium">
+                      Karachi, Pakistan
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <Server className="w-5 h-5 mt-1 text-gray-500" />
-                    <span>
-                      <span className="font-semibold text-gray-800">Backend:</span> Node.js, PHP (Core & WordPress), Python
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Database className="w-5 h-5 mt-1 text-gray-500" />
-                    <span>
-                      <span className="font-semibold text-gray-800">Database:</span> PostgreSQL, MongoDB
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Wrench className="w-5 h-5 mt-1 text-gray-500" />
-                    <span>
-                      <span className="font-semibold text-gray-800">Tools & Technologies:</span> Figma, REST APIs, Git, Storybook, Cypress
+                  <li className="flex items-center">
+                    <i className="fas fa-circle text-green-500 text-xs mr-2"></i>
+                    <span className="text-gray-700 text-base font-medium">
+                      Available for new projects
                     </span>
                   </li>
                 </ul>
+
+                <div className="flex space-x-4">
+                  <a href="https://github.com/NomanKhaliq1" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-indigo-600" title="GitHub Profile" aria-label="GitHub Profile">
+                    <FaGithub size={24} />
+                  </a>
+                  <a href="https://www.linkedin.com/in/nomanghouri-dev/" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-indigo-600" title="LinkedIn Profile"
+                    aria-label="LinkedIn Profile">
+                    <FaLinkedin size={24} />
+                  </a>
+                  <a href="https://www.instagram.com/nomanghouri2/" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-indigo-600" title="Instagram Profile"
+                    aria-label="Instagram Profile">
+                    <FaInstagram size={24} />
+                  </a>
+                  <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-indigo-600" title="Twitter Profile"
+                    aria-label="Twitter Profile">
+                    <FaTwitter size={24} />
+                  </a>
+                </div>
+                <a href="#contact"
+                  className="group inline-block mt-4 w-max bg-indigo-600 text-white px-6 py-3 rounded-lg text-sm font-semibold 
+                              shadow hover:bg-indigo-700 hover:-translate-y-1 hover:shadow-lg transform transition-all duration-300">
+                  Let’s Work Together
+                  <span className="ml-2 text-base group-hover:animate-bounce inline-block">🤝</span>
+                </a>
+              </div>
+            </div>
+
+            <div className="w-full md:w-1/3">
+              <div className="relative w-full aspect-square">
+                <Image src="/hero-sec-img.png" alt="Hero Image" fill className="object-cover rounded-lg" priority />
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
+    </FadeInOnView>
 
-        <Skills />
-        <ExperienceSection />
+    <FadeInOnView>
+      <section id="about" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
+              About Me
+            </span>
+          </div>
 
-        <section id="work" className="bg-white">
-          <ProjectShowcase />
-        </section>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="flex items-center">
+              <Image src="/aboutme.jpeg" alt="About Me Image" width={500} height={500}
+                className="object-cover rounded-lg mx-auto" />
+            </div>
 
-        <section id="testimonials" className="bg-gray-50">
-          <TestimonialSlider />
-        </section>
-      </main>
-    </>
-  );
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold text-gray-800">
+                Curious about me? Here you have it:
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                I&apos;m a passionate full-stack developer who specializes in creating modern, user-friendly, and
+                scalable web applications. Leveraging my expertise in frontend technologies like <span
+                  className="font-semibold">React.js</span>, <span className="font-semibold">Next.js</span>, and <span
+                  className="font-semibold">TailwindCSS</span>, alongside backend frameworks like <span
+                  className="font-semibold">Node.js</span>, I enjoy bringing innovative ideas to life with seamless
+                technical solutions.
+              </p>
+
+              <h3 className="text-xl font-semibold text-gray-800">
+                My Journey:
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                My development journey began a few years ago, driven by curiosity and a desire to solve real-world
+                problems through technology. Since then, I’ve continuously enhanced my skills by embracing challenges
+                and mastering tools like <span className="font-semibold">TypeScript</span>, RESTful APIs, and modern
+                JavaScript frameworks. Today, I focus on building highly efficient, maintainable, and impactful web
+                applications.
+              </p>
+
+              <h3 className="text-xl font-semibold text-gray-800">
+                What I Work With:
+              </h3>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <Code2 className="w-5 h-5 mt-1 text-gray-500" />
+                  <span>
+                    <span className="font-semibold text-gray-800">Frontend:</span> JavaScript, TypeScript, React.js,
+                    Next.js, TailwindCSS
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Server className="w-5 h-5 mt-1 text-gray-500" />
+                  <span>
+                    <span className="font-semibold text-gray-800">Backend:</span> Node.js, PHP (Core & WordPress),
+                    Python
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Database className="w-5 h-5 mt-1 text-gray-500" />
+                  <span>
+                    <span className="font-semibold text-gray-800">Database:</span> PostgreSQL, MongoDB
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Wrench className="w-5 h-5 mt-1 text-gray-500" />
+                  <span>
+                    <span className="font-semibold text-gray-800">Tools & Technologies:</span> Figma, REST APIs, Git,
+                    Storybook, Cypress
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </FadeInOnView>
+
+    <FadeInOnView>
+      <Skills />
+    </FadeInOnView>
+
+    <FadeInOnView>
+      <ExperienceSection />
+    </FadeInOnView>
+
+    <FadeInOnView>
+      <section id="work" className="bg-white">
+        <ProjectShowcase />
+      </section>
+    </FadeInOnView>
+
+    <section id="testimonials" className="bg-gray-50">
+      <TestimonialSlider />
+    </section>
+  </main>
+</>
+);
 }

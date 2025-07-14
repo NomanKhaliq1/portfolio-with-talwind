@@ -14,7 +14,8 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "Noman Khaliq | Full Stack Developer",
-  description: "Full Stack Developer specializing in building modern web applications with expertise in frontend and backend technologies.",
+  description:
+    "Full Stack Developer specializing in building modern web applications with expertise in frontend and backend technologies.",
 };
 
 export default function RootLayout({
@@ -23,14 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${montserrat.variable} antialiased`}>
       <head>
         <link
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
           rel="stylesheet"
         />
       </head>
-      <body className={`${montserrat.variable} antialiased`}>
+      <body>
         <Header />
         {children}
         <Footer />
