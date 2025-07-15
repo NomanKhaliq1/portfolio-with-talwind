@@ -65,6 +65,7 @@ const TestimonialSlider: FC = () => {
   const [overflowIndexes, setOverflowIndexes] = useState<number[]>([]);
 
   useEffect(() => {
+  const timeout = setTimeout(() => {
     const indexes: number[] = [];
     refs.current.forEach((el, i) => {
       if (el && el.scrollHeight > el.offsetHeight + 10) {
@@ -72,7 +73,10 @@ const TestimonialSlider: FC = () => {
       }
     });
     setOverflowIndexes(indexes);
-  }, []);
+  }, 300); // delay to wait for images/fonts
+
+  return () => clearTimeout(timeout);
+}, []);
 
   return (
     <section id="testimonials" className="bg-gray-50 py-24">
