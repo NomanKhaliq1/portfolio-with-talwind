@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import Image from "next/image";
-import { experiences } from "@/app/data/experiences"; // 🔁 Import from new file
+import { experiences } from "@/app/data/experiences";
 
 const ExperienceSection: FC = () => {
   return (
@@ -12,15 +12,18 @@ const ExperienceSection: FC = () => {
           Experience
         </span>
       </div>
+
       <p className="text-center text-gray-600 mb-8">
         Here is a quick summary of my most recent experiences:
       </p>
+
       <div className="max-w-4xl mx-auto space-y-6">
         {experiences.map((experience, index) => (
           <div
             key={index}
             className="flex flex-col md:flex-row items-stretch p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition"
           >
+            {/* Experience Content */}
             <div className="flex-1">
               <h3 className="text-xl font-bold">{experience.title}</h3>
               <ul className="list-disc text-[14px] text-gray-600 pl-5 mt-2">
@@ -30,6 +33,7 @@ const ExperienceSection: FC = () => {
               </ul>
             </div>
 
+            {/* Logo & Meta */}
             <div className="flex flex-row md:flex-col items-start md:items-end justify-between mt-4 md:mt-0 md:ml-6 flex-shrink-0 w-full md:w-auto">
               <Image
                 src={experience.logo}
@@ -38,14 +42,15 @@ const ExperienceSection: FC = () => {
                 height={64}
                 className="object-contain md:mb-2"
               />
-              <p className="text-sm text-gray-500 ml-auto md:ml-0 mt-2 md:mt-0 flex items-center gap-2">
+
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-1 text-sm text-gray-500 mt-2 md:mt-0">
                 <span>{experience.date}</span>
                 {experience.date.toLowerCase().includes("present") && (
                   <span className="text-green-600 font-medium text-xs bg-green-100 px-2 py-1 rounded-full">
                     Currently Working
                   </span>
                 )}
-              </p>
+              </div>
             </div>
           </div>
         ))}

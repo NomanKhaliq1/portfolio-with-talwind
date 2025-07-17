@@ -98,7 +98,7 @@ const TestimonialSlider: FC = () => {
           }} breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
+            1100: { slidesPerView: 3 },
           }} modules={[Autoplay]} className="w-full">
           {testimonials.map((testimonial, index) => (
           <SwiperSlide key={index} className="py-6">

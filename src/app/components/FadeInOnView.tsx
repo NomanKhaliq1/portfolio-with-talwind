@@ -4,7 +4,7 @@ import { motion, useInView, useAnimation } from "framer-motion";
 import { useEffect, useRef } from "react";
 
 // ✅ Global toggle – control animation from here
-const ANIMATIONS_ENABLED = true;
+const ANIMATIONS_ENABLED = false;
 
 export default function FadeInOnView({
   children,

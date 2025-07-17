@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
 // ✅ Global toggle to stop/start animations
-const ANIMATIONS_ENABLED = true;
+const ANIMATIONS_ENABLED = false;
 
 const Skills = () => {
   const skills = [
