@@ -36,7 +36,7 @@ const HeroSection = () => {
             <div className="w-full lg:w-2/3 space-y-8 text-left">
               <div className="space-y-4">
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900">
-                  Hi, I'm Noman Khaliq <span className="animate-waving-hand">👋</span>
+                  Hi, I&apos;m Noman Khaliq <span className="animate-waving-hand">👋</span>
                 </h1>
                 <p className="text-indigo-600 text-base sm:text-lg font-medium mt-2">
                   I help businesses turn complex ideas into sleek, scalable web apps.
