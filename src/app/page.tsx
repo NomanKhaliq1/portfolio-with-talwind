@@ -10,31 +10,31 @@ import FadeInOnView from "./components/FadeInOnView";
 
 export default function Home() {
 
-return (
-<>
-  <main className="min-h-screen bg-white">
-    <HeroSection />
+  return (
+    <>
+      <main className="min-h-screen bg-white">
+        <HeroSection />
 
-    <AboutSection />
+        <AboutSection />
 
-    <FadeInOnView>
-      <Skills />
-    </FadeInOnView>
+        <FadeInOnView>
+          <Skills />
+        </FadeInOnView>
 
-    <FadeInOnView>
-      <ExperienceSection />
-    </FadeInOnView>
+        <FadeInOnView>
+          <ExperienceSection />
+        </FadeInOnView>
 
-    <FadeInOnView>
-      <section id="work" className="bg-white">
-        <ProjectShowcase />
-      </section>
-    </FadeInOnView>
+        <FadeInOnView>
+          <section id="work" className="bg-white">
+            <ProjectShowcase />
+          </section>
+        </FadeInOnView>
 
-    <section id="testimonials" className="bg-gray-50">
-      <TestimonialSlider />
-    </section>
-  </main>
-</>
-);
+        <section id="testimonials" className="bg-gray-50">
+          <TestimonialSlider />
+        </section>
+      </main>
+    </>
+  );
 }

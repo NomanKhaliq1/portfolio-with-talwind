@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -13,13 +14,26 @@ const Header = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
       setIsMenuOpen(false);
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="w-full bg-white shadow-md font-montserrat fixed top-0 z-50">
+    <header
+      className={`w-full bg-white font-montserrat fixed top-0 z-50 transition-shadow duration-300 ${
+        isScrolled ? "shadow-md" : ""
+      }`}
+    >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
@@ -28,35 +42,22 @@ const Header = () => {
             </Link>
           </div>
 
+          {/* Desktop Nav */}
           <nav className="hidden md:flex space-x-8 font-normal">
-            <button 
-              onClick={() => scrollToSection('about')}
-              className="text-gray-700 hover:text-gray-900 transition-colors duration-200"
-            >
-              About
-            </button>
-            <button 
-              onClick={() => scrollToSection('work')}
-              className="text-gray-700 hover:text-gray-900 transition-colors duration-200"
-            >
-              Work
-            </button>
-            <button
-              onClick={() => scrollToSection('testimonials')}
-              className="text-gray-700 hover:text-gray-900 transition-colors duration-200"
-            >
-              Testimonials
-            </button>
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="text-gray-700 hover:text-gray-900 transition-colors duration-200"
-            >
-              Contact
-            </button>
+            {["about", "work", "testimonials", "contact"].map((section) => (
+              <button
+                key={section}
+                onClick={() => scrollToSection(section)}
+                className="text-gray-700 hover:text-gray-900 hover:underline underline-offset-4 transition-all duration-200 capitalize"
+              >
+                {section}
+              </button>
+            ))}
           </nav>
 
+          {/* Mobile Menu Toggle */}
           <div className="md:hidden">
-            <button 
+            <button
               className="text-gray-700 hover:text-gray-900 focus:outline-none p-2"
               onClick={toggleMenu}
               aria-label="Toggle menu"
@@ -78,37 +79,24 @@ const Header = () => {
           </div>
         </div>
 
-
-        <div 
+        {/* Mobile Nav */}
+        <div
           className={`md:hidden transition-all duration-300 ease-in-out ${
-            isMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+            isMenuOpen
+              ? "max-h-64 opacity-100"
+              : "max-h-0 opacity-0 overflow-hidden"
           }`}
         >
           <div className="px-2 pt-2 pb-3 space-y-1 font-normal">
-            <button
-              onClick={() => scrollToSection('home')}
-              className="block w-full text-left px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors duration-200"
-            >
-              Home
-            </button>
-            <button
-              onClick={() => scrollToSection('about')}
-              className="block w-full text-left px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors duration-200"
-            >
-              About
-            </button>
-            <button
-              onClick={() => scrollToSection('work')}
-              className="block w-full text-left px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors duration-200"
-            >
-              Work
-            </button>
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="block w-full text-left px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors duration-200"
-            >
-              Contact
-            </button>
+            {["home", "about", "work", "contact"].map((section) => (
+              <button
+                key={section}
+                onClick={() => scrollToSection(section)}
+                className="block w-full text-left px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors duration-200 capitalize"
+              >
+                {section}
+              </button>
+            ))}
           </div>
         </div>
       </div>
