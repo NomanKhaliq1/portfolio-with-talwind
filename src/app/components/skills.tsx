@@ -4,6 +4,9 @@ import Image from "next/image";
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
+// ✅ Global toggle to stop/start animations
+const ANIMATIONS_ENABLED = true;
+
 const Skills = () => {
   const skills = [
     { src: "/icons/javascript.svg", alt: "Javascript", label: "Javascript" },
@@ -37,46 +40,73 @@ const Skills = () => {
           </h2>
         </div>
 
-        <motion.div
-          ref={ref}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-10 mt-10"
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: 0.1,
+        {ANIMATIONS_ENABLED ? (
+          <motion.div
+            ref={ref}
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-10 mt-10"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.1,
+                },
               },
-            },
-          }}
-        >
-          {skills.map((skill, index) => (
-            <motion.div
-              key={index}
-              className="flex flex-col items-center text-center space-y-2"
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0 },
-              }}
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="w-20 h-20 flex items-center justify-center">
-                <Image
-                  src={skill.src}
-                  alt={skill.alt}
-                  width={64}
-                  height={64}
-                  className="w-full h-full object-contain"
-                />
+            }}
+          >
+            {skills.map((skill, index) => (
+              <motion.div
+                key={index}
+                className="flex flex-col items-center text-center space-y-2"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="w-20 h-20 flex items-center justify-center">
+                  <Image
+                    src={skill.src}
+                    alt={skill.alt}
+                    width={64}
+                    height={64}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <span className="text-gray-600 font-medium text-sm">
+                  {skill.label}
+                </span>
+              </motion.div>
+            ))}
+          </motion.div>
+        ) : (
+          <div
+            ref={ref}
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-10 mt-10"
+          >
+            {skills.map((skill, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center text-center space-y-2"
+              >
+                <div className="w-20 h-20 flex items-center justify-center">
+                  <Image
+                    src={skill.src}
+                    alt={skill.alt}
+                    width={64}
+                    height={64}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <span className="text-gray-600 font-medium text-sm">
+                  {skill.label}
+                </span>
               </div>
-              <span className="text-gray-600 font-medium text-sm">
-                {skill.label}
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

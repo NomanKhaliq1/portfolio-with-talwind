@@ -1,24 +1,31 @@
 "use client";
+
 import { motion, useInView, useAnimation } from "framer-motion";
 import { useEffect, useRef } from "react";
+
+// ✅ Global toggle – control animation from here
+const ANIMATIONS_ENABLED = true;
 
 export default function FadeInOnView({
   children,
   className = "",
   delay = 0,
-  enabled = true,
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
-  enabled?: boolean;
 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { margin: "-10% 0px -30% 0px", once: false });
+
+  const isInView = useInView(ref, {
+    margin: "-10% 0px -30% 0px",
+    once: false,
+  });
+
   const controls = useAnimation();
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!ANIMATIONS_ENABLED) return;
 
     if (isInView) {
       controls.start({
@@ -39,10 +46,18 @@ export default function FadeInOnView({
         },
       });
     }
-  }, [isInView, controls, delay, enabled]);
+  }, [isInView, controls, delay]);
 
-  if (!enabled) return <div className={className}>{children}</div>;
+  // ✅ Return plain div when disabled — no motion at all
+  if (!ANIMATIONS_ENABLED) {
+    return (
+      <div ref={ref} className={className}>
+        {children}
+      </div>
+    );
+  }
 
+  // ✅ Return animated version when enabled
   return (
     <motion.div
       ref={ref}

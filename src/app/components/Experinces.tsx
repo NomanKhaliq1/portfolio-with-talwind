@@ -1,31 +1,8 @@
 "use client";
 
 import { FC } from "react";
-import Image from "next/image"; // Ensure you use this component
-
-type Experience = {
-  title: string;
-  company: string;
-  logo: string;
-  date: string;
-  description: string[];
-};
-
-const experiences: Experience[] = [
-  {
-    title: "Web Developer",
-    company: "Awesome Technologies Inc",
-    logo: "/experience-logos/AwesomeTech.webp",
-    date: "Nov 2021 - Present",
-    description: [
-      "Developed and maintained responsive websites using platforms like Webflow and WordPress, focusing on delivering seamless user experiences.",
-      "Specialized in e-commerce websites and custom WordPress solutions, including the creation of custom plugins tailored to client needs.",
-      "Collaborated with teams to design visually appealing and high-performance websites aligned with client goals.",
-      "Ensured adherence to best practices in web development, including responsive design, cross-browser compatibility, and performance optimization.",
-      "Worked on CMS-based projects, implementing content updates, and managing website functionalities for various industries.",
-    ],
-  },
-];
+import Image from "next/image";
+import { experiences } from "@/app/data/experiences"; // 🔁 Import from new file
 
 const ExperienceSection: FC = () => {
   return (
@@ -57,12 +34,17 @@ const ExperienceSection: FC = () => {
               <Image
                 src={experience.logo}
                 alt={experience.company}
-                width={128} // Adjust as needed
-                height={64} // Adjust as needed
+                width={128}
+                height={64}
                 className="object-contain md:mb-2"
               />
-              <p className="text-sm text-gray-500 ml-auto md:ml-0 mt-2 md:mt-0">
-                {experience.date}
+              <p className="text-sm text-gray-500 ml-auto md:ml-0 mt-2 md:mt-0 flex items-center gap-2">
+                <span>{experience.date}</span>
+                {experience.date.toLowerCase().includes("present") && (
+                  <span className="text-green-600 font-medium text-xs bg-green-100 px-2 py-1 rounded-full">
+                    Currently Working
+                  </span>
+                )}
               </p>
             </div>
           </div>
