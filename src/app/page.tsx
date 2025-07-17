@@ -26,11 +26,6 @@ const customMessage = "On vacation, back on 23rd July";
 const openToJobOffers = true;
 const jobType = "Remote Full-Time";
 
-const isAvailableAuto =
-  currentProjects === 0 || (remainingSlots > 0 && currentProjects > 0);
-
-const isAvailable = !statusOverride && isAvailableAuto;
-
 export default function Home() {
 
 const currentExperience = experiences.find((exp) =>
@@ -58,7 +53,7 @@ return (
           {/* Headline */}
           <div className="space-y-4">
             <h1 className="text-4xl md:text-6xl font-bold leading-tight text-gray-900">
-              Hi, I'm Noman Khaliq <span className="animate-waving-hand">👋</span>
+              Hi, I&apos;m Noman Khaliq <span className="animate-waving-hand">👋</span>
             </h1>
             <p className="text-indigo-600 text-lg font-medium mt-2">
               I help businesses turn complex ideas into sleek, scalable web apps.
@@ -138,7 +133,8 @@ return (
           <div className="flex flex-wrap items-center gap-6 pt-4 text-gray-700 text-sm md:text-base">
             <div title="Based on real client work">🌐 {totalWebsitesBuilt}+ Websites Built</div>
             <div title="Live projects in development">🚀 {activeProjects} Ongoing Projects</div>
-            <div title="From Nov 2021 to Present">💼 {yearsOfExperience}+ Years Experience</div>
+            <div title={`From ${startDate.getFullYear()} to Present`}>💼 {yearsOfExperience}+ Years Experience
+            </div>
           </div>
 
           {/* Social + CTA */}
