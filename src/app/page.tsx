@@ -16,8 +16,8 @@ import { Code2, Server, Wrench, Database } from "lucide-react";
 import FadeInOnView from "./components/FadeInOnView";
 import { experiences } from "@/app/data/experiences";
 
-const currentProjects = 0;
-const totalSlots = 3;
+const currentProjects = 12;
+const totalSlots = 20;
 const remainingSlots = totalSlots - currentProjects;
 
 const statusOverride = true;
@@ -39,7 +39,7 @@ const yearsOfExperience = today.getFullYear() - startDate.getFullYear();
 
 // Sample static project data
 const totalWebsitesBuilt = 15;
-const activeProjects = 6;
+const activeProjects = currentProjects;
 
 return (
 <>
@@ -132,7 +132,11 @@ return (
           {/* Highlights (Websites, Projects, Experience) */}
           <div className="flex flex-wrap items-center gap-6 pt-4 text-gray-700 text-sm md:text-base">
             <div title="Based on real client work">🌐 {totalWebsitesBuilt}+ Websites Built</div>
-            <div title="Live projects in development">🚀 {activeProjects} Ongoing Projects</div>
+            {activeProjects > 0 && (
+              <div title="Live projects in development">
+                🚀 {activeProjects} Ongoing Projects
+              </div>
+            )}
             <div title={`From ${startDate.getFullYear()} to Present`}>💼 {yearsOfExperience}+ Years Experience
             </div>
           </div>
@@ -163,7 +167,7 @@ return (
         </div>
 
         {/* Image Right Side */}
-        <div className="relative w-[22rem] h-[28rem] mx-auto bg-gradient-to-br from-yellow-400/10 via-orange-200/30 to-white rounded-[2rem] p-2 shadow-2xl hover:scale-105 transition-transform duration-300">
+        <div className="relative w-[32rem] h-[38rem] mx-auto bg-gradient-to-br from-yellow-400/10 via-orange-200/30 to-white rounded-[2rem] p-2 shadow-2xl hover:scale-105 transition-transform duration-300">
         <Image
           src="/noman-khaliq-developer.webp"
           alt="Noman Khaliq Hero Image"
@@ -193,8 +197,8 @@ return (
           <Image
             src="/aboutme.jpeg"
             alt="About Me Image"
-            width={500}
-            height={500}
+            width={600}
+            height={600}
             className="object-cover rounded-lg mx-auto"
           />
         </div>
