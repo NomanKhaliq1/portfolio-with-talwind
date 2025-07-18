@@ -12,7 +12,7 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 });
 
-// ✅ SEO metadata
+// SEO metadata
 export const metadata: Metadata = {
   title: "Noman Khaliq | Full Stack Developer",
   description:
@@ -67,7 +67,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={montserrat.variable}>
+    <html lang="en" className={montserrat.variable} suppressHydrationWarning>
       <body className="antialiased">
         <Header />
         {children}

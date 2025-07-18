@@ -31,9 +31,11 @@ export default function Home() {
           </section>
         </FadeInOnView>
 
-        <section id="testimonials" className="bg-gray-50">
-          <TestimonialSlider />
-        </section>
+        <FadeInOnView>
+          <section id="testimonials" className="bg-gray-50">
+            <TestimonialSlider />
+          </section>
+        </FadeInOnView>
       </main>
     </>
   );

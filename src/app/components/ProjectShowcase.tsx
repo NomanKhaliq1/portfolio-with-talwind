@@ -8,48 +8,8 @@ import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import ClientOnly from './ClientOnly';
-
-const projects = [
-    {
-    title: "Fiskil",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec arcu ac tellus volutpat viverra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. In bibendum libero nec tellus scelerisque, sed cursus nulla lobortis. Curabitur sed nibh suscipit, blandit tellus a, lacinia magna. Morbi facilisis tellus non augue ullamcorper, sed sodales felis lacinia. Suspendisse consectetur neque et turpis mattis, a faucibus lorem commodo.",
-    technologies: ["React", "Next.js", "TailwindCSS"],
-    image: "/projectimages/DummyPortfolio.png",
-    link: "https://fiskil.com",
-    modalOnlyContent: (
-      <div className="mt-6">
-        <h4 className="text-lg font-semibold mb-2">Key Features</h4>
-        <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-          <li>Real-time transaction monitoring</li>
-          <li>Bank integration with open banking</li>
-          <li>Data visualizations for insights</li>
-        </ul>
-      </div>
-    ),
-  },
-  {
-    title: "Fiskil",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec arcu ac tellus volutpat viverra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. In bibendum libero nec tellus scelerisque, sed cursus nulla lobortis. Curabitur sed nibh suscipit, blandit tellus a, lacinia magna. Morbi facilisis tellus non augue ullamcorper, sed sodales felis lacinia. Suspendisse consectetur neque et turpis mattis, a faucibus lorem commodo.",
-    technologies: [
-      "React", "Next.js", "Typescript", "Nest.js", "PostgreSQL",
-      "TailwindCSS", "Figma", "Cypress", "Storybook", "Git"
-    ],
-    image: "/projectimages/DummyPortfolio.png",
-    link: "https://fiskil.com",
-  },
-  {
-    title: "Fiskil",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec arcu ac tellus volutpat viverra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. In bibendum libero nec tellus scelerisque, sed cursus nulla lobortis. Curabitur sed nibh suscipit, blandit tellus a, lacinia magna. Morbi facilisis tellus non augue ullamcorper, sed sodales felis lacinia. Suspendisse consectetur neque et turpis mattis, a faucibus lorem commodo.",
-    technologies: [
-      "React", "Next.js", "Typescript", "Nest.js", "PostgreSQL",
-      "TailwindCSS", "Figma", "Cypress", "Storybook", "Git"
-    ],
-    image: "/projectimages/DummyPortfolio.png",
-    link: "https://fiskil.com",
-  },
-];
+import { projects } from "@/app/data/projects";
+import { modalContentMap } from "@/app/data/ModalContent";
 
 const getPreviewText = (text: string, wordLimit = 35) => {
   const words = text.split(" ");
@@ -189,8 +149,10 @@ const ProjectShowcase: FC = () => {
         {selectedProject.description}
       </p>
 
-      {selectedProject.modalOnlyContent && (
-        <div className="mb-6">{selectedProject.modalOnlyContent}</div>
+      {selectedProject.modalKey && modalContentMap[selectedProject.modalKey] && (
+        <div className="mb-6">
+          {modalContentMap[selectedProject.modalKey]}
+        </div>
       )}
 
       <div className="flex flex-wrap gap-2 mb-6">
