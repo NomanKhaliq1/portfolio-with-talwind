@@ -3,8 +3,8 @@
 import { motion, useInView, useAnimation } from "framer-motion";
 import { useEffect, useRef } from "react";
 
-// ✅ Global toggle – control animation from here
-const ANIMATIONS_ENABLED = false;
+// Global toggle – control animation from here
+const ANIMATIONS_ENABLED = true;
 
 export default function FadeInOnView({
   children,
@@ -48,7 +48,7 @@ export default function FadeInOnView({
     }
   }, [isInView, controls, delay]);
 
-  // ✅ Return plain div when disabled — no motion at all
+  // Return plain div when disabled — no motion at all
   if (!ANIMATIONS_ENABLED) {
     return (
       <div ref={ref} className={className}>
@@ -57,7 +57,7 @@ export default function FadeInOnView({
     );
   }
 
-  // ✅ Return animated version when enabled
+  // Return animated version when enabled
   return (
     <motion.div
       ref={ref}

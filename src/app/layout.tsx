@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     siteName: "Noman Khaliq Portfolio",
     images: [
       {
-        url: "/og-image.jpg", // 💡 Add this image in your public folder
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Noman Khaliq - Full Stack Developer",
@@ -56,10 +56,10 @@ export const metadata: Metadata = {
     description:
       "Crafting modern, scalable web apps with React, Next.js, and WordPress.",
     creator: "@nomankhaliq_",
-    images: ["/og-image.jpg"], // Same as Open Graph
+    images: ["/og-image.jpg"],
   },
   icons: {
-    icon: "/favicon.ico", // Place favicon.ico in /public
+    icon: "/favicon.ico",
   },
 };
 
@@ -68,11 +68,6 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={montserrat.variable}>
-      <head>
-        {/* Optional: Add additional meta here if needed */}
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
       <body className="antialiased">
         <Header />
         {children}
