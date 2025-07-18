@@ -148,7 +148,7 @@ const HeroSection = () => {
                 href="#contact"
                 className="inline-block mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700 transition"
               >
-                Let’s Work Together 🫱
+                Let’s Work Together 🤝
               </a>
             </div>
 
