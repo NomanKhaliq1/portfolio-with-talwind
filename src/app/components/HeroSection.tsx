@@ -3,19 +3,21 @@
 import Image from "next/image";
 import { FaTwitter, FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { experiences } from "@/app/data/experiences";
+import { portfolioStatus } from "@/app/data/portfolioStatus";
 import FadeInOnView from "./FadeInOnView";
 
-const currentProjects: number = 12;
-const totalSlots = 20;
+const {
+  currentProjects,
+  totalSlots,
+  totalWebsitesBuilt,
+  statusOverride,
+  customMessage,
+  openToJobOffers,
+  jobType,
+} = portfolioStatus;
+
 const remainingSlots = totalSlots - currentProjects;
 
-const statusOverride = true;
-const customMessage = "On vacation, back on 23rd July";
-
-const openToJobOffers = false;
-const jobType = "Remote Full-Time";
-
-const totalWebsitesBuilt = 15;
 const activeProjects = currentProjects;
 
 const HeroSection = () => {
