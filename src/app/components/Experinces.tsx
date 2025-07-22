@@ -1,10 +1,45 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
-import { experiences } from "@/app/data/experiences";
+import { getExperiences, type Experience } from "@/app/utils/getExperiences";
+import { supabase } from "@/app/lib/supabaseClient";
 
 const ExperienceSection: FC = () => {
+  const [experiences, setExperiences] = useState<Experience[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function fetchAndSet() {
+      const data = await getExperiences();
+      if (mounted) setExperiences(data);
+    }
+
+    fetchAndSet();
+
+    const channel = supabase
+      .channel("realtime:experiences")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "experiences",
+        },
+        (payload) => {
+          console.log("🔄 Realtime update received (experiences):", payload);
+          fetchAndSet();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      mounted = false;
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
   return (
     <div className="px-6 py-20 bg-gray-50">
       <div className="text-center mb-6">
@@ -23,7 +58,6 @@ const ExperienceSection: FC = () => {
             key={index}
             className="flex flex-col md:flex-row items-stretch p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition"
           >
-            {/* Experience Content */}
             <div className="flex-1">
               <h3 className="text-xl font-bold">{experience.title}</h3>
               <ul className="list-disc text-[14px] text-gray-600 pl-5 mt-2">
@@ -33,7 +67,6 @@ const ExperienceSection: FC = () => {
               </ul>
             </div>
 
-            {/* Logo & Meta */}
             <div className="flex flex-row md:flex-col items-start md:items-end justify-between mt-4 md:mt-0 md:ml-6 flex-shrink-0 w-full md:w-auto">
               <Image
                 src={experience.logo}

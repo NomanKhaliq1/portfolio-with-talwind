@@ -1,16 +1,49 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { skills } from "@/app/data/skills";
+import { supabase } from "@/app/lib/supabaseClient";
+import { getSkills, type Skill } from "@/app/utils/getSkills";
 
-// ✅ Global toggle to stop/start animations
 const ANIMATIONS_ENABLED = true;
 
 const Skills = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false });
+  const [skills, setSkills] = useState<Skill[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function fetchAndSet() {
+      const skills = await getSkills();
+      if (mounted) setSkills(skills);
+    }
+
+    fetchAndSet();
+
+    const channel = supabase
+      .channel("realtime:skills")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "skills",
+        },
+        (payload) => {
+          console.log("🔄 Realtime skill update:", payload);
+          fetchAndSet();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      mounted = false;
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   return (
     <section id="skills" className="py-20">
@@ -26,7 +59,7 @@ const Skills = () => {
           </h2>
         </div>
 
-        {ANIMATIONS_ENABLED ? (
+        {(ANIMATIONS_ENABLED ? (
           <motion.div
             ref={ref}
             className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-10 mt-10"
@@ -83,7 +116,7 @@ const Skills = () => {
               </div>
             ))}
           </div>
-        )}
+        ))}
       </div>
     </section>
   );

@@ -1,41 +1,104 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTwitter, FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
-import { experiences } from "@/app/data/experiences";
-import { portfolioStatus, type PortfolioStatus } from "@/app/data/portfolioStatus";
 import FadeInOnView from "./FadeInOnView";
+import { getPortfolioStatus } from "@/app/utils/getPortfolioStatus";
+import { getExperiences } from "@/app/utils/getExperiences";
+import { supabase } from "@/app/lib/supabaseClient";
 
-const {
-  currentProjects,
-  totalSlots,
-  totalWebsitesBuilt,
-  statusOverride,
-  customMessage,
-  openToJobOffers,
-  jobType,
-}: PortfolioStatus = portfolioStatus;
-
-const remainingSlots = totalSlots - currentProjects;
+type Status = {
+  current_projects: number;
+  total_slots: number;
+  total_built: number;
+  status_override: boolean;
+  custom_message: string;
+  vacation_until: string;
+  open_to_jobs: boolean;
+  job_type: string;
+  dynamicMessage: string;
+};
 
 const HeroSection = () => {
   const [showJobModal, setShowJobModal] = useState(false);
+  const [status, setStatus] = useState<Status | null>(null);
+  const [yearsOfExperience, setYearsOfExperience] = useState<number | null>(null);
+  const [currentRole, setCurrentRole] = useState<string | null>(null);
 
-  const currentExperience = experiences.find((exp) =>
-    exp.date.toLowerCase().includes("present")
-  );
+  useEffect(() => {
+    let mounted = true;
 
-  const startDate = new Date(experiences[0].startDate);
-  const today = new Date();
-  const yearsOfExperience = today.getFullYear() - startDate.getFullYear();
+    async function fetchAndSet() {
+      const liveData = await getPortfolioStatus();
+      if (!mounted || !liveData) return;
+
+      setStatus((prev) => {
+        const isDifferent = JSON.stringify(prev) !== JSON.stringify(liveData);
+        return isDifferent ? { ...liveData } : { ...liveData };
+      });
+    }
+
+    fetchAndSet();
+
+    const channel = supabase
+      .channel("realtime:portfolioStatus")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "portfolioStatus" },
+        () => fetchAndSet()
+      )
+      .subscribe();
+
+    return () => {
+      mounted = false;
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  useEffect(() => {
+    async function calculateExperience() {
+      const experiences = await getExperiences();
+      if (experiences.length > 0) {
+        const sorted = experiences.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+        const startDate = new Date(sorted[0].startDate);
+        const today = new Date();
+        const years = today.getFullYear() - startDate.getFullYear();
+        setYearsOfExperience(years);
+
+        const current = experiences.find((exp) =>
+          exp.date.toLowerCase().includes("present")
+        );
+        if (current) {
+          setCurrentRole(
+            `Currently working as <strong>${current.title}</strong> at <strong>${current.company}</strong>`
+          );
+        }
+      }
+    }
+
+    calculateExperience();
+  }, []);
+
+  if (!status) return null;
+
+  const {
+    current_projects,
+    total_slots,
+    total_built,
+    status_override,
+    open_to_jobs,
+    job_type,
+    dynamicMessage,
+  } = status;
+
+  const remainingSlots = total_slots - current_projects;
 
   return (
     <FadeInOnView>
       <section className="bg-white py-20 md:py-28">
         <div className="container mx-auto px-4 sm:px-6 md:px-8">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-10 md:gap-12 lg:gap-14">
-            {/* Left Text */}
             <div className="w-full lg:w-2/3 space-y-8 text-left">
               <div className="space-y-4">
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900">
@@ -57,24 +120,24 @@ const HeroSection = () => {
                   <span className="text-gray-700 text-base font-medium">Karachi, Pakistan</span>
                 </li>
 
-                {currentExperience && (
+                {currentRole && (
                   <li className="flex items-start gap-2">
                     <span className="mt-[8px] w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                    <span className="text-gray-700 text-base font-medium">
-                      Currently working as <strong>{currentExperience.title}</strong> at{" "}
-                      <strong>{currentExperience.company}</strong>
-                    </span>
+                    <span
+                      className="text-gray-700 text-base font-medium"
+                      dangerouslySetInnerHTML={{ __html: currentRole }}
+                    />
                   </li>
                 )}
 
-                {statusOverride ? (
+                {status_override ? (
                   <li className="flex items-start gap-2">
                     <span className="mt-[8px] w-2 h-2 rounded-full bg-red-500 shrink-0" />
                     <span className="text-gray-700 text-base font-medium">
-                      Currently unavailable {customMessage && `— ${customMessage}`}
+                      Currently unavailable — {dynamicMessage}
                     </span>
                   </li>
-                ) : currentProjects === 0 ? (
+                ) : current_projects === 0 ? (
                   <li className="flex items-start gap-2">
                     <span className="mt-[8px] w-2 h-2 rounded-full bg-green-500 shrink-0" />
                     <span className="text-gray-700 text-base font-medium">
@@ -88,23 +151,23 @@ const HeroSection = () => {
                       Available for new projects ({remainingSlots} slot{remainingSlots !== 1 ? "s" : ""} left)
                     </span>
                     <span className="absolute left-0 top-full mt-1 z-10 text-xs text-white bg-gray-800 px-2 py-1 rounded shadow opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                      Handling {currentProjects} of {totalSlots} projects
+                      Handling {current_projects} of {total_slots} projects
                     </span>
                   </li>
                 ) : (
                   <li className="flex items-start gap-2">
                     <span className="mt-[8px] w-2 h-2 rounded-full bg-red-500 shrink-0" />
                     <span className="text-gray-700 text-base font-medium">
-                      Currently unavailable (Handling {currentProjects} projects)
+                      Currently unavailable (Handling {current_projects} projects)
                     </span>
                   </li>
                 )}
 
-                {openToJobOffers && (
+                {open_to_jobs && (
                   <li className="flex items-start gap-2">
                     <span className="mt-[8px] w-2 h-2 rounded-full bg-blue-500 shrink-0" />
                     <span className="text-gray-700 text-base font-medium">
-                      Open to job offers ({jobType})
+                      Open to job offers ({job_type})
                     </span>
                   </li>
                 )}
@@ -114,13 +177,13 @@ const HeroSection = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6 text-center text-gray-800">
                   <div className="flex flex-col items-center space-y-1">
                     <span className="text-2xl sm:text-3xl">🌐</span>
-                    <span className="text-sm sm:text-base font-semibold">{totalWebsitesBuilt}+ Websites Built</span>
+                    <span className="text-sm sm:text-base font-semibold">{total_built}+ Websites Built</span>
                   </div>
 
-                  {currentProjects > 0 && (
+                  {current_projects > 0 && (
                     <div className="flex flex-col items-center space-y-1" title="Live projects in development">
                       <span className="text-2xl sm:text-3xl">🚀</span>
-                      <span className="text-sm sm:text-base font-semibold">{currentProjects} Ongoing Projects</span>
+                      <span className="text-sm sm:text-base font-semibold">{current_projects} Ongoing Projects</span>
                     </div>
                   )}
 
@@ -131,7 +194,9 @@ const HeroSection = () => {
 
                   <div className="flex flex-col items-center space-y-1">
                     <span className="text-2xl sm:text-3xl">📅</span>
-                    <span className="text-sm sm:text-base font-semibold">{yearsOfExperience}+ Years Experience</span>
+                    <span className="text-sm sm:text-base font-semibold">
+                      {yearsOfExperience !== null ? `${yearsOfExperience}+ Years Experience` : "Loading..."}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -161,7 +226,7 @@ const HeroSection = () => {
                 <a href="#contact" className="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700 transition w-fit text-center">
                   Let’s Work Together 🤝
                 </a>
-                {openToJobOffers && (
+                {open_to_jobs && (
                   <button onClick={() => setShowJobModal(true)} className="text-indigo-600 font-medium hover:underline text-sm sm:text-base">
                     Want to offer me a job? Click here →
                   </button>
@@ -169,20 +234,16 @@ const HeroSection = () => {
               </div>
             </div>
 
-            {/* Right Image */}
             <div className="relative w-full max-w-[22rem] sm:max-w-[26rem] md:max-w-[30rem] lg:w-[35rem] h-[30rem] sm:h-[34rem] md:h-[40rem] lg:h-[42rem] mx-auto bg-gradient-to-br from-yellow-400/10 via-orange-200/30 to-white rounded-[2rem] p-2 shadow-2xl hover:scale-105 transition-transform duration-300">
               <Image src="/noman-khaliq-developer.webp" alt="Noman Khaliq Hero Image" fill className="object-cover rounded-[2rem] border-2 border-white" priority />
             </div>
           </div>
 
           {/* Job Offer Modal */}
-          {openToJobOffers && showJobModal && (
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4 transition-opacity duration-300 ease-out animate-fadeIn">
+          {open_to_jobs && showJobModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4 transition-opacity duration-300 ease-out animate-fadeIn">
               <div className="relative">
-                <button onClick={() => setShowJobModal(false)}
-                  className="absolute -top-5 -right-5 w-10 h-10 rounded-full bg-foreground text-white hover:opacity-90 flex items-center justify-center shadow-lg z-10"
-                  aria-label="Close Modal">
+                <button onClick={() => setShowJobModal(false)} className="absolute -top-5 -right-5 w-10 h-10 rounded-full bg-foreground text-white hover:opacity-90 flex items-center justify-center shadow-lg z-10" aria-label="Close Modal">
                   <span className="text-lg">×</span>
                 </button>
                 <div className="bg-white rounded-xl max-w-lg w-full p-6 shadow-xl text-center animate-modalIn">
@@ -199,6 +260,7 @@ const HeroSection = () => {
               </div>
             </div>
           )}
+
         </div>
       </section>
     </FadeInOnView>

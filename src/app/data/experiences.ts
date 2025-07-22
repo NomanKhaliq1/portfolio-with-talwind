@@ -12,8 +12,8 @@ export const experiences: Experience[] = [
     title: "Web Developer",
     company: "Awesome Technologies Inc",
     logo: "/experience-logos/AwesomeTech.webp",
-    date: "Nov 2021 - Present",
-    startDate: "2021-11-01",
+    date: "Nov 2022 - Present",
+    startDate: "2022-11-01",
     description: [
       "Developed and maintained responsive websites using platforms like Webflow and WordPress, focusing on delivering seamless user experiences.",
       "Specialized in e-commerce websites and custom WordPress solutions, including the creation of custom plugins tailored to client needs.",

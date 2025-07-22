@@ -1,12 +1,14 @@
-export const portfolioStatus = {
-  currentProjects: 18,
-  totalSlots: 20,
-  totalWebsitesBuilt: 15,
-  statusOverride: true,
-  customMessage: "On vacation, back on 23rd July",
-  openToJobOffers: true,
-  jobType: "Remote Full-Time",
+export const fallbackPortfolioStatus = {
+  current_projects: 18,
+  total_slots: 20,
+  total_built: 15,
+  status_override: true,
+  custom_message: "On vacation, back on 23rd July",
+  vacation_until: "2025-07-23",
+  open_to_jobs: true,
+  job_type: "Remote Full-Time",
+  dynamicMessage: "On vacation, back on 23rd July",
 };
 
-// Bonus: Strict type export for better type safety
-export type PortfolioStatus = typeof portfolioStatus;
+// Strict type export for fallback usage
+export type PortfolioStatus = typeof fallbackPortfolioStatus;
