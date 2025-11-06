@@ -2,6 +2,13 @@ import { supabase } from "../lib/supabaseClient";
 import { fallbackSkills, type Skill } from "@/app/data/skills";
 
 export async function getSkills(): Promise<Skill[]> {
+  if (!supabase) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("Supabase client unavailable. Using fallback skills data.");
+    }
+    return fallbackSkills;
+  }
+
   try {
     const { data, error } = await supabase
       .from("skills")
