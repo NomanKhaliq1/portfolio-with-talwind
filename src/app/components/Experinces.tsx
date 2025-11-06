@@ -10,6 +10,7 @@ const ExperienceSection: FC = () => {
 
   useEffect(() => {
     let mounted = true;
+    const client = supabase;
 
     async function fetchAndSet() {
       const data = await getExperiences();
@@ -18,7 +19,13 @@ const ExperienceSection: FC = () => {
 
     fetchAndSet();
 
-    const channel = supabase
+    if (!client) {
+      return () => {
+        mounted = false;
+      };
+    }
+
+    const channel = client
       .channel("realtime:experiences")
       .on(
         "postgres_changes",
@@ -36,7 +43,7 @@ const ExperienceSection: FC = () => {
 
     return () => {
       mounted = false;
-      supabase.removeChannel(channel);
+      client.removeChannel(channel);
     };
   }, []);
 

@@ -28,20 +28,24 @@ const HeroSection = () => {
 
   useEffect(() => {
     let mounted = true;
+    const client = supabase;
 
     async function fetchAndSet() {
       const liveData = await getPortfolioStatus();
       if (!mounted || !liveData) return;
 
-      setStatus((prev) => {
-        const isDifferent = JSON.stringify(prev) !== JSON.stringify(liveData);
-        return isDifferent ? { ...liveData } : { ...liveData };
-      });
+      setStatus({ ...liveData });
     }
 
     fetchAndSet();
 
-    const channel = supabase
+    if (!client) {
+      return () => {
+        mounted = false;
+      };
+    }
+
+    const channel = client
       .channel("realtime:portfolioStatus")
       .on(
         "postgres_changes",
@@ -52,7 +56,7 @@ const HeroSection = () => {
 
     return () => {
       mounted = false;
-      supabase.removeChannel(channel);
+      client.removeChannel(channel);
     };
   }, []);
 
@@ -60,7 +64,9 @@ const HeroSection = () => {
     async function calculateExperience() {
       const experiences = await getExperiences();
       if (experiences.length > 0) {
-        const sorted = experiences.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+        const sorted = [...experiences].sort(
+          (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+        );
         const startDate = new Date(sorted[0].startDate);
         const today = new Date();
         const years = today.getFullYear() - startDate.getFullYear();

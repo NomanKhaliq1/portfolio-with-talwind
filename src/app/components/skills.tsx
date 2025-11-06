@@ -15,6 +15,7 @@ const Skills = () => {
 
   useEffect(() => {
     let mounted = true;
+    const client = supabase;
 
     async function fetchAndSet() {
       const skills = await getSkills();
@@ -23,7 +24,13 @@ const Skills = () => {
 
     fetchAndSet();
 
-    const channel = supabase
+    if (!client) {
+      return () => {
+        mounted = false;
+      };
+    }
+
+    const channel = client
       .channel("realtime:skills")
       .on(
         "postgres_changes",
@@ -41,7 +48,7 @@ const Skills = () => {
 
     return () => {
       mounted = false;
-      supabase.removeChannel(channel);
+      client.removeChannel(channel);
     };
   }, []);
 
