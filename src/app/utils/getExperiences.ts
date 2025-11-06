@@ -2,6 +2,13 @@ import { supabase } from "../lib/supabaseClient";
 import { experiences as fallbackExperiences, type Experience } from "@/app/data/experiences";
 
 export async function getExperiences(): Promise<Experience[]> {
+  if (!supabase) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("Supabase client unavailable. Using fallback experiences data.");
+    }
+    return fallbackExperiences;
+  }
+
   try {
     const { data, error } = await supabase
       .from("experiences")
@@ -15,9 +22,10 @@ export async function getExperiences(): Promise<Experience[]> {
 
     return data.map((exp) => ({
       ...exp,
-      description: typeof exp.description === "string"
-        ? JSON.parse(exp.description)
-        : exp.description,
+      description:
+        typeof exp.description === "string"
+          ? JSON.parse(exp.description)
+          : exp.description,
     }));
   } catch (err) {
     const error = err as Error;

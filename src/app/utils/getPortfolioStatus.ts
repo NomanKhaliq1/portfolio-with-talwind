@@ -4,6 +4,13 @@ import { fallbackPortfolioStatus } from "@/app/data/portfolioStatus";
 type PortfolioStatus = typeof fallbackPortfolioStatus;
 
 export async function getPortfolioStatus(): Promise<PortfolioStatus> {
+  if (!supabase) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("Supabase client unavailable. Using fallback portfolio status data.");
+    }
+    return withDynamicMessage(fallbackPortfolioStatus);
+  }
+
   try {
     const { data, error } = await supabase
       .from("portfolioStatus")
