@@ -1,18 +1,19 @@
 import { supabase } from "../lib/supabaseClient";
 import { experiences as fallbackExperiences, type Experience } from "@/app/data/experiences";
 
+function cloneFallbackExperiences(): Experience[] {
+  return fallbackExperiences.map((experience) => ({
+    ...experience,
+    description: [...experience.description],
+  }));
+}
+
 export async function getExperiences(): Promise<Experience[]> {
   if (!supabase) {
     if (process.env.NODE_ENV !== "production") {
       console.warn("Supabase client unavailable. Using fallback experiences data.");
     }
-codex/review-portfolio-site-gdno4p
-    return fallbackExperiences.map((experience) => ({
-      ...experience,
-      description: [...experience.description],
-    }));
-    return fallbackExperiences;
-main
+    return cloneFallbackExperiences();
   }
 
   try {
@@ -23,10 +24,7 @@ main
 
     if (error || !data || data.length === 0) {
       console.warn("⚠️ Supabase error while fetching experiences:", error?.message || "No data returned");
-      return fallbackExperiences.map((experience) => ({
-        ...experience,
-        description: [...experience.description],
-      }));
+      return cloneFallbackExperiences();
     }
 
     return data.map((exp) => ({
@@ -39,10 +37,7 @@ main
   } catch (err) {
     const error = err as Error;
     console.error("❌ Supabase fetch failed:", error.message);
-    return fallbackExperiences.map((experience) => ({
-      ...experience,
-      description: [...experience.description],
-    }));
+    return cloneFallbackExperiences();
   }
 }
 
