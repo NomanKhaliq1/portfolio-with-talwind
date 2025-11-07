@@ -10,6 +10,7 @@ const ExperienceSection: FC = () => {
 
   useEffect(() => {
     let mounted = true;
+    const client = supabase;
 
     async function fetchAndSet() {
       const data = await getExperiences();
@@ -18,7 +19,13 @@ const ExperienceSection: FC = () => {
 
     fetchAndSet();
 
-    const channel = supabase
+    if (!client) {
+      return () => {
+        mounted = false;
+      };
+    }
+
+    const channel = client
       .channel("realtime:experiences")
       .on(
         "postgres_changes",
@@ -27,8 +34,7 @@ const ExperienceSection: FC = () => {
           schema: "public",
           table: "experiences",
         },
-        (payload) => {
-          console.log("🔄 Realtime update received (experiences):", payload);
+        () => {
           fetchAndSet();
         }
       )
@@ -36,59 +42,70 @@ const ExperienceSection: FC = () => {
 
     return () => {
       mounted = false;
-      supabase.removeChannel(channel);
+      client.removeChannel(channel);
     };
   }, []);
 
   return (
-    <div className="px-6 py-20 bg-gray-50">
-      <div className="text-center mb-6">
-        <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
-          Experience
-        </span>
-      </div>
+    <section id="experience" className="relative overflow-hidden bg-slate-50 py-24">
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white to-transparent" />
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs uppercase tracking-[0.3em] text-slate-500">
+            Experience
+          </span>
+          <h2 className="mt-6 text-3xl font-semibold text-slate-900 sm:text-4xl">
+            Partnerships that shipped meaningful change
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-slate-600">
+            A snapshot of collaborations where research, design, and engineering aligned to deliver lasting outcomes.
+          </p>
+        </div>
 
-      <p className="text-center text-gray-600 mb-8">
-        Here is a quick summary of my most recent experiences:
-      </p>
+        <div className="mt-16 space-y-8">
+          {experiences.map((experience, index) => (
+            <div
+              key={index}
+              className="relative flex flex-col gap-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md sm:flex-row sm:p-8"
+            >
+              <div className="flex items-start gap-4 sm:w-1/3">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50">
+                  <Image
+                    src={experience.logo}
+                    alt={experience.company}
+                    width={80}
+                    height={80}
+                    className="h-12 w-12 object-contain"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-slate-900">{experience.company}</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{experience.date}</p>
+                  <p className="text-sm font-medium text-slate-600">{experience.title}</p>
+                  {experience.date.toLowerCase().includes("present") && (
+                    <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      Currently contributing
+                    </span>
+                  )}
+                </div>
+              </div>
 
-      <div className="max-w-4xl mx-auto space-y-6">
-        {experiences.map((experience, index) => (
-          <div
-            key={index}
-            className="flex flex-col md:flex-row items-stretch p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition"
-          >
-            <div className="flex-1">
-              <h3 className="text-xl font-bold">{experience.title}</h3>
-              <ul className="list-disc text-[14px] text-gray-600 pl-5 mt-2">
-                {experience.description.map((point, i) => (
-                  <li key={i}>{point}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex flex-row md:flex-col items-start md:items-end justify-between mt-4 md:mt-0 md:ml-6 flex-shrink-0 w-full md:w-auto">
-              <Image
-                src={experience.logo}
-                alt={experience.company}
-                width={128}
-                height={64}
-                className="object-contain md:mb-2"
-              />
-
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-1 text-sm text-gray-500 mt-2 md:mt-0">
-                <span>{experience.date}</span>
-                {experience.date.toLowerCase().includes("present") && (
-                  <span className="text-green-600 font-medium text-xs bg-green-100 px-2 py-1 rounded-full">
-                    Currently Working
-                  </span>
-                )}
+              <div className="sm:w-2/3">
+                <ul className="space-y-3 text-sm leading-relaxed text-slate-600">
+                  {experience.description.map((point, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="mt-1 inline-flex h-1.5 w-1.5 rounded-full bg-slate-300" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

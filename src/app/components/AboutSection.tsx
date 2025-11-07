@@ -7,69 +7,96 @@ import FadeInOnView from "./FadeInOnView";
 const AboutSection = () => {
   return (
     <FadeInOnView>
-      <section id="about" className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
-              About Me
+      <section id="about" className="relative overflow-hidden bg-white py-24 sm:py-28">
+        <div className="absolute -left-12 top-24 h-40 w-40 rounded-full bg-blue-100/60 blur-3xl" />
+        <div className="absolute -right-16 bottom-10 h-48 w-48 rounded-full bg-emerald-100/50 blur-3xl" />
+        <div className="mx-auto grid w-full max-w-6xl gap-16 px-4 sm:px-6 lg:grid-cols-[1.15fr_0.9fr] lg:items-center">
+          <div className="order-2 space-y-8 lg:order-1">
+            <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-xs uppercase tracking-[0.3em] text-slate-500">
+              About
             </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="flex items-center">
-              <Image
-                src="/aboutme.jpeg"
-                alt="About Me Image"
-                width={600}
-                height={600}
-                className="object-cover rounded-lg mx-auto"
-              />
+            <div className="space-y-5">
+              <h2 className="text-3xl font-semibold text-slate-900 sm:text-4xl">
+                Pairing design sensitivity with resilient engineering.
+              </h2>
+              <p className="text-lg leading-relaxed text-slate-600">
+                I’m a product engineer who thrives at the intersection of interaction design and full-stack development. From the first lo-fi prototype to polished launch, I help teams articulate the experience, architect the system, and ship with confidence.
+              </p>
             </div>
 
-            <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-gray-800">
-                Curious about me? Here you have it:
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                I&apos;m a passionate full-stack developer focused on crafting modern, user-friendly, and scalable web applications. With hands-on experience in <span className="font-semibold">React.js</span>, <span className="font-semibold">Next.js</span>, and <span className="font-semibold">TailwindCSS</span>, I turn complex ideas into seamless digital experiences. My backend toolkit includes <span className="font-semibold">Node.js</span>, PHP, and Python — enabling me to build robust and secure systems.
-              </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                <h3 className="text-sm font-semibold text-slate-900">What guides my work</h3>
+                <p className="mt-2 text-sm text-slate-600">
+                  Clarity and calm. I focus on building flows that feel intuitive, reduce cognitive load, and scale as products grow.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                <h3 className="text-sm font-semibold text-slate-900">Currently exploring</h3>
+                <p className="mt-2 text-sm text-slate-600">
+                  Design systems, motion-led storytelling, and tooling that keeps product teams shipping with momentum.
+                </p>
+              </div>
+            </div>
 
-              <p className="text-green-600 font-medium">
-                I’m currently open for freelance and full-time remote opportunities.
-              </p>
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Toolkit</h3>
+              <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                <div className="flex items-start gap-3">
+                  <Code2 className="mt-1 h-5 w-5 text-slate-500" />
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">Interface engineering</p>
+                    <p className="text-sm text-slate-600">TypeScript, React, Next.js, Tailwind CSS, Framer Motion</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Server className="mt-1 h-5 w-5 text-slate-500" />
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">Backend foundations</p>
+                    <p className="text-sm text-slate-600">Node.js, PHP (Core & WordPress), Python</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Database className="mt-1 h-5 w-5 text-slate-500" />
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">Data layer</p>
+                    <p className="text-sm text-slate-600">PostgreSQL, MongoDB, Supabase</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Wrench className="mt-1 h-5 w-5 text-slate-500" />
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">Workflow</p>
+                    <p className="text-sm text-slate-600">Figma, REST APIs, Git, Storybook, Cypress</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-              <h3 className="text-xl font-semibold text-gray-800">My Journey:</h3>
-              <p className="text-gray-600 leading-relaxed">
-                My development path started out of pure curiosity — wanting to solve real-world problems with code. Since then, I’ve embraced every challenge and upskilled through technologies like <span className="font-semibold">TypeScript</span>, RESTful APIs, and modern JavaScript ecosystems. I now specialize in building performant, maintainable, and meaningful software products.
-              </p>
+            <p className="text-sm font-medium text-emerald-700">
+              Open to thoughtful collaborations — let’s build something enduring together.
+            </p>
+          </div>
 
-              <h3 className="text-xl font-semibold text-gray-800">What I Work With:</h3>
-              <ul className="space-y-3 text-gray-700">
-                <li className="flex items-start gap-2">
-                  <Code2 className="w-5 h-5 mt-1 text-gray-500" />
-                  <span>
-                    <span className="font-semibold text-gray-800">Frontend:</span> JavaScript, TypeScript, React.js, Next.js, TailwindCSS
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Server className="w-5 h-5 mt-1 text-gray-500" />
-                  <span>
-                    <span className="font-semibold text-gray-800">Backend:</span> Node.js, PHP (Core & WordPress), Python
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Database className="w-5 h-5 mt-1 text-gray-500" />
-                  <span>
-                    <span className="font-semibold text-gray-800">Database:</span> PostgreSQL, MongoDB
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Wrench className="w-5 h-5 mt-1 text-gray-500" />
-                  <span>
-                    <span className="font-semibold text-gray-800">Tools & Technologies:</span> Figma, REST APIs, Git, Storybook, Cypress
-                  </span>
-                </li>
-              </ul>
+          <div className="order-1 lg:order-2">
+            <div className="relative rounded-[2.5rem] border border-slate-200 bg-white p-5 shadow-xl">
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem]">
+                <Image
+                  src="/aboutme.jpeg"
+                  alt="About Me Image"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              <div className="mx-auto -mt-10 w-[85%] rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm">
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-400">A quick snapshot</p>
+                <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                  <li>• 8+ product launches navigated from discovery to delivery.</li>
+                  <li>• Championing accessibility, performance, and maintainability.</li>
+                  <li>• Comfortable leading cross-functional conversations and workshops.</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

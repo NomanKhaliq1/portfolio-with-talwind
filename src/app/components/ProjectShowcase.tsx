@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import ClientOnly from './ClientOnly';
+import ClientOnly from "./ClientOnly";
 import { projects } from "@/app/data/projects";
 import { modalContentMap } from "@/app/data/ModalContent";
 
@@ -40,64 +40,70 @@ const ProjectShowcase: FC = () => {
   };
 
   return (
-    <div className="px-6 py-20 bg-gray-50">
-      <div className="text-center mb-6">
-        <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
-          Work
+    <section className="relative overflow-hidden bg-slate-50 py-24" id="work">
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white to-transparent" />
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center px-4 text-center sm:px-6">
+        <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs uppercase tracking-[0.3em] text-slate-500">
+          Selected work
         </span>
+        <h2 className="mt-6 text-3xl font-semibold text-slate-900 sm:text-4xl">
+          Calm, purposeful product stories
+        </h2>
+        <p className="mt-4 max-w-3xl text-base leading-relaxed text-slate-600">
+          A curated mix of launches spanning marketing sites, design systems, and applications where craft and measurable impact worked hand in hand.
+        </p>
       </div>
-      <p className="text-center text-gray-600 mb-10">
-        Some of the noteworthy projects I have built:
-      </p>
 
-      <div className="relative max-w-5xl mx-auto">
+      <div className="relative mx-auto mt-16 w-full max-w-6xl">
         <ClientOnly>
           <Swiper
             modules={[Pagination, Autoplay]}
             pagination={{ clickable: true }}
             autoplay={{ delay: 5000 }}
-            loop={true}
+            loop
             className="!pb-12"
           >
             {projects.map((project, index) => (
               <SwiperSlide key={index}>
-                <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden min-h-[450px]">
-                  <div className="md:w-1/2 bg-gray-100 flex justify-center items-center p-6">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      width={800}
-                      height={400}
-                      className="object-cover rounded-md"
-                    />
+                <div className="flex flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm lg:flex-row">
+                  <div className="flex items-center justify-center bg-slate-100/60 p-6 lg:w-1/2">
+                    <div className="relative aspect-video w-full max-w-[520px] overflow-hidden rounded-2xl border border-slate-200 bg-white">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
 
-                  <div className="flex-1 p-8 flex flex-col justify-between">
-                    <div>
-                      <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
+                  <div className="flex flex-1 flex-col justify-between gap-6 p-8 text-left lg:p-12">
+                    <div className="space-y-4">
+                      <h3 className="text-2xl font-semibold text-slate-900">{project.title}</h3>
                       {(() => {
                         const { trimmed, shouldTrim } = getPreviewText(project.description, 35);
                         return (
                           <>
-                            <p className="text-gray-600 text-[15px] leading-relaxed">{trimmed}</p>
+                            <p className="text-sm leading-relaxed text-slate-600">{trimmed}</p>
                             {shouldTrim && (
                               <button
                                 onClick={() => handleOpen(project)}
-                                className="mt-3 text-[var(--accent-purple)] text-sm hover:underline"
+                                className="mt-3 text-sm font-semibold text-blue-600 transition hover:text-blue-700"
                               >
-                                Read More →
+                                Read more →
                               </button>
                             )}
                           </>
                         );
                       })()}
                     </div>
-                    <div>
-                      <div className="flex flex-wrap gap-2 mt-6">
+
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap gap-2">
                         {project.technologies.map((tech, i) => (
                           <span
                             key={i}
-                            className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md"
+                            className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-600"
                           >
                             {tech}
                           </span>
@@ -107,7 +113,7 @@ const ProjectShowcase: FC = () => {
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-gray-800 mt-4 hover:underline text-sm"
+                        className="inline-flex items-center text-sm font-semibold text-slate-900 transition hover:text-blue-600"
                       >
                         Visit <FiExternalLink className="ml-2" />
                       </a>
@@ -120,65 +126,61 @@ const ProjectShowcase: FC = () => {
         </ClientOnly>
       </div>
 
-      {/* Modal */}
       {showModal && selectedProject && (
-  <div className="fixed inset-0 bg-black/50 z-50 px-4 pt-10 md:px-10 overflow-y-auto">
-    <div
-      className={`bg-white w-full md:w-[90%] lg:w-[85%] rounded-xl shadow-2xl p-6 md:p-10 relative mx-auto ${
-        isClosing ? "animate-slideDown" : "animate-slideUp"
-      }`}
-    >
-      <button
-        onClick={handleClose}
-        className="absolute top-3 right-4 text-gray-500 hover:text-red-500 text-2xl"
-      >
-        ×
-      </button>
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-900/40 px-4 pb-10 pt-20">
+          <div
+            className={`relative w-full max-w-4xl overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 text-left shadow-2xl transition ${
+              isClosing ? "animate-slideDown" : "animate-slideUp"
+            }`}
+          >
+            <button
+              onClick={handleClose}
+              className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-slate-400 hover:text-slate-900"
+            >
+              ×
+            </button>
 
-      <h2 className="text-3xl font-bold mb-6">{selectedProject.title}</h2>
+            <h2 className="pr-10 text-3xl font-semibold text-slate-900 sm:text-4xl">{selectedProject.title}</h2>
 
-      <Image
-        src={selectedProject.image}
-        alt="Project preview"
-        width={1100}
-        height={500}
-        className="rounded-lg mb-6 w-full object-contain"
-      />
+            <Image
+              src={selectedProject.image}
+              alt="Project preview"
+              width={1100}
+              height={500}
+              className="mt-6 rounded-2xl border border-slate-200 object-contain"
+            />
 
-      <p className="text-gray-700 mb-4 text-[16px] leading-relaxed">
-        {selectedProject.description}
-      </p>
+            <p className="mt-6 text-sm leading-relaxed text-slate-600">{selectedProject.description}</p>
 
-      {selectedProject.modalKey && modalContentMap[selectedProject.modalKey] && (
-        <div className="mb-6">
-          {modalContentMap[selectedProject.modalKey]}
+            {selectedProject.modalKey && modalContentMap[selectedProject.modalKey] && (
+              <div className="mt-6 space-y-3 text-sm leading-relaxed text-slate-600">
+                {modalContentMap[selectedProject.modalKey]}
+              </div>
+            )}
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              {selectedProject.technologies.map((tech, i) => (
+                <span
+                  key={i}
+                  className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-600"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            <a
+              href={selectedProject.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center text-sm font-semibold text-slate-900 transition hover:text-blue-600"
+            >
+              Visit <FiExternalLink className="ml-2" />
+            </a>
+          </div>
         </div>
       )}
-
-      <div className="flex flex-wrap gap-2 mb-6">
-        {selectedProject.technologies.map((tech, i) => (
-          <span
-            key={i}
-            className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md"
-          >
-            {tech}
-          </span>
-        ))}
-      </div>
-
-      <a
-        href={selectedProject.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center text-[var(--accent-purple)] hover:underline text-base"
-      >
-        Visit <FiExternalLink className="ml-2" />
-      </a>
-    </div>
-  </div>
-)}
-
-    </div>
+    </section>
   );
 };
 
