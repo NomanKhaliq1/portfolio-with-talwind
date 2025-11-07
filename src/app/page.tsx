@@ -9,26 +9,20 @@ import TestimonialSlider from "./components/testimonials";
 import FadeInOnView from "./components/FadeInOnView";
 
 export default function Home() {
-
   return (
     <>
-      <main className="min-h-screen bg-transparent text-slate-900">
+      <main className="min-h-screen bg-transparent">
         <HeroSection />
-
         <AboutSection />
-
         <FadeInOnView>
           <Skills />
         </FadeInOnView>
-
         <FadeInOnView>
           <ExperienceSection />
         </FadeInOnView>
-
         <FadeInOnView>
           <ProjectShowcase />
         </FadeInOnView>
-
         <FadeInOnView>
           <TestimonialSlider />
         </FadeInOnView>

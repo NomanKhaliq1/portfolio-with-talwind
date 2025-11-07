@@ -5,17 +5,46 @@ import { Code2, Server, Database, Wrench } from "lucide-react";
 import FadeInOnView from "./FadeInOnView";
 
 const AboutSection = () => {
+  const pillars = [
+    {
+      title: "Interface engineering",
+      description: "TypeScript, React, Next.js, Tailwind CSS, Framer Motion",
+      icon: Code2,
+    },
+    {
+      title: "Backend foundations",
+      description: "Node.js, PHP (Core & WordPress), Python, REST APIs",
+      icon: Server,
+    },
+    {
+      title: "Data layer",
+      description: "PostgreSQL, MongoDB, Supabase, Prisma",
+      icon: Database,
+    },
+    {
+      title: "Workflow",
+      description: "Figma, Git, Storybook, testing automation",
+      icon: Wrench,
+    },
+  ];
+
   return (
     <FadeInOnView>
-      <section id="about" className="relative overflow-hidden bg-white py-24 sm:py-28">
-        <div className="absolute -left-12 top-24 h-40 w-40 rounded-full bg-blue-100/60 blur-3xl" />
-        <div className="absolute -right-16 bottom-10 h-48 w-48 rounded-full bg-emerald-100/50 blur-3xl" />
-        <div className="mx-auto grid w-full max-w-6xl gap-16 px-4 sm:px-6 lg:grid-cols-[1.15fr_0.9fr] lg:items-center">
-          <div className="order-2 space-y-8 lg:order-1">
-            <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-xs uppercase tracking-[0.3em] text-slate-500">
-              About
-            </span>
+      <section id="about" className="relative isolate overflow-hidden bg-slate-50 py-24 sm:py-32">
+        {/* Gradient background elements */}
+        <div className="absolute inset-x-0 -top-20 -z-10 flex justify-center">
+          <div className="h-56 w-[36rem] rounded-full bg-gradient-to-r from-emerald-300/40 to-sky-300/40 blur-3xl" />
+        </div>
+        <div className="absolute -bottom-16 left-8 -z-10 h-40 w-40 rounded-full bg-emerald-300/30 blur-3xl" />
+        <div className="absolute -right-10 top-24 -z-10 h-52 w-52 rounded-full bg-sky-300/25 blur-3xl" />
+
+        <div className="mx-auto grid w-full max-w-6xl gap-16 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+          {/* Left Column */}
+          <div className="order-2 space-y-10 lg:order-1">
             <div className="space-y-5">
+              <span className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-4 py-2 text-[11px] font-semibold tracking-[0.4em] text-slate-500">
+                ABOUT
+              </span>
               <h2 className="text-3xl font-semibold text-slate-900 sm:text-4xl">
                 Pairing design sensitivity with resilient engineering.
               </h2>
@@ -24,52 +53,37 @@ const AboutSection = () => {
               </p>
             </div>
 
+            {/* Secondary info cards */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                <h3 className="text-sm font-semibold text-slate-900">What guides my work</h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  Clarity and calm. I focus on building flows that feel intuitive, reduce cognitive load, and scale as products grow.
+              <div className="rounded-3xl border border-white/60 bg-white p-6 shadow-sm shadow-emerald-500/5">
+                <h3 className="text-sm font-semibold text-slate-900">Approach</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  Every engagement starts with listening. I translate product goals into flows, then deliver polished interfaces built on maintainable foundations.
                 </p>
               </div>
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              <div className="rounded-3xl border border-white/60 bg-white p-6 shadow-sm shadow-sky-500/5">
                 <h3 className="text-sm font-semibold text-slate-900">Currently exploring</h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  Design systems, motion-led storytelling, and tooling that keeps product teams shipping with momentum.
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  Design systems, motion-led storytelling, and performance budgets that keep products fast as they grow.
                 </p>
               </div>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Toolkit</h3>
-              <div className="mt-5 grid gap-5 sm:grid-cols-2">
-                <div className="flex items-start gap-3">
-                  <Code2 className="mt-1 h-5 w-5 text-slate-500" />
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900">Interface engineering</p>
-                    <p className="text-sm text-slate-600">TypeScript, React, Next.js, Tailwind CSS, Framer Motion</p>
+            {/* Toolkit section */}
+            <div className="rounded-3xl border border-white/60 bg-white p-6 shadow-lg shadow-slate-900/5">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">Toolkit</h3>
+              <div className="mt-6 grid gap-5 sm:grid-cols-2">
+                {pillars.map(({ icon: Icon, title, description }) => (
+                  <div key={title} className="flex items-start gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-600">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-900">{title}</p>
+                      <p className="mt-1 text-sm text-slate-600">{description}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Server className="mt-1 h-5 w-5 text-slate-500" />
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900">Backend foundations</p>
-                    <p className="text-sm text-slate-600">Node.js, PHP (Core & WordPress), Python</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Database className="mt-1 h-5 w-5 text-slate-500" />
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900">Data layer</p>
-                    <p className="text-sm text-slate-600">PostgreSQL, MongoDB, Supabase</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Wrench className="mt-1 h-5 w-5 text-slate-500" />
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900">Workflow</p>
-                    <p className="text-sm text-slate-600">Figma, REST APIs, Git, Storybook, Cypress</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
@@ -78,25 +92,30 @@ const AboutSection = () => {
             </p>
           </div>
 
+          {/* Right Column */}
           <div className="order-1 lg:order-2">
-            <div className="relative rounded-[2.5rem] border border-slate-200 bg-white p-5 shadow-xl">
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem]">
-                <Image
-                  src="/aboutme.jpeg"
-                  alt="About Me Image"
-                  fill
-                  className="object-cover"
-                  priority
-                />
+            <div className="relative">
+              <div className="relative overflow-hidden rounded-[2.5rem] border border-white/70 bg-white/80 p-5 shadow-xl shadow-slate-900/10 backdrop-blur">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem]">
+                  <Image
+                    src="/aboutme.jpeg"
+                    alt="About Me"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+                <div className="mx-auto -mt-10 w-[85%] rounded-3xl border border-white/70 bg-white p-6 text-left shadow-lg shadow-slate-900/5">
+                  <p className="text-[11px] uppercase tracking-[0.4em] text-slate-500">Snapshot</p>
+                  <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                    <li>• 8+ product launches navigated from discovery to delivery.</li>
+                    <li>• Championing accessibility, performance, and maintainability.</li>
+                    <li>• Comfortable leading cross-functional conversations and workshops.</li>
+                  </ul>
+                </div>
               </div>
-              <div className="mx-auto -mt-10 w-[85%] rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm">
-                <p className="text-xs uppercase tracking-[0.3em] text-slate-400">A quick snapshot</p>
-                <ul className="mt-3 space-y-2 text-sm text-slate-600">
-                  <li>• 8+ product launches navigated from discovery to delivery.</li>
-                  <li>• Championing accessibility, performance, and maintainability.</li>
-                  <li>• Comfortable leading cross-functional conversations and workshops.</li>
-                </ul>
-              </div>
+              <div className="absolute -right-8 top-12 h-24 w-24 rounded-full bg-emerald-300/40 blur-3xl" />
+              <div className="absolute -left-6 -bottom-10 h-28 w-28 rounded-full bg-sky-300/30 blur-3xl" />
             </div>
           </div>
         </div>
