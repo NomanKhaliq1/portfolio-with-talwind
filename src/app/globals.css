@@ -3,10 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f9fc;
+  --foreground: #0f172a;
   --font-montserrat: 'Montserrat', sans-serif;
-  --accent-purple: #7c3aed; /* added for custom purple */
+  --accent-slate: #1e293b;
+  --accent-blue: #2563eb;
+  --accent-emerald: #0f766e;
 }
 
 @keyframes wave {
@@ -26,17 +28,13 @@
   transform-origin: 70% 70%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ffffff;
-    --foreground: #171717;
-    /* optionally override --accent-purple here */
-  }
-}
-
 body {
   color: var(--foreground);
-  background: var(--background);
+  background:
+    radial-gradient(circle at 12% 20%, rgba(37, 99, 235, 0.08), transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(15, 118, 110, 0.08), transparent 48%),
+    radial-gradient(circle at 25% 75%, rgba(148, 163, 184, 0.12), transparent 52%),
+    var(--background);
   font-family: var(--font-montserrat);
 }
 
@@ -54,7 +52,7 @@ body {
   height: 0.5rem !important; /* h-2 */
   border-radius: 50px !important; /* rounded-full */
   opacity: 1 !important;
-  background-color: var(--accent-purple) !important;
+  background-color: var(--accent-blue) !important;
 }
 
 @layer utilities {

@@ -6,7 +6,11 @@ export async function getSkills(): Promise<Skill[]> {
     if (process.env.NODE_ENV !== "production") {
       console.warn("Supabase client unavailable. Using fallback skills data.");
     }
+codex/review-portfolio-site-gdno4p
+    return fallbackSkills.map((skill) => ({ ...skill }));
+
     return fallbackSkills;
+ main
   }
 
   try {
@@ -17,14 +21,14 @@ export async function getSkills(): Promise<Skill[]> {
 
     if (error || !data || data.length === 0) {
       console.warn("⚠️ Supabase error or empty table, using fallback data:", error?.message);
-      return fallbackSkills;
+      return fallbackSkills.map((skill) => ({ ...skill }));
     }
 
     return data as Skill[];
   } catch (err) {
     const error = err as Error;
     console.error("❌ Supabase fetch failed:", error.message);
-    return fallbackSkills;
+    return fallbackSkills.map((skill) => ({ ...skill }));
   }
 }
 

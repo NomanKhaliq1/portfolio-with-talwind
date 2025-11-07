@@ -8,7 +8,11 @@ export async function getPortfolioStatus(): Promise<PortfolioStatus> {
     if (process.env.NODE_ENV !== "production") {
       console.warn("Supabase client unavailable. Using fallback portfolio status data.");
     }
+codex/review-portfolio-site-gdno4p
+    return withDynamicMessage({ ...fallbackPortfolioStatus });
+
     return withDynamicMessage(fallbackPortfolioStatus);
+main
   }
 
   try {
@@ -22,14 +26,14 @@ export async function getPortfolioStatus(): Promise<PortfolioStatus> {
 
     if (error || !latest) {
       console.warn("Supabase error:", error?.message || "No data returned");
-      return withDynamicMessage(fallbackPortfolioStatus);
+      return withDynamicMessage({ ...fallbackPortfolioStatus });
     }
 
     return withDynamicMessage(latest);
   } catch (err) {
     const error = err as Error;
     console.error("Supabase fetch failed:", error.message);
-    return withDynamicMessage(fallbackPortfolioStatus);
+    return withDynamicMessage({ ...fallbackPortfolioStatus });
   }
 }
 

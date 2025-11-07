@@ -6,7 +6,13 @@ export async function getExperiences(): Promise<Experience[]> {
     if (process.env.NODE_ENV !== "production") {
       console.warn("Supabase client unavailable. Using fallback experiences data.");
     }
+codex/review-portfolio-site-gdno4p
+    return fallbackExperiences.map((experience) => ({
+      ...experience,
+      description: [...experience.description],
+    }));
     return fallbackExperiences;
+main
   }
 
   try {
@@ -17,7 +23,10 @@ export async function getExperiences(): Promise<Experience[]> {
 
     if (error || !data || data.length === 0) {
       console.warn("⚠️ Supabase error while fetching experiences:", error?.message || "No data returned");
-      return fallbackExperiences;
+      return fallbackExperiences.map((experience) => ({
+        ...experience,
+        description: [...experience.description],
+      }));
     }
 
     return data.map((exp) => ({
@@ -30,7 +39,10 @@ export async function getExperiences(): Promise<Experience[]> {
   } catch (err) {
     const error = err as Error;
     console.error("❌ Supabase fetch failed:", error.message);
-    return fallbackExperiences;
+    return fallbackExperiences.map((experience) => ({
+      ...experience,
+      description: [...experience.description],
+    }));
   }
 }
 
