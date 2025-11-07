@@ -1,31 +1,62 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { FiExternalLink } from "react-icons/fi";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import ClientOnly from "./ClientOnly";
-import { projects } from "@/app/data/projects";
+import ClientOnly from './ClientOnly';
+import { getProjects } from "@/app/utils/getProjects";
 import { modalContentMap } from "@/app/data/ModalContent";
+import { supabase } from "@/app/lib/supabaseClient"; // ✅ import Supabase client
 
-const getPreviewText = (text: string, wordLimit = 32) => {
+const getPreviewText = (text: string, wordLimit = 35) => {
   const words = text.split(" ");
   const shouldTrim = words.length > wordLimit;
-  const trimmed = shouldTrim ? `${words.slice(0, wordLimit).join(" ")}…` : text;
+  const trimmed = shouldTrim ? words.slice(0, wordLimit).join(" ") + "..." : text;
   return { trimmed, shouldTrim };
 };
 
 const ProjectShowcase: FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<
-    (typeof projects)[0] | null
-  >(null);
+  const [selectedProject, setSelectedProject] = useState<any | null>(null);
   const [isClosing, setIsClosing] = useState(false);
+  const [projects, setProjects] = useState<any[]>([]);
 
-  const handleOpen = (project: (typeof projects)[0]) => {
+  // Initial load
+  useEffect(() => {
+    let mounted = true;
+
+    const fetchAndSet = async () => {
+      const data = await getProjects();
+      if (mounted) setProjects(data);
+    };
+
+    fetchAndSet();
+
+    // Realtime subscription
+    const channel = supabase
+      .channel("realtime:projects")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "projects",
+        },
+        () => fetchAndSet()
+      )
+      .subscribe();
+
+    return () => {
+      mounted = false;
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const handleOpen = (project: any) => {
     setSelectedProject(project);
     setShowModal(true);
     document.body.style.overflow = "hidden";
@@ -38,96 +69,64 @@ const ProjectShowcase: FC = () => {
       setSelectedProject(null);
       setIsClosing(false);
       document.body.style.overflow = "auto";
-    }, 320);
+    }, 400);
   };
 
   return (
-    <section
-      className="relative isolate overflow-hidden bg-slate-50 py-24 sm:py-32"
-      id="projects"
-    >
-      {/* background gradient */}
-      <div className="absolute inset-x-0 -top-24 -z-10 flex justify-center">
-        <div className="h-72 w-[40rem] rounded-full bg-gradient-to-br from-emerald-300/35 via-sky-300/30 to-blue-300/35 blur-3xl" />
+    <div className="px-6 py-20 bg-gray-50">
+      <div className="text-center mb-6">
+        <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">Work</span>
       </div>
-      <div className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-white" />
+      <p className="text-center text-gray-600 mb-10">
+        Some of the noteworthy projects I have built:
+      </p>
 
-      {/* section intro */}
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-center px-4 text-center sm:px-6">
-        <span className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-4 py-2 text-[11px] font-semibold tracking-[0.4em] text-slate-500">
-          SELECTED WORK
-        </span>
-        <h2 className="mt-6 text-3xl font-semibold text-slate-900 sm:text-4xl">
-          Modern products crafted with clarity and lasting polish.
-        </h2>
-        <p className="mt-4 max-w-3xl text-base leading-relaxed text-slate-600">
-          A curated mix of launches—design systems, marketing experiences, and
-          product interfaces—built alongside founders and teams who value
-          thoughtful detail.
-        </p>
-      </div>
-
-      {/* swiper showcase */}
-      <div className="relative mx-auto mt-16 w-full max-w-6xl">
+      <div className="relative max-w-5xl mx-auto">
         <ClientOnly>
           <Swiper
             modules={[Pagination, Autoplay]}
             pagination={{ clickable: true }}
-            autoplay={{ delay: 5500 }}
+            autoplay={{ delay: 5000 }}
             loop
             className="!pb-12"
           >
             {projects.map((project, index) => (
               <SwiperSlide key={index}>
-                <div className="flex flex-col overflow-hidden rounded-[2.25rem] border border-slate-200 bg-white shadow-sm lg:flex-row">
-                  {/* image */}
-                  <div className="flex items-center justify-center bg-slate-100/60 p-6 lg:w-1/2">
-                    <div className="relative aspect-video w-full max-w-[520px] overflow-hidden rounded-2xl border border-slate-200 bg-white">
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
+                <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden min-h-[450px]">
+                  <div className="md:w-1/2 bg-gray-100 flex justify-center items-center p-6">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      width={800}
+                      height={400}
+                      className="object-cover rounded-md"
+                    />
                   </div>
 
-                  {/* text */}
-                  <div className="flex flex-1 flex-col justify-between gap-6 p-8 text-left lg:p-12">
-                    <div className="space-y-4">
-                      <h3 className="text-2xl font-semibold text-slate-900">
-                        {project.title}
-                      </h3>
+                  <div className="flex-1 p-8 flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
                       {(() => {
-                        const { trimmed, shouldTrim } = getPreviewText(
-                          project.description,
-                          32
-                        );
+                        const { trimmed, shouldTrim } = getPreviewText(project.description, 35);
                         return (
                           <>
-                            <p className="text-sm leading-relaxed text-slate-600">
-                              {trimmed}
-                            </p>
+                            <p className="text-gray-600 text-[15px] leading-relaxed">{trimmed}</p>
                             {shouldTrim && (
                               <button
                                 onClick={() => handleOpen(project)}
-                                className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 transition hover:text-emerald-500"
+                                className="mt-3 text-[var(--accent-purple)] text-sm hover:underline"
                               >
-                                Explore case study <span aria-hidden>→</span>
+                                Read More →
                               </button>
                             )}
                           </>
                         );
                       })()}
                     </div>
-
-                    <div className="space-y-4">
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.map((tech, i) => (
-                          <span
-                            key={i}
-                            className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-600"
-                          >
+                    <div>
+                      <div className="flex flex-wrap gap-2 mt-6">
+                        {project.technologies.map((tech: string, i: number) => (
+                          <span key={i} className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md">
                             {tech}
                           </span>
                         ))}
@@ -136,9 +135,9 @@ const ProjectShowcase: FC = () => {
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-emerald-600"
+                        className="inline-flex items-center text-gray-800 mt-4 hover:underline text-sm"
                       >
-                        Visit project <FiExternalLink />
+                        Visit <FiExternalLink className="ml-2" />
                       </a>
                     </div>
                   </div>
@@ -149,50 +148,36 @@ const ProjectShowcase: FC = () => {
         </ClientOnly>
       </div>
 
-      {/* modal */}
       {showModal && selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-950/70 px-4 pb-10 pt-20 backdrop-blur">
-          <div
-            className={`relative w-full max-w-4xl overflow-hidden rounded-[2.25rem] border border-white/10 bg-slate-950/90 p-8 text-left text-white shadow-2xl transition ${
-              isClosing ? "animate-fadeDown" : "animate-fadeUp"
-            }`}
-          >
-            <button
-              onClick={handleClose}
-              className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 transition hover:border-white/40 hover:text-white"
-            >
+        <div className="fixed inset-0 bg-black/50 z-50 px-4 pt-10 md:px-10 overflow-y-auto">
+          <div className={`bg-white w-full md:w-[90%] lg:w-[85%] rounded-xl shadow-2xl p-6 md:p-10 relative mx-auto ${isClosing ? "animate-slideDown" : "animate-slideUp"}`}>
+            <button onClick={handleClose} className="absolute top-3 right-4 text-gray-500 hover:text-red-500 text-2xl">
               ×
             </button>
 
-            <h2 className="pr-12 text-3xl font-semibold text-white sm:text-4xl">
-              {selectedProject.title}
-            </h2>
+            <h2 className="text-3xl font-bold mb-6">{selectedProject.title}</h2>
 
             <Image
               src={selectedProject.image}
               alt="Project preview"
               width={1100}
               height={500}
-              className="mt-6 rounded-2xl border border-white/10 object-contain"
+              className="rounded-lg mb-6 w-full object-contain"
             />
 
-            <p className="mt-6 text-sm leading-relaxed text-white/70">
+            <p className="text-gray-700 mb-4 text-[16px] leading-relaxed">
               {selectedProject.description}
             </p>
 
-            {selectedProject.modalKey &&
-              modalContentMap[selectedProject.modalKey] && (
-                <div className="mt-6 space-y-3 text-sm leading-relaxed text-white/70">
-                  {modalContentMap[selectedProject.modalKey]}
-                </div>
-              )}
+            {selectedProject.modalKey && modalContentMap[selectedProject.modalKey] && (
+              <div className="mb-6">
+                {modalContentMap[selectedProject.modalKey]}
+              </div>
+            )}
 
-            <div className="mt-6 flex flex-wrap gap-2">
-              {selectedProject.technologies.map((tech, i) => (
-                <span
-                  key={i}
-                  className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/70"
-                >
+            <div className="flex flex-wrap gap-2 mb-6">
+              {selectedProject.technologies.map((tech: string, i: number) => (
+                <span key={i} className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md">
                   {tech}
                 </span>
               ))}
@@ -202,14 +187,14 @@ const ProjectShowcase: FC = () => {
               href={selectedProject.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white transition hover:text-emerald-300"
+              className="inline-flex items-center text-[var(--accent-purple)] hover:underline text-base"
             >
-              Visit project <FiExternalLink />
+              Visit <FiExternalLink className="ml-2" />
             </a>
           </div>
         </div>
       )}
-    </section>
+    </div>
   );
 };
 

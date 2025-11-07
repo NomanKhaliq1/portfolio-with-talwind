@@ -1,16 +1,10 @@
 import { supabase } from "../lib/supabaseClient";
 import { fallbackPortfolioStatus } from "@/app/data/portfolioStatus";
+import { DateTime } from "luxon";
 
 type PortfolioStatus = typeof fallbackPortfolioStatus;
 
 export async function getPortfolioStatus(): Promise<PortfolioStatus> {
-  if (!supabase) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn("Supabase client unavailable. Using fallback portfolio status data.");
-    }
-    return withDynamicMessage(cloneFallbackStatus());
-  }
-
   try {
     const { data, error } = await supabase
       .from("portfolioStatus")
@@ -22,29 +16,43 @@ export async function getPortfolioStatus(): Promise<PortfolioStatus> {
 
     if (error || !latest) {
       console.warn("Supabase error:", error?.message || "No data returned");
-      return withDynamicMessage(cloneFallbackStatus());
+      return withDynamicMessage(fallbackPortfolioStatus);
     }
 
     return withDynamicMessage(latest);
   } catch (err) {
     const error = err as Error;
     console.error("Supabase fetch failed:", error.message);
-    return withDynamicMessage(cloneFallbackStatus());
+    return withDynamicMessage(fallbackPortfolioStatus);
   }
-}
-
-function cloneFallbackStatus(): PortfolioStatus {
-  return { ...fallbackPortfolioStatus };
 }
 
 function withDynamicMessage(data: PortfolioStatus): PortfolioStatus {
   const today = new Date();
   const vacationEnd = new Date(data.vacation_until);
+  const isBackFromVacation = today > vacationEnd;
 
-  const dynamicMessage =
-    today > vacationEnd
-      ? "I’m back and available for work!"
-      : data.custom_message;
+  const userZone = data.timezone || "Asia/Karachi";
+  const now = DateTime.now().setZone(userZone);
+  const startHour = data.working_hours_from ?? 9;
+  const endHour = data.working_hours_to ?? 17;
+
+  const start = now.set({ hour: startHour, minute: 0 });
+  const end = now.set({ hour: endHour, minute: 0 });
+  const isWithinWorkingHours = now >= start && now <= end;
+
+  const prettyStart = start.toFormat("h:mm a");
+  const prettyEnd = end.toFormat("h:mm a");
+
+  let dynamicMessage = "";
+
+  if (!isBackFromVacation) {
+    dynamicMessage = `On vacation until ${vacationEnd.toDateString()}`;
+  } else if (isWithinWorkingHours) {
+    dynamicMessage = `Available now — responses expected between ${prettyStart} and ${prettyEnd}`;
+  } else {
+    dynamicMessage = `Currently offline — responds after ${prettyStart} (${data.country || "your"} time)`;
+  }
 
   return {
     ...data,

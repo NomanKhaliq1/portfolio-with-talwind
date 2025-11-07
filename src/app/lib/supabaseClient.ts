@@ -1,18 +1,9 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_KEY!;
 
-let supabase: SupabaseClient | null = null;
+console.log("Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
+console.log("Supabase KEY:", process.env.NEXT_PUBLIC_SUPABASE_KEY);
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  if (process.env.NODE_ENV !== 'production') {
-    console.warn(
-      'Supabase environment variables are missing. Falling back to local data sources.'
-    );
-  }
-} else {
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
-}
-
-export { supabase };
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);

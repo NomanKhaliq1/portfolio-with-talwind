@@ -1,18 +1,24 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   FaEnvelope,
   FaPhone,
-  FaTwitter,
-  FaGithub,
-  FaLinkedin,
-  FaInstagram,
   FaRegCopy,
 } from "react-icons/fa";
+import * as FaIcons from "react-icons/fa";
+import { supabase } from "@/app/lib/supabaseClient";
+
+type SocialLink = {
+  platform: string;
+  url: string;
+  icon: string;
+  order: number;
+};
 
 const FooterContact: FC = () => {
   const [copied, setCopied] = useState<string | null>(null);
+  const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -20,144 +26,104 @@ const FooterContact: FC = () => {
     setTimeout(() => setCopied(null), 2000);
   };
 
+  // ✅ Fetch + Realtime
+  useEffect(() => {
+    const fetchLinks = async () => {
+      const { data, error } = await supabase
+        .from("socialLinks")
+        .select("platform, url, icon, order")
+        .order("order", { ascending: true });
+
+      if (error) {
+        console.warn("❌ Failed to load social links:", error.message);
+        return;
+      }
+
+      const filtered = (data || []).filter(
+        (item) => item.url && item.icon && FaIcons[item.icon as keyof typeof FaIcons]
+      );
+
+      setSocialLinks(filtered);
+    };
+
+    fetchLinks();
+
+    const subscription = supabase
+      .channel("realtime:socialLinks")
+      .on("postgres_changes", {
+        event: "*",
+        schema: "public",
+        table: "socialLinks",
+      }, fetchLinks)
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
+  }, []);
+
   return (
-    <footer
-      id="contact"
-      className="relative isolate overflow-hidden bg-slate-950 text-white"
-    >
-      {/* Copy notification */}
+    <footer id="contact" className="text-center relative">
       {copied && (
-        <div className="fixed left-1/2 top-6 z-50 -translate-x-1/2 rounded-full border border-emerald-300/50 bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 shadow-lg shadow-emerald-500/20 backdrop-blur">
-          {copied} copied to clipboard
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md z-50">
+          {copied} copied to clipboard!
         </div>
       )}
 
-      {/* Background gradients */}
-      <div className="absolute inset-x-0 -top-20 -z-10 flex justify-center">
-        <div className="h-72 w-[46rem] rounded-full bg-gradient-to-br from-emerald-400/30 via-sky-400/25 to-blue-500/30 blur-3xl" />
-      </div>
-      <div className="absolute -bottom-16 left-8 -z-10 h-44 w-44 rounded-full bg-emerald-400/25 blur-3xl" />
-      <div className="absolute -bottom-24 right-0 -z-10 h-48 w-48 rounded-full bg-sky-400/25 blur-3xl" />
+      <div className="px-6 py-20">
+        <div className="mb-6">
+          <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
+            Get in touch
+          </span>
+        </div>
+        <p className="text-gray-600 mb-6">
+          What&apos;s next? Feel free to reach out to me if you&apos;re looking for a
+          developer, have a query, or simply want to connect.
+        </p>
 
-      {/* Content container */}
-      <div className="mx-auto w-full max-w-6xl px-4 pb-20 pt-28 sm:px-6">
-        <div className="relative overflow-hidden rounded-[2.75rem] border border-white/10 bg-white/5 p-10 shadow-2xl shadow-slate-950/40 backdrop-blur-lg sm:p-14">
-          <div className="grid gap-12 lg:grid-cols-[2fr_1fr] lg:items-start">
-            {/* Left section */}
-            <div className="space-y-7">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-semibold tracking-[0.35em] text-white/70">
-                LET’S COLLABORATE
-              </span>
-              <h2 className="text-3xl font-semibold sm:text-4xl">
-                Bring a calm, modern product experience to life.
-              </h2>
-              <p className="text-base leading-relaxed text-white/70">
-                Share your roadmap or early ideas—I’ll help shape a plan that
-                balances storytelling, design systems, and reliable engineering.
-              </p>
-
-              {/* Contact buttons */}
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                <button
-                  onClick={() => copyToClipboard("nomanghouri.dev@gmail.com")}
-                  className="group inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/10 px-6 py-3 text-sm font-medium text-white/80 transition hover:border-white/40 hover:bg-white/15"
-                >
-                  <FaEnvelope className="text-emerald-300" />
-                  nomanghouri.dev@gmail.com
-                  <FaRegCopy className="text-white/50 transition group-hover:text-white/80" />
-                </button>
-                <button
-                  onClick={() => copyToClipboard("+92 308 2452547")}
-                  className="group inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/10 px-6 py-3 text-sm font-medium text-white/80 transition hover:border-white/40 hover:bg-white/15"
-                >
-                  <FaPhone className="text-sky-300" />
-                  +92 308 2452547
-                  <FaRegCopy className="text-white/50 transition group-hover:text-white/80" />
-                </button>
-              </div>
-
-              {/* Social links */}
-              <div>
-                <p className="text-xs uppercase tracking-[0.4em] text-white/50">
-                  Elsewhere
-                </p>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <a
-                    href="https://github.com/NomanKhaliq1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white/70 transition hover:border-white/40 hover:text-white"
-                    aria-label="GitHub"
-                  >
-                    <FaGithub />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/nomanghouri-dev/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white/70 transition hover:border-white/40 hover:text-white"
-                    aria-label="LinkedIn"
-                  >
-                    <FaLinkedin />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/nomanghouri2/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white/70 transition hover:border-white/40 hover:text-white"
-                    aria-label="Instagram"
-                  >
-                    <FaInstagram />
-                  </a>
-                  <a
-                    href="https://twitter.com/nomankhaliq_"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white/70 transition hover:border-white/40 hover:text-white"
-                    aria-label="Twitter"
-                  >
-                    <FaTwitter />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Right section */}
-            <div className="rounded-3xl border border-white/15 bg-white/5 p-6 text-white/70 shadow-lg shadow-slate-950/20">
-              <p className="text-xs uppercase tracking-[0.4em] text-white/60">
-                Project fit
-              </p>
-              <p className="mt-3 text-sm leading-relaxed">
-                I’m most impactful when:
-              </p>
-              <ul className="mt-3 space-y-2 text-sm">
-                <li>
-                  • You value a partner who designs, builds, and iterates
-                  alongside your team.
-                </li>
-                <li>
-                  • Clear communication, thoughtful documentation, and tidy
-                  handover matter.
-                </li>
-                <li>
-                  • You’re ready to launch quickly while protecting craft and
-                  accessibility.
-                </li>
-              </ul>
-              <a
-                href="mailto:nomanghouri.dev@gmail.com?subject=Let%27s%20collaborate"
-                className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/30 transition hover:bg-emerald-100"
-              >
-                Start a project <span aria-hidden>→</span>
-              </a>
-            </div>
+        <div className="flex flex-col items-center space-y-4 mb-8">
+          <div className="flex items-center space-x-3 text-lg">
+            <FaEnvelope className="text-gray-600" />
+            <span className="text-gray-800 font-medium">nomanghouri.dev@gmail.com</span>
+            <FaRegCopy
+              className="text-gray-500 cursor-pointer hover:text-gray-800"
+              onClick={() => copyToClipboard("nomanghouri.dev@gmail.com")}
+            />
           </div>
+          <div className="flex items-center space-x-3 text-lg">
+            <FaPhone className="text-gray-600" />
+            <span className="text-gray-800 font-medium">+92 308 2452547</span>
+            <FaRegCopy
+              className="text-gray-500 cursor-pointer hover:text-gray-800"
+              onClick={() => copyToClipboard("+92 308 2452547")}
+            />
+          </div>
+        </div>
+
+        <p className="text-gray-600 mb-4">You may also find me on these platforms!</p>
+        <div className="flex justify-center space-x-6 mb-6">
+          {socialLinks.map((item) => {
+            const Icon = FaIcons[item.icon as keyof typeof FaIcons];
+            return (
+              <a
+                key={item.platform}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-indigo-600"
+                aria-label={item.platform}
+              >
+                <Icon size={24} />
+              </a>
+            );
+          })}
         </div>
       </div>
 
-      {/* Footer note */}
-      <div className="border-t border-white/10 py-6 text-center text-xs text-white/60">
-        © {new Date().getFullYear()} · Designed & built by Noman Khaliq
+      <div className="text-sm text-gray-500 bg-gray-50 py-6 px-4 text-center sm:text-base">
+        <p>
+          © {new Date().getFullYear()} | Designed and coded with ❤️ by Noman Khaliq
+        </p>
       </div>
     </footer>
   );
