@@ -6,7 +6,11 @@ export async function getSkills(): Promise<Skill[]> {
     if (process.env.NODE_ENV !== "production") {
       console.warn("Supabase client unavailable. Using fallback skills data.");
     }
+codex/review-portfolio-site-gdno4p
     return fallbackSkills.map((skill) => ({ ...skill }));
+
+    return fallbackSkills;
+ main
   }
 
   try {

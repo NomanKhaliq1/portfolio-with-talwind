@@ -6,10 +6,13 @@ export async function getExperiences(): Promise<Experience[]> {
     if (process.env.NODE_ENV !== "production") {
       console.warn("Supabase client unavailable. Using fallback experiences data.");
     }
+codex/review-portfolio-site-gdno4p
     return fallbackExperiences.map((experience) => ({
       ...experience,
       description: [...experience.description],
     }));
+    return fallbackExperiences;
+main
   }
 
   try {

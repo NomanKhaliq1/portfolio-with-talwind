@@ -8,7 +8,11 @@ export async function getPortfolioStatus(): Promise<PortfolioStatus> {
     if (process.env.NODE_ENV !== "production") {
       console.warn("Supabase client unavailable. Using fallback portfolio status data.");
     }
+codex/review-portfolio-site-gdno4p
     return withDynamicMessage({ ...fallbackPortfolioStatus });
+
+    return withDynamicMessage(fallbackPortfolioStatus);
+main
   }
 
   try {
