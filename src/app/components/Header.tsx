@@ -30,28 +30,32 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled ? "backdrop-blur-xl bg-slate-900/80 shadow-lg shadow-sky-900/10" : "bg-transparent"
+      className={`fixed top-0 z-50 w-full border-b transition-all duration-300 ${
+        isScrolled
+          ? "border-slate-200 bg-white/95 backdrop-blur shadow-sm"
+          : "border-transparent bg-white/80"
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-2xl bg-gradient-to-br from-sky-400 via-violet-500 to-purple-600 shadow-lg shadow-purple-500/40" />
-          <Link className="text-sm font-semibold tracking-widest text-slate-100 uppercase" href="/">
+          <div className="h-9 w-9 rounded-2xl bg-slate-900 text-white">
+            <div className="flex h-full w-full items-center justify-center text-xs font-semibold">NK</div>
+          </div>
+          <Link className="text-sm font-semibold uppercase tracking-widest text-slate-900" href="/">
             &lt;Noman Khaliq /&gt;
           </Link>
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-500 md:flex">
           {["about", "work", "testimonials", "contact"].map((section) => (
             <button
               key={section}
               onClick={() => scrollToSection(section)}
-              className="group relative capitalize transition-colors duration-200 hover:text-white"
+              className="group relative capitalize transition-colors duration-200 hover:text-slate-900"
             >
               <span>{section}</span>
-              <span className="absolute inset-x-0 -bottom-2 h-0.5 scale-x-0 bg-gradient-to-r from-sky-400 via-violet-500 to-purple-600 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+              <span className="absolute inset-x-0 -bottom-2 h-0.5 scale-x-0 bg-slate-900/70 transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </button>
           ))}
         </nav>
@@ -59,7 +63,7 @@ const Header = () => {
         {/* Mobile Menu Toggle */}
         <div className="md:hidden">
           <button
-            className="rounded-full border border-white/10 p-2 text-slate-100 transition hover:border-white/30 hover:bg-white/5"
+            className="rounded-full border border-slate-300/70 p-2 text-slate-700 transition hover:border-slate-500 hover:bg-white"
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
@@ -82,16 +86,16 @@ const Header = () => {
 
       {/* Mobile Nav */}
       <div
-        className={`md:hidden overflow-hidden border-t border-white/5 bg-slate-900/90 backdrop-blur-xl transition-all duration-300 ${
+        className={`overflow-hidden border-t border-slate-200 bg-white transition-all duration-300 md:hidden ${
           isMenuOpen ? "max-h-64" : "max-h-0"
         }`}
       >
-        <div className="space-y-1 px-4 py-4 text-sm font-medium text-slate-200">
+        <div className="space-y-1 px-4 py-4 text-sm font-medium text-slate-600">
           {["home", "about", "work", "testimonials", "contact"].map((section) => (
             <button
               key={section}
               onClick={() => scrollToSection(section)}
-              className="flex w-full items-center rounded-lg px-3 py-2 capitalize transition hover:bg-white/10"
+              className="flex w-full items-center rounded-lg px-3 py-2 capitalize transition hover:bg-slate-100"
             >
               {section}
             </button>

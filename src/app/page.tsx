@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="min-h-screen text-slate-100">
+      <main className="min-h-screen bg-transparent text-slate-900">
         <HeroSection />
 
         <AboutSection />
