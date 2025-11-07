@@ -7,25 +7,27 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import ClientOnly from './ClientOnly';
-import { getProjects } from "@/app/utils/getProjects";
+import ClientOnly from "./ClientOnly";
+import { getProjects, Project } from "@/app/utils/getProjects";
 import { modalContentMap } from "@/app/data/ModalContent";
-import { supabase } from "@/app/lib/supabaseClient"; // ✅ import Supabase client
+import { supabase } from "@/app/lib/supabaseClient";
 
 const getPreviewText = (text: string, wordLimit = 35) => {
   const words = text.split(" ");
   const shouldTrim = words.length > wordLimit;
-  const trimmed = shouldTrim ? words.slice(0, wordLimit).join(" ") + "..." : text;
+  const trimmed = shouldTrim
+    ? words.slice(0, wordLimit).join(" ") + "..."
+    : text;
   return { trimmed, shouldTrim };
 };
 
 const ProjectShowcase: FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<any | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isClosing, setIsClosing] = useState(false);
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
-  // Initial load
+  // Fetch projects + subscribe to realtime updates
   useEffect(() => {
     let mounted = true;
 
@@ -36,7 +38,6 @@ const ProjectShowcase: FC = () => {
 
     fetchAndSet();
 
-    // Realtime subscription
     const channel = supabase
       .channel("realtime:projects")
       .on(
@@ -56,7 +57,7 @@ const ProjectShowcase: FC = () => {
     };
   }, []);
 
-  const handleOpen = (project: any) => {
+  const handleOpen = (project: Project) => {
     setSelectedProject(project);
     setShowModal(true);
     document.body.style.overflow = "hidden";
@@ -75,7 +76,9 @@ const ProjectShowcase: FC = () => {
   return (
     <div className="px-6 py-20 bg-gray-50">
       <div className="text-center mb-6">
-        <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">Work</span>
+        <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
+          Work
+        </span>
       </div>
       <p className="text-center text-gray-600 mb-10">
         Some of the noteworthy projects I have built:
@@ -107,10 +110,15 @@ const ProjectShowcase: FC = () => {
                     <div>
                       <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
                       {(() => {
-                        const { trimmed, shouldTrim } = getPreviewText(project.description, 35);
+                        const { trimmed, shouldTrim } = getPreviewText(
+                          project.description,
+                          35
+                        );
                         return (
                           <>
-                            <p className="text-gray-600 text-[15px] leading-relaxed">{trimmed}</p>
+                            <p className="text-gray-600 text-[15px] leading-relaxed">
+                              {trimmed}
+                            </p>
                             {shouldTrim && (
                               <button
                                 onClick={() => handleOpen(project)}
@@ -123,22 +131,28 @@ const ProjectShowcase: FC = () => {
                         );
                       })()}
                     </div>
+
                     <div>
                       <div className="flex flex-wrap gap-2 mt-6">
-                        {project.technologies.map((tech: string, i: number) => (
-                          <span key={i} className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md">
+                        {project.technologies?.map((tech, i) => (
+                          <span
+                            key={i}
+                            className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md"
+                          >
                             {tech}
                           </span>
                         ))}
                       </div>
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-gray-800 mt-4 hover:underline text-sm"
-                      >
-                        Visit <FiExternalLink className="ml-2" />
-                      </a>
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-gray-800 mt-4 hover:underline text-sm"
+                        >
+                          Visit <FiExternalLink className="ml-2" />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -150,8 +164,15 @@ const ProjectShowcase: FC = () => {
 
       {showModal && selectedProject && (
         <div className="fixed inset-0 bg-black/50 z-50 px-4 pt-10 md:px-10 overflow-y-auto">
-          <div className={`bg-white w-full md:w-[90%] lg:w-[85%] rounded-xl shadow-2xl p-6 md:p-10 relative mx-auto ${isClosing ? "animate-slideDown" : "animate-slideUp"}`}>
-            <button onClick={handleClose} className="absolute top-3 right-4 text-gray-500 hover:text-red-500 text-2xl">
+          <div
+            className={`bg-white w-full md:w-[90%] lg:w-[85%] rounded-xl shadow-2xl p-6 md:p-10 relative mx-auto ${
+              isClosing ? "animate-slideDown" : "animate-slideUp"
+            }`}
+          >
+            <button
+              onClick={handleClose}
+              className="absolute top-3 right-4 text-gray-500 hover:text-red-500 text-2xl"
+            >
               ×
             </button>
 
@@ -169,28 +190,34 @@ const ProjectShowcase: FC = () => {
               {selectedProject.description}
             </p>
 
-            {selectedProject.modalKey && modalContentMap[selectedProject.modalKey] && (
-              <div className="mb-6">
-                {modalContentMap[selectedProject.modalKey]}
-              </div>
-            )}
+            {selectedProject.modalKey &&
+              modalContentMap[selectedProject.modalKey] && (
+                <div className="mb-6">
+                  {modalContentMap[selectedProject.modalKey]}
+                </div>
+              )}
 
             <div className="flex flex-wrap gap-2 mb-6">
-              {selectedProject.technologies.map((tech: string, i: number) => (
-                <span key={i} className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md">
+              {selectedProject.technologies?.map((tech, i) => (
+                <span
+                  key={i}
+                  className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md"
+                >
                   {tech}
                 </span>
               ))}
             </div>
 
-            <a
-              href={selectedProject.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-[var(--accent-purple)] hover:underline text-base"
-            >
-              Visit <FiExternalLink className="ml-2" />
-            </a>
+            {selectedProject.link && (
+              <a
+                href={selectedProject.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-[var(--accent-purple)] hover:underline text-base"
+              >
+                Visit <FiExternalLink className="ml-2" />
+              </a>
+            )}
           </div>
         </div>
       )}

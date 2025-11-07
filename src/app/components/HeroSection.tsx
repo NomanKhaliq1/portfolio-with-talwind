@@ -47,11 +47,17 @@ const HeroSection = () => {
   const [yearsOfExperience, setYearsOfExperience] = useState<number | null>(null);
   const [currentRole, setCurrentRole] = useState<string | null>(null);
 
+  // ✅ Detect visitor timezone automatically
+  const userTimeZone =
+    typeof Intl !== "undefined"
+      ? Intl.DateTimeFormat().resolvedOptions().timeZone
+      : "Asia/Karachi";
+
   useEffect(() => {
     let mounted = true;
 
     async function fetchAndSet() {
-      const liveData = await getPortfolioStatus();
+      const liveData = await getPortfolioStatus(userTimeZone);
       if (!mounted || !liveData) return;
       setStatus(liveData);
     }
@@ -67,16 +73,17 @@ const HeroSection = () => {
       mounted = false;
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [userTimeZone]);
 
   useEffect(() => {
     async function calculateExperience() {
       const experiences = await getExperiences();
       if (experiences.length > 0) {
-        const sorted = experiences.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+        const sorted = experiences.sort(
+          (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+        );
         const startDate = new Date(sorted[0].startDate);
         const today = new Date();
-        const localHour = getLocalHour(timezone);
         const years = today.getFullYear() - startDate.getFullYear();
         setYearsOfExperience(years);
 
@@ -103,7 +110,6 @@ const HeroSection = () => {
     job_type = "",
     dynamicMessage = "",
     vacation_until = "",
-    country,
     working_hours_from,
     working_hours_to,
     timezone,
@@ -114,8 +120,8 @@ const HeroSection = () => {
   const vacationEnd = vacation_until ? new Date(vacation_until) : null;
   const isOnVacation = vacationEnd && today <= vacationEnd;
 
-  const nowHour = new Date().getHours();
-  const localHour = getLocalHour(timezone);
+  const activeZone = timezone || userTimeZone;
+  const localHour = getLocalHour(activeZone);
   const isWithinWorkingHours =
     typeof working_hours_from === "number" &&
     typeof working_hours_to === "number" &&
@@ -143,16 +149,27 @@ const HeroSection = () => {
                   I help businesses turn complex ideas into sleek, scalable web apps.
                 </p>
                 <div className="space-y-2 text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
-                  <p>Expert in <strong>React</strong>, <strong>Next.js</strong>, <strong>TailwindCSS</strong>, and <strong>WordPress</strong></p>
-                  <p>I build scalable, high-performance web apps with clean, user-friendly designs.</p>
-                  <p>Passionate about turning real-world problems into powerful digital solutions.</p>
+                  <p>
+                    Expert in <strong>React</strong>, <strong>Next.js</strong>,{" "}
+                    <strong>TailwindCSS</strong>, and <strong>WordPress</strong>
+                  </p>
+                  <p>
+                    I build scalable, high-performance web apps with clean, user-friendly
+                    designs.
+                  </p>
+                  <p>
+                    Passionate about turning real-world problems into powerful digital
+                    solutions.
+                  </p>
                 </div>
               </div>
 
               <ul className="list-none space-y-2">
                 <li className="flex items-start gap-2">
                   <span className="mt-[8px] w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                  <span className="text-gray-700 text-base font-medium">Karachi, Pakistan</span>
+                  <span className="text-gray-700 text-base font-medium">
+                    Karachi, Pakistan
+                  </span>
                 </li>
 
                 <li className="flex items-start gap-2">
@@ -167,15 +184,22 @@ const HeroSection = () => {
                   )}
                 </li>
 
-                {typeof working_hours_from === "number" && typeof working_hours_to === "number" && (
-                  <li className="ml-[22px] text-sm text-gray-500">
-                    Working Hours: <strong>{formatTime(working_hours_from)}</strong> – <strong>{formatTime(working_hours_to)}</strong>{" "}
-                    <span className="text-gray-400 text-xs">({timezone?.replace("_", " ")})</span>
-                  </li>
-                )}
+                {typeof working_hours_from === "number" &&
+                  typeof working_hours_to === "number" && (
+                    <li className="ml-[22px] text-sm text-gray-500">
+                      Working Hours:{" "}
+                      <strong>{formatTime(working_hours_from)}</strong> –{" "}
+                      <strong>{formatTime(working_hours_to)}</strong>{" "}
+                      <span className="text-gray-400 text-xs">
+                        ({activeZone.replace("_", " ")})
+                      </span>
+                    </li>
+                  )}
 
                 {availabilityNote && (
-                  <li className="ml-[22px] text-sm text-gray-500 italic">{availabilityNote}</li>
+                  <li className="ml-[22px] text-sm text-gray-500 italic">
+                    {availabilityNote}
+                  </li>
                 )}
 
                 {status_override ? (
@@ -196,7 +220,8 @@ const HeroSection = () => {
                   <li className="flex items-start gap-2 group relative">
                     <span className="mt-[8px] w-2 h-2 rounded-full bg-green-500 shrink-0" />
                     <span className="text-gray-700 text-base font-medium">
-                      Available for new projects ({remainingSlots} slot{remainingSlots !== 1 ? "s" : ""} left)
+                      Available for new projects ({remainingSlots} slot
+                      {remainingSlots !== 1 ? "s" : ""} left)
                     </span>
                     <span className="absolute left-0 top-full mt-1 z-10 text-xs text-white bg-gray-800 px-2 py-1 rounded shadow opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
                       Handling {current_projects} of {total_slots} projects
@@ -226,28 +251,44 @@ const HeroSection = () => {
                   <div className="flex flex-col items-center space-y-1">
                     <span className="text-2xl sm:text-3xl">🌐</span>
                     <span className="text-sm sm:text-base font-semibold">
-                      {total_built ? `${total_built}+ Websites Built` : <span className="w-24 h-4 bg-gray-200 rounded animate-pulse inline-block" />}
+                      {total_built ? (
+                        `${total_built}+ Websites Built`
+                      ) : (
+                        <span className="w-24 h-4 bg-gray-200 rounded animate-pulse inline-block" />
+                      )}
                     </span>
                   </div>
 
                   <div className="flex flex-col items-center space-y-1">
                     <span className="text-2xl sm:text-3xl">🚀</span>
                     <span className="text-sm sm:text-base font-semibold">
-                      {current_projects ? `${current_projects} Ongoing Projects` : <span className="w-20 h-4 bg-gray-200 rounded animate-pulse inline-block" />}
+                      {current_projects ? (
+                        `${current_projects} Ongoing Projects`
+                      ) : (
+                        <span className="w-20 h-4 bg-gray-200 rounded animate-pulse inline-block" />
+                      )}
                     </span>
                   </div>
 
                   <div className="flex flex-col items-center space-y-1">
                     <span className="text-2xl sm:text-3xl">💼</span>
                     <span className="text-sm sm:text-base font-semibold">
-                      {total_slots ? `${remainingSlots} Available Slots` : <span className="w-20 h-4 bg-gray-200 rounded animate-pulse inline-block" />}
+                      {total_slots ? (
+                        `${remainingSlots} Available Slots`
+                      ) : (
+                        <span className="w-20 h-4 bg-gray-200 rounded animate-pulse inline-block" />
+                      )}
                     </span>
                   </div>
 
                   <div className="flex flex-col items-center space-y-1">
                     <span className="text-2xl sm:text-3xl">📅</span>
                     <span className="text-sm sm:text-base font-semibold">
-                      {yearsOfExperience !== null ? `${yearsOfExperience}+ Years Experience` : <span className="w-20 h-4 bg-gray-200 rounded animate-pulse inline-block" />}
+                      {yearsOfExperience !== null ? (
+                        `${yearsOfExperience}+ Years Experience`
+                      ) : (
+                        <span className="w-20 h-4 bg-gray-200 rounded animate-pulse inline-block" />
+                      )}
                     </span>
                   </div>
                 </div>
@@ -255,31 +296,62 @@ const HeroSection = () => {
 
               {remainingSlots <= 3 && (
                 <p className="text-sm text-red-500 font-semibold text-center lg:text-left mt-4 mx-auto lg:mx-0 max-w-3xl">
-                  Bonus Tip: Only {remainingSlots} project slot{remainingSlots !== 1 ? "s" : ""} left — grab yours now!
+                  Bonus Tip: Only {remainingSlots} project slot
+                  {remainingSlots !== 1 ? "s" : ""} left — grab yours now!
                 </p>
               )}
 
               <div className="pt-6 sm:pt-8 flex justify-center sm:justify-start space-x-5">
-                <a href="https://github.com/NomanKhaliq1" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-black" aria-label="GitHub">
+                <a
+                  href="https://github.com/NomanKhaliq1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-black"
+                  aria-label="GitHub"
+                >
                   <FaGithub size={22} />
                 </a>
-                <a href="https://www.linkedin.com/in/nomanghouri-dev/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700" aria-label="LinkedIn">
+                <a
+                  href="https://www.linkedin.com/in/nomanghouri-dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-blue-700"
+                  aria-label="LinkedIn"
+                >
                   <FaLinkedin size={22} />
                 </a>
-                <a href="https://www.instagram.com/nomanghouri2/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-pink-500" aria-label="Instagram">
+                <a
+                  href="https://www.instagram.com/nomanghouri2/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-pink-500"
+                  aria-label="Instagram"
+                >
                   <FaInstagram size={22} />
                 </a>
-                <a href="https://twitter.com/nomankhaliq_" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-sky-500" aria-label="Twitter">
+                <a
+                  href="https://twitter.com/nomankhaliq_"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-sky-500"
+                  aria-label="Twitter"
+                >
                   <FaTwitter size={22} />
                 </a>
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-3 sm:space-y-0 w-fit mx-auto sm:mx-0">
-                <a href="#contact" className="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700 transition w-fit text-center">
+                <a
+                  href="#contact"
+                  className="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700 transition w-fit text-center"
+                >
                   Let’s Work Together 🤝
                 </a>
                 {open_to_jobs && (
-                  <button onClick={() => setShowJobModal(true)} className="text-indigo-600 font-medium hover:underline text-sm sm:text-base">
+                  <button
+                    onClick={() => setShowJobModal(true)}
+                    className="text-indigo-600 font-medium hover:underline text-sm sm:text-base"
+                  >
                     Want to offer me a job? Click here →
                   </button>
                 )}
@@ -287,32 +359,45 @@ const HeroSection = () => {
             </div>
 
             <div className="relative w-full max-w-[22rem] sm:max-w-[26rem] md:max-w-[30rem] lg:w-[35rem] h-[30rem] sm:h-[34rem] md:h-[40rem] lg:h-[42rem] mx-auto bg-gradient-to-br from-yellow-400/10 via-orange-200/30 to-white rounded-[2rem] p-2 shadow-2xl hover:scale-105 transition-transform duration-300">
-              <Image src="/noman-khaliq-developer.webp" alt="Noman Khaliq Hero Image" fill className="object-cover rounded-[2rem] border-2 border-white" priority />
+              <Image
+                src="/noman-khaliq-developer.webp"
+                alt="Noman Khaliq Hero Image"
+                fill
+                className="object-cover rounded-[2rem] border-2 border-white"
+                priority
+              />
             </div>
           </div>
 
-          {/* Job Offer Modal */}
           {open_to_jobs && showJobModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4 transition-opacity duration-300 ease-out animate-fadeIn">
               <div className="relative">
-                <button onClick={() => setShowJobModal(false)} className="absolute -top-5 -right-5 w-10 h-10 rounded-full bg-foreground text-white hover:opacity-90 flex items-center justify-center shadow-lg z-10" aria-label="Close Modal">
+                <button
+                  onClick={() => setShowJobModal(false)}
+                  className="absolute -top-5 -right-5 w-10 h-10 rounded-full bg-foreground text-white hover:opacity-90 flex items-center justify-center shadow-lg z-10"
+                  aria-label="Close Modal"
+                >
                   <span className="text-lg">×</span>
                 </button>
                 <div className="bg-white rounded-xl max-w-lg w-full p-6 shadow-xl text-center animate-modalIn">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Interested in Hiring Me?</h2>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                    Interested in Hiring Me?
+                  </h2>
                   <p className="mt-4 text-gray-600">
-                    I&apos;m open to remote full-time roles in React, Next.js, WordPress, or UI-focused web development.<br />
+                    I&apos;m open to remote full-time roles in React, Next.js, WordPress, or
+                    UI-focused web development.<br />
                     If you have an opportunity, let’s connect!
                   </p>
-                  <a href="mailto:youremail@example.com?subject=Full-Time Job Opportunity for Noman"
-                    className="inline-block mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700 transition">
+                  <a
+                    href="mailto:youremail@example.com?subject=Full-Time Job Opportunity for Noman"
+                    className="inline-block mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700 transition"
+                  >
                     Send Job Offer 📩
                   </a>
                 </div>
               </div>
             </div>
           )}
-
         </div>
       </section>
     </FadeInOnView>

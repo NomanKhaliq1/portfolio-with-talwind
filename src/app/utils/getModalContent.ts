@@ -19,19 +19,25 @@ export async function getModalContent(): Promise<Record<string, ModalItem>> {
 
     const contentMap: Record<string, ModalItem> = {};
 
-    data.forEach((item) => {
+    data.forEach((item: { key: string; heading: string; items: string[] | string }) => {
       if (!item.key || !item.heading || !item.items) return;
 
       contentMap[item.key] = {
         key: item.key,
         heading: item.heading,
-        items: typeof item.items === "string" ? JSON.parse(item.items) : item.items,
+        items:
+          typeof item.items === "string"
+            ? JSON.parse(item.items)
+            : item.items,
       };
     });
 
     return contentMap;
-  } catch (err: any) {
-    console.error("❌ Supabase fetch failed:", err.message);
+  } catch (err) {
+    console.error(
+      "❌ Supabase fetch failed:",
+      (err as Error).message || "Unknown error"
+    );
     return {};
   }
 }

@@ -1,7 +1,16 @@
 import { supabase } from "../lib/supabaseClient";
 import { projects as fallbackProjects } from "@/app/data/projects";
 
-export async function getProjects() {
+export interface Project {
+  title: string;
+  description: string;
+  technologies: string[] | null;
+  image: string;
+  link: string;
+  modalKey?: string;
+}
+
+export async function getProjects(): Promise<Project[]> {
   try {
     const { data, error } = await supabase
       .from("projects")
@@ -10,17 +19,24 @@ export async function getProjects() {
 
     if (error || !data || data.length === 0) {
       console.warn("⚠️ Supabase error or empty table. Using fallback.");
-      return fallbackProjects;
+      return fallbackProjects as Project[];
     }
 
-    return data.map((item: any) => ({
+    // ✅ Safely parse 'technologies' if it’s a JSON string
+    const parsedProjects: Project[] = data.map((item) => ({
       ...item,
-      technologies: typeof item.technologies === "string"
-        ? JSON.parse(item.technologies)
-        : item.technologies,
+      technologies:
+        typeof item.technologies === "string"
+          ? JSON.parse(item.technologies)
+          : item.technologies,
     }));
-  } catch (err: any) {
-    console.error("❌ Supabase fetch failed:", err.message);
-    return fallbackProjects;
+
+    return parsedProjects;
+  } catch (err) {
+    console.error(
+      "❌ Supabase fetch failed:",
+      (err as Error).message || "Unknown error"
+    );
+    return fallbackProjects as Project[];
   }
 }
