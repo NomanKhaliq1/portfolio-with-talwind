@@ -16,134 +16,165 @@ const TestimonialSlider: FC = () => {
   const [overflowIndexes, setOverflowIndexes] = useState<number[]>([]);
 
   useEffect(() => {
-  const timeout = setTimeout(() => {
-    const indexes: number[] = [];
-    refs.current.forEach((el, i) => {
-      if (el && el.scrollHeight > el.offsetHeight + 10) {
-        indexes.push(i);
-      }
-    });
-    setOverflowIndexes(indexes);
-  }, 300); // delay to wait for images/fonts
+    const timeout = setTimeout(() => {
+      const indexes: number[] = [];
+      refs.current.forEach((el, i) => {
+        if (el && el.scrollHeight > el.offsetHeight + 10) {
+          indexes.push(i);
+        }
+      });
+      setOverflowIndexes(indexes);
+    }, 300);
 
-  return () => clearTimeout(timeout);
-}, []);
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
-    <section id="testimonials" className="bg-gray-50 py-24">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
-          <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
-            Testimonials
+    <section id="testimonials" className="relative isolate overflow-hidden bg-white py-24 sm:py-32">
+      <div className="absolute inset-x-0 -top-20 -z-10 flex justify-center">
+        <div className="h-60 w-[38rem] rounded-full bg-gradient-to-br from-emerald-300/35 via-sky-300/25 to-blue-300/35 blur-3xl" />
+      </div>
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-slate-100" />
+
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-4 py-2 text-[11px] font-semibold tracking-[0.4em] text-slate-500">
+            TESTIMONIALS
           </span>
-          <p className="text-lg text-gray-600 mt-2">
-            What people are saying about my work
+          <h2 className="mt-6 text-3xl font-semibold text-slate-900 sm:text-4xl">
+            Teams trust the calm, detail-driven collaboration.
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-slate-600">
+            Notes from founders, design leads, and engineers who partnered with me to ship meaningful work.
           </p>
         </div>
-        
-      <ClientOnly>
-        <Swiper spaceBetween={30} slidesPerView={1} loop={true} speed={1000} centeredSlides autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: false 
-          }} breakpoints={{
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1100: { slidesPerView: 3 },
-          }} modules={[Autoplay]} className="w-full">
-          {testimonials.map((testimonial, index) => (
-          <SwiperSlide key={index} className="py-6">
-            <div
-              className="p-6 bg-white rounded-2xl shadow-lg flex flex-col w-full max-w-md mx-auto h-[560px] text-center">
-              {/* Banner and Company Logo */}
-              <div className="relative w-full">
-                <div className="bg-indigo-100 w-full h-36 rounded-t-xl flex items-center justify-center relative">
-                  {testimonial.companyLogo && (
-                  <Image src={testimonial.companyLogo} alt="Company Logo" width={150} height={40}
-                    className="object-contain absolute top-5 left-1/2 -translate-x-1/2 z-10" />
-                  )}
-                </div>
 
-                {/* Person Image */}
-                <div className="absolute -bottom-[60px] left-1/2 -translate-x-1/2 z-20">
-                  <Image src={testimonial.image || placeholderImage} alt={testimonial.name} width={120} height={120}
-                    className="rounded-full object-cover shadow border-4 border-white" />
-                </div>
-              </div>
-
-              {/* Body */}
-              <div className="mt-[70px] flex flex-col justify-between flex-1">
-                <div>
-                  <div className="font-bold text-gray-800 mt-2">
-                    {testimonial.name}
-                  </div>
-                  <div className="text-sm text-gray-500">{testimonial.designation}</div>
-                  <div className="flex items-center justify-center mt-1 mb-3">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                    <FaStar key={i} className="text-yellow-500" />
-                    ))}
+        <ClientOnly>
+          <Swiper
+            spaceBetween={30}
+            slidesPerView={1}
+            loop
+            speed={900}
+            centeredSlides
+            autoplay={{
+              delay: 6000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: false,
+            }}
+            breakpoints={{
+              640: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              1100: { slidesPerView: 3 },
+            }}
+            modules={[Autoplay]}
+            className="mt-14 w-full"
+          >
+            {testimonials.map((testimonial, index) => (
+              <SwiperSlide key={index} className="py-6">
+                <div className="mx-auto flex h-[500px] max-w-md flex-col overflow-hidden rounded-[2rem] border border-white/80 bg-white/90 p-6 text-left shadow-lg shadow-slate-900/10 backdrop-blur-sm transition hover:-translate-y-1 hover:shadow-xl">
+                  <div className="flex items-center gap-4">
+                    <div className="relative h-16 w-16 overflow-hidden rounded-full border border-slate-200 bg-slate-100">
+                      <Image
+                        src={testimonial.image || placeholderImage}
+                        alt={testimonial.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-base font-semibold text-slate-900">{testimonial.name}</p>
+                      <p className="text-xs uppercase tracking-[0.35em] text-slate-400">{testimonial.designation}</p>
+                    </div>
                   </div>
 
-                  {/* Review Text */}
-                  <p ref={(el: HTMLParagraphElement | null)=> {
-                    refs.current[index] = el;
-                    }}
-                    className="text-gray-700 font-medium text-base leading-relaxed line-clamp-6"
+                  <div className="mt-5 flex flex-col gap-3">
+                    <div className="flex items-center gap-1 text-amber-400">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <FaStar key={i} className="text-sm" />
+                      ))}
+                    </div>
+                    <p
+                      ref={(el: HTMLParagraphElement | null) => {
+                        refs.current[index] = el;
+                      }}
+                      className="line-clamp-6 text-sm leading-relaxed text-slate-600"
                     >
-                    {testimonial.review}
-                  </p>
+                      {testimonial.review}
+                    </p>
+                  </div>
+
+                  <div className="mt-auto">
+                    {testimonial.companyLogo && (
+                      <div className="mt-6 flex items-center justify-between">
+                        <Image
+                          src={testimonial.companyLogo}
+                          alt="Company Logo"
+                          width={120}
+                          height={32}
+                          className="object-contain opacity-80"
+                        />
+                        {overflowIndexes.includes(index) && (
+                          <button
+                            onClick={() => setSelectedReview(testimonial)}
+                            className="text-xs font-semibold text-emerald-600 transition hover:text-emerald-700"
+                          >
+                            Read full
+                          </button>
+                        )}
+                      </div>
+                    )}
+                    {!testimonial.companyLogo && overflowIndexes.includes(index) && (
+                      <button
+                        onClick={() => setSelectedReview(testimonial)}
+                        className="mt-6 text-xs font-semibold text-emerald-600 transition hover:text-emerald-700"
+                      >
+                        Read full
+                      </button>
+                    )}
+                  </div>
                 </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </ClientOnly>
 
-                {/* Read More Button */}
-                {overflowIndexes.includes(index) && (
-                <button onClick={()=> setSelectedReview(testimonial)}
-                  className="text-sm mt-2 text-indigo-600 font-semibold hover:underline transition duration-150"
-                  >
-                  Read More
-                </button>
-                )}
-              </div>
-            </div>
-          </SwiperSlide>
-          ))}
-        </Swiper>
-      </ClientOnly>
-
-        {/* Modal */}
         {selectedReview && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full text-center">
-              <Image
-                src={selectedReview.image || placeholderImage}
-                alt={selectedReview.name}
-                width={80}
-                height={80}
-                className="rounded-full mb-4 mx-auto object-cover"
-              />
-              <h3 className="text-xl font-bold mb-1">{selectedReview.name}</h3>
-              <p className="text-sm text-gray-500">{selectedReview.designation}</p>
-              <p className="text-sm text-gray-500 mb-4">{selectedReview.role}</p>
-              <p className="text-gray-700 mb-6">{selectedReview.review}</p>
-              <div className="flex items-center justify-center mb-4">
-                {[...Array(selectedReview.rating)].map((_, i) => (
-                  <FaStar key={i} className="text-yellow-500" />
-                ))}
-              </div>
-              {selectedReview.companyLogo && (
-                <Image
-                  src={selectedReview.companyLogo}
-                  alt="Company Logo"
-                  width={160}
-                  height={40}
-                  className="object-contain mx-auto mb-4"
-                />
-              )}
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur">
+            <div className="w-full max-w-2xl rounded-[2rem] border border-white/10 bg-slate-950/90 p-8 text-center text-white shadow-2xl">
               <button
                 onClick={() => setSelectedReview(null)}
-                className="mt-2 px-5 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                className="mb-4 ml-auto flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 transition hover:border-white/40 hover:text-white"
               >
-                Close
+                ×
               </button>
+              <div className="flex flex-col items-center gap-4 text-white/80">
+                <div className="relative h-20 w-20 overflow-hidden rounded-full border border-white/20 bg-white/10">
+                  <Image
+                    src={selectedReview.image || placeholderImage}
+                    alt={selectedReview.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold text-white">{selectedReview.name}</h3>
+                <p className="text-xs uppercase tracking-[0.4em] text-white/60">{selectedReview.designation}</p>
+                <p className="text-sm text-white/60">{selectedReview.role}</p>
+                <div className="flex items-center gap-1 text-amber-400">
+                  {[...Array(selectedReview.rating)].map((_, i) => (
+                    <FaStar key={i} className="text-sm" />
+                  ))}
+                </div>
+                <p className="mt-4 text-sm leading-relaxed text-white/70">{selectedReview.review}</p>
+                {selectedReview.companyLogo && (
+                  <Image
+                    src={selectedReview.companyLogo}
+                    alt="Company Logo"
+                    width={160}
+                    height={40}
+                    className="mt-4 object-contain opacity-80"
+                  />
+                )}
+              </div>
             </div>
           </div>
         )}
