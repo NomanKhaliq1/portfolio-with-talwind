@@ -28,7 +28,9 @@ type CurrentRole = {
 const HeroSection = () => {
   const [showJobModal, setShowJobModal] = useState(false);
   const [status, setStatus] = useState<Status | null>(null);
-  const [yearsOfExperience, setYearsOfExperience] = useState<number | null>(null);
+  const [yearsOfExperience, setYearsOfExperience] = useState<number | null>(
+    null
+  );
   const [currentRole, setCurrentRole] = useState<CurrentRole | null>(null);
 
   useEffect(() => {
@@ -38,7 +40,6 @@ const HeroSection = () => {
     async function fetchAndSet() {
       const liveData = await getPortfolioStatus();
       if (!mounted || !liveData) return;
-
       setStatus({ ...liveData });
     }
 
@@ -70,7 +71,8 @@ const HeroSection = () => {
       const experiences = await getExperiences();
       if (experiences.length > 0) {
         const sorted = [...experiences].sort(
-          (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+          (a, b) =>
+            new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
         );
         const startDate = new Date(sorted[0].startDate);
         const today = new Date();
@@ -106,12 +108,15 @@ const HeroSection = () => {
 
   const remainingSlots = total_slots - current_projects;
   const isUnavailable = status_override || remainingSlots <= 0;
+  const availabilityDot = isUnavailable ? "bg-rose-400" : "bg-emerald-400";
 
   const availabilityMessage = status_override
     ? dynamicMessage || "Currently unavailable"
     : remainingSlots > 0
-      ? `Available for ${remainingSlots} new project${remainingSlots === 1 ? "" : "s"}`
-      : "Currently fully booked";
+    ? `Available for ${remainingSlots} new project${
+        remainingSlots === 1 ? "" : "s"
+      }`
+    : "Currently fully booked";
 
   const availabilitySubtext = status_override
     ? open_to_jobs
@@ -119,14 +124,13 @@ const HeroSection = () => {
       : undefined
     : `Partnering on ${current_projects} of ${total_slots} active collaborations.`;
 
-  const availabilityDot = isUnavailable ? "bg-rose-400" : "bg-emerald-400";
-
   return (
     <FadeInOnView>
       <section
         id="home"
         className="relative isolate overflow-hidden bg-slate-950 py-28 text-white sm:py-32"
       >
+        {/* Gradient background */}
         <div className="absolute inset-x-0 -top-20 -z-10 flex justify-center">
           <div className="h-72 w-[42rem] rounded-full bg-gradient-to-br from-sky-400/30 via-emerald-400/25 to-blue-500/30 blur-3xl" />
         </div>
@@ -134,27 +138,39 @@ const HeroSection = () => {
         <div className="absolute -bottom-24 right-0 -z-10 h-72 w-72 rounded-full bg-sky-400/20 blur-3xl" />
 
         <div className="mx-auto grid w-full max-w-6xl gap-16 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          {/* Left Section */}
           <div className="space-y-10">
             <div className="space-y-4">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-semibold tracking-[0.4em] text-white/70">
                 PRODUCT ENGINEER • DESIGN PARTNER
               </span>
               <h1 className="text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
-                Crisp digital products crafted with a calm, systems-driven approach.
+                Crisp digital products crafted with a calm, systems-driven
+                approach.
               </h1>
               <p className="max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">
-                I join founders and product teams to design thoughtful experiences, build resilient frontends, and ship work that feels considered. From product discovery to production-ready code, I help move ideas to launch.
+                I join founders and product teams to design thoughtful
+                experiences, build resilient frontends, and ship work that feels
+                considered. From product discovery to production-ready code, I
+                help move ideas to launch.
               </p>
             </div>
 
+            {/* Availability */}
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">
-                  <span className={`mt-1 h-2.5 w-2.5 rounded-full ${availabilityDot}`} />
+                  <span
+                    className={`mt-1 h-2.5 w-2.5 rounded-full ${availabilityDot}`}
+                  />
                   <div>
-                    <p className="text-sm font-semibold text-white">{availabilityMessage}</p>
+                    <p className="text-sm font-semibold text-white">
+                      {availabilityMessage}
+                    </p>
                     {availabilitySubtext && (
-                      <p className="mt-1 text-xs text-white/60">{availabilitySubtext}</p>
+                      <p className="mt-1 text-xs text-white/60">
+                        {availabilitySubtext}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -167,26 +183,35 @@ const HeroSection = () => {
                   </button>
                 )}
               </div>
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-black/10 p-4">
-                  <p className="text-[11px] uppercase tracking-[0.4em] text-white/50">Experience</p>
-                  <p className="mt-2 text-2xl font-semibold">
-                    {yearsOfExperience ? `${yearsOfExperience}+` : "7+"}
-                  </p>
-                  <p className="mt-1 text-xs text-white/60">Years building cross-disciplinary products</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-black/10 p-4">
-                  <p className="text-[11px] uppercase tracking-[0.4em] text-white/50">Current focus</p>
-                  <p className="mt-2 text-sm font-semibold text-white">
-                    {currentRole ? currentRole.title : "Product Engineering"}
-                  </p>
-                  <p className="mt-1 text-xs text-white/60">
-                    {currentRole ? currentRole.company : "Independent partner"}
-                  </p>
-                </div>
+            </div>
+
+            {/* Experience + Focus */}
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl border border-white/10 bg-black/10 p-4">
+                <p className="text-[11px] uppercase tracking-[0.4em] text-white/50">
+                  Experience
+                </p>
+                <p className="mt-2 text-2xl font-semibold">
+                  {yearsOfExperience ? `${yearsOfExperience}+` : "7+"}
+                </p>
+                <p className="mt-1 text-xs text-white/60">
+                  Years building cross-disciplinary products
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-black/10 p-4">
+                <p className="text-[11px] uppercase tracking-[0.4em] text-white/50">
+                  Current focus
+                </p>
+                <p className="mt-2 text-sm font-semibold text-white">
+                  {currentRole ? currentRole.title : "Product Engineering"}
+                </p>
+                <p className="mt-1 text-xs text-white/60">
+                  {currentRole ? currentRole.company : "Independent partner"}
+                </p>
               </div>
             </div>
 
+            {/* Actions */}
             <div className="flex flex-wrap items-center gap-4">
               <button
                 onClick={() => setShowJobModal(true)}
@@ -202,30 +227,39 @@ const HeroSection = () => {
               </a>
             </div>
 
+            {/* Socials */}
             <div className="flex items-center gap-5 text-white/60">
               <a
-                href="https://twitter.com/"
+                href="https://twitter.com/nomankhaliq_"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="transition hover:text-white"
                 aria-label="Twitter"
               >
                 <FaTwitter size={20} />
               </a>
               <a
-                href="https://github.com/"
+                href="https://github.com/NomanKhaliq1"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="transition hover:text-white"
                 aria-label="GitHub"
               >
                 <FaGithub size={20} />
               </a>
               <a
-                href="https://linkedin.com/"
+                href="https://linkedin.com/in/nomanghouri-dev/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="transition hover:text-white"
                 aria-label="LinkedIn"
               >
                 <FaLinkedin size={20} />
               </a>
               <a
-                href="https://instagram.com/"
+                href="https://instagram.com/nomanghouri2/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="transition hover:text-white"
                 aria-label="Instagram"
               >
@@ -234,6 +268,7 @@ const HeroSection = () => {
             </div>
           </div>
 
+          {/* Right Section - Image */}
           <div className="relative">
             <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 p-8 backdrop-blur">
               <div className="relative mx-auto h-48 w-48 overflow-hidden rounded-2xl">
@@ -256,18 +291,27 @@ const HeroSection = () => {
               </div>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl border border-white/10 bg-black/10 p-4 text-center">
-                  <p className="text-[11px] uppercase tracking-[0.4em] text-white/50">Launches</p>
-                  <p className="mt-3 text-2xl font-semibold text-white">{total_built}+ projects</p>
+                  <p className="text-[11px] uppercase tracking-[0.4em] text-white/50">
+                    Launches
+                  </p>
+                  <p className="mt-3 text-2xl font-semibold text-white">
+                    {total_built}+ projects
+                  </p>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-black/10 p-4 text-center">
-                  <p className="text-[11px] uppercase tracking-[0.4em] text-white/50">Collaborations</p>
-                  <p className="mt-3 text-2xl font-semibold text-white">{total_slots}+ teams</p>
+                  <p className="text-[11px] uppercase tracking-[0.4em] text-white/50">
+                    Collaborations
+                  </p>
+                  <p className="mt-3 text-2xl font-semibold text-white">
+                    {total_slots}+ teams
+                  </p>
                 </div>
               </div>
               <div className="mt-6 rounded-2xl border border-white/10 bg-black/10 p-4 text-left">
                 <p className="text-sm font-semibold text-white">Latest note</p>
                 <p className="mt-2 text-sm text-white/60">
-                  “Noman brings calm energy and a systems mindset—our shipping velocity doubled.”
+                  “Noman brings calm energy and a systems mindset—our shipping
+                  velocity doubled.”
                 </p>
               </div>
             </div>
@@ -276,6 +320,7 @@ const HeroSection = () => {
           </div>
         </div>
 
+        {/* Job Modal */}
         {open_to_jobs && showJobModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-4">
             <div className="relative w-full max-w-lg rounded-3xl border border-white/10 bg-slate-950/80 p-10 text-center text-white shadow-2xl backdrop-blur">
@@ -286,9 +331,13 @@ const HeroSection = () => {
               >
                 ×
               </button>
-              <h2 className="text-2xl font-semibold">Let’s talk about teaming up</h2>
+              <h2 className="text-2xl font-semibold">
+                Let’s talk about teaming up
+              </h2>
               <p className="mt-4 text-sm leading-relaxed text-white/70">
-                I’m exploring {job_type.toLowerCase()} opportunities where thoughtful design systems and polished frontends matter. Share a little about your roadmap and I’ll be in touch.
+                I’m exploring {job_type.toLowerCase()} opportunities where
+                thoughtful design systems and polished frontends matter. Share a
+                little about your roadmap and I’ll be in touch.
               </p>
               <a
                 href="mailto:nomanghouri.dev@gmail.com?subject=Collaboration%20with%20Noman"

@@ -30,13 +30,18 @@ const TestimonialSlider: FC = () => {
   }, []);
 
   return (
-    <section id="testimonials" className="relative isolate overflow-hidden bg-white py-24 sm:py-32">
+    <section
+      id="testimonials"
+      className="relative isolate overflow-hidden bg-white py-24 sm:py-32"
+    >
+      {/* Background gradients */}
       <div className="absolute inset-x-0 -top-20 -z-10 flex justify-center">
         <div className="h-60 w-[38rem] rounded-full bg-gradient-to-br from-emerald-300/35 via-sky-300/25 to-blue-300/35 blur-3xl" />
       </div>
       <div className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-slate-100" />
 
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+        {/* Section Header */}
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-4 py-2 text-[11px] font-semibold tracking-[0.4em] text-slate-500">
             TESTIMONIALS
@@ -45,10 +50,12 @@ const TestimonialSlider: FC = () => {
             Teams trust the calm, detail-driven collaboration.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-slate-600">
-            Notes from founders, design leads, and engineers who partnered with me to ship meaningful work.
+            Notes from founders, design leads, and engineers who partnered with
+            me to ship meaningful work.
           </p>
         </div>
 
+        {/* Testimonials Slider */}
         <ClientOnly>
           <Swiper
             spaceBetween={30}
@@ -72,6 +79,7 @@ const TestimonialSlider: FC = () => {
             {testimonials.map((testimonial, index) => (
               <SwiperSlide key={index} className="py-6">
                 <div className="mx-auto flex h-[500px] max-w-md flex-col overflow-hidden rounded-[2rem] border border-white/80 bg-white/90 p-6 text-left shadow-lg shadow-slate-900/10 backdrop-blur-sm transition hover:-translate-y-1 hover:shadow-xl">
+                  {/* Profile Section */}
                   <div className="flex items-center gap-4">
                     <div className="relative h-16 w-16 overflow-hidden rounded-full border border-slate-200 bg-slate-100">
                       <Image
@@ -82,11 +90,16 @@ const TestimonialSlider: FC = () => {
                       />
                     </div>
                     <div>
-                      <p className="text-base font-semibold text-slate-900">{testimonial.name}</p>
-                      <p className="text-xs uppercase tracking-[0.35em] text-slate-400">{testimonial.designation}</p>
+                      <p className="text-base font-semibold text-slate-900">
+                        {testimonial.name}
+                      </p>
+                      <p className="text-xs uppercase tracking-[0.35em] text-slate-400">
+                        {testimonial.designation}
+                      </p>
                     </div>
                   </div>
 
+                  {/* Review Text */}
                   <div className="mt-5 flex flex-col gap-3">
                     <div className="flex items-center gap-1 text-amber-400">
                       {[...Array(testimonial.rating)].map((_, i) => (
@@ -103,6 +116,7 @@ const TestimonialSlider: FC = () => {
                     </p>
                   </div>
 
+                  {/* Company Logo + Read More */}
                   <div className="mt-auto">
                     {testimonial.companyLogo && (
                       <div className="mt-6 flex items-center justify-between">
@@ -123,14 +137,15 @@ const TestimonialSlider: FC = () => {
                         )}
                       </div>
                     )}
-                    {!testimonial.companyLogo && overflowIndexes.includes(index) && (
-                      <button
-                        onClick={() => setSelectedReview(testimonial)}
-                        className="mt-6 text-xs font-semibold text-emerald-600 transition hover:text-emerald-700"
-                      >
-                        Read full
-                      </button>
-                    )}
+                    {!testimonial.companyLogo &&
+                      overflowIndexes.includes(index) && (
+                        <button
+                          onClick={() => setSelectedReview(testimonial)}
+                          className="mt-6 text-xs font-semibold text-emerald-600 transition hover:text-emerald-700"
+                        >
+                          Read full
+                        </button>
+                      )}
                   </div>
                 </div>
               </SwiperSlide>
@@ -138,6 +153,7 @@ const TestimonialSlider: FC = () => {
           </Swiper>
         </ClientOnly>
 
+        {/* Modal for full review */}
         {selectedReview && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur">
             <div className="w-full max-w-2xl rounded-[2rem] border border-white/10 bg-slate-950/90 p-8 text-center text-white shadow-2xl">
@@ -156,15 +172,23 @@ const TestimonialSlider: FC = () => {
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-semibold text-white">{selectedReview.name}</h3>
-                <p className="text-xs uppercase tracking-[0.4em] text-white/60">{selectedReview.designation}</p>
+                <h3 className="text-xl font-semibold text-white">
+                  {selectedReview.name}
+                </h3>
+                <p className="text-xs uppercase tracking-[0.4em] text-white/60">
+                  {selectedReview.designation}
+                </p>
                 <p className="text-sm text-white/60">{selectedReview.role}</p>
+
                 <div className="flex items-center gap-1 text-amber-400">
                   {[...Array(selectedReview.rating)].map((_, i) => (
                     <FaStar key={i} className="text-sm" />
                   ))}
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-white/70">{selectedReview.review}</p>
+                <p className="mt-4 text-sm leading-relaxed text-white/70">
+                  {selectedReview.review}
+                </p>
+
                 {selectedReview.companyLogo && (
                   <Image
                     src={selectedReview.companyLogo}

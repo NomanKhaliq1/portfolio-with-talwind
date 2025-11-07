@@ -47,7 +47,11 @@ const ExperienceSection: FC = () => {
   }, []);
 
   return (
-    <section id="work" className="relative isolate overflow-hidden bg-white py-24 sm:py-32">
+    <section
+      id="experience"
+      className="relative isolate overflow-hidden bg-white py-24 sm:py-32"
+    >
+      {/* Subtle background gradients */}
       <div className="absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-slate-100 via-white" />
       <div className="absolute inset-y-0 right-0 -z-10 hidden w-1/2 bg-gradient-to-l from-slate-100/60 via-white sm:block" />
 
@@ -57,10 +61,11 @@ const ExperienceSection: FC = () => {
             EXPERIENCE
           </span>
           <h2 className="mt-6 text-3xl font-semibold text-slate-900 sm:text-4xl">
-            Collaborations that delivered thoughtful, measurable change.
+            Partnerships that shipped meaningful change.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-slate-600">
-            A mix of in-house partnerships and agency engagements where research, design, and engineering converged to build products that feel calm yet powerful.
+            A mix of collaborations where research, design, and engineering came
+            together to build products that feel calm yet powerful.
           </p>
         </div>
 
@@ -68,7 +73,9 @@ const ExperienceSection: FC = () => {
           <div className="absolute inset-y-0 left-4 hidden w-px bg-gradient-to-b from-emerald-200 via-slate-200 to-transparent md:block" />
           <div className="space-y-10">
             {experiences.map((experience, index) => {
-              const isCurrent = experience.date.toLowerCase().includes("present");
+              const isCurrent = experience.date
+                .toLowerCase()
+                .includes("present");
 
               return (
                 <div
@@ -77,6 +84,7 @@ const ExperienceSection: FC = () => {
                 >
                   <div className="absolute -left-7 top-8 hidden h-3 w-3 rounded-full border border-white bg-emerald-400 shadow-md shadow-emerald-500/30 md:block" />
                   <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+                    {/* Company Info */}
                     <div className="flex items-start gap-4 sm:w-1/3">
                       <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50">
                         <Image
@@ -88,9 +96,15 @@ const ExperienceSection: FC = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <p className="text-sm font-semibold text-slate-900">{experience.company}</p>
-                        <p className="text-xs uppercase tracking-[0.4em] text-slate-400">{experience.date}</p>
-                        <p className="text-sm font-medium text-slate-600">{experience.title}</p>
+                        <p className="text-sm font-semibold text-slate-900">
+                          {experience.company}
+                        </p>
+                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">
+                          {experience.date}
+                        </p>
+                        <p className="text-sm font-medium text-slate-600">
+                          {experience.title}
+                        </p>
                         {isCurrent && (
                           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
@@ -100,6 +114,7 @@ const ExperienceSection: FC = () => {
                       </div>
                     </div>
 
+                    {/* Description */}
                     <div className="sm:w-2/3">
                       <ul className="space-y-3 text-sm leading-relaxed text-slate-600">
                         {experience.description.map((point, i) => (

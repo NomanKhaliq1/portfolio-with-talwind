@@ -38,6 +38,7 @@ body {
   font-family: var(--font-montserrat);
 }
 
+/* Swiper pagination styling */
 .swiper-pagination-bullet {
   width: 0.5rem !important;
   height: 0.5rem !important;
@@ -52,9 +53,14 @@ body {
   height: 0.5rem !important;
   border-radius: 9999px !important;
   opacity: 1 !important;
-  background: linear-gradient(90deg, var(--accent-emerald), var(--accent-blue)) !important;
+  background: linear-gradient(
+    90deg,
+    var(--accent-emerald),
+    var(--accent-blue)
+  ) !important;
 }
 
+/* Animation utilities */
 @layer utilities {
   @keyframes slide-up {
     0% {
