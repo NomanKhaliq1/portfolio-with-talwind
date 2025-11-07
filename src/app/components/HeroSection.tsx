@@ -102,172 +102,219 @@ const HeroSection = () => {
 
   return (
     <FadeInOnView>
-      <section className="bg-white py-20 md:py-28">
-        <div className="container mx-auto px-4 sm:px-6 md:px-8">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 md:gap-12 lg:gap-14">
-            <div className="w-full lg:w-2/3 space-y-8 text-left">
-              <div className="space-y-4">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900">
-                  Hi, I&apos;m Noman Khaliq <span className="animate-waving-hand">👋</span>
-                </h1>
-                <p className="text-indigo-600 text-base sm:text-lg font-medium mt-2">
-                  I help businesses turn complex ideas into sleek, scalable web apps.
-                </p>
-                <div className="space-y-2 text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
-                  <p>Expert in <strong>React</strong>, <strong>Next.js</strong>, <strong>TailwindCSS</strong>, and <strong>WordPress</strong></p>
-                  <p>I build scalable, high-performance web apps with clean, user-friendly designs.</p>
-                  <p>Passionate about turning real-world problems into powerful digital solutions.</p>
+      <section className="relative overflow-hidden py-24 sm:py-28">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.22),_transparent_55%)]" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom,_rgba(139,92,246,0.25),_transparent_60%)]" />
+        <div className="mx-auto flex w-full max-w-6xl flex-col-reverse items-center gap-16 px-4 sm:px-6 lg:flex-row lg:items-end">
+          <div className="relative w-full lg:w-[60%]">
+            <div className="absolute -left-12 -top-16 hidden h-48 w-48 rounded-full bg-sky-500/20 blur-3xl lg:block" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.3em] text-slate-200">
+              Available for collaborations
+              <span className={`inline-flex h-2 w-2 rounded-full ${status_override ? "bg-rose-400" : "bg-emerald-400"}`} />
+            </span>
+
+            <h1 className="mt-6 text-4xl font-bold leading-[1.1] text-white sm:text-5xl md:text-6xl">
+              Building bold digital experiences that feel effortless
+              <span className="ml-2 inline-block align-middle text-3xl sm:text-4xl">👋</span>
+            </h1>
+
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
+              I help growing teams turn complex ideas into scalable products. From rapid prototypes to production-grade platforms,
+              I craft experiences that balance engineering rigor with visual polish.
+            </p>
+
+            <div className="mt-6 grid gap-4 text-sm text-slate-200 sm:grid-cols-2">
+              <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                <div className="space-y-1">
+                  <p className="font-semibold text-white">Based in Karachi, Pakistan</p>
+                  <p className="text-slate-300">Collaborating remotely with teams across the globe.</p>
                 </div>
               </div>
-
-              <ul className="list-none space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="mt-[8px] w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                  <span className="text-gray-700 text-base font-medium">Karachi, Pakistan</span>
-                </li>
-
-                {currentRole && (
-                  <li className="flex items-start gap-2">
-                    <span className="mt-[8px] w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                    <span
-                      className="text-gray-700 text-base font-medium"
-                      dangerouslySetInnerHTML={{ __html: currentRole }}
-                    />
-                  </li>
-                )}
-
-                {status_override ? (
-                  <li className="flex items-start gap-2">
-                    <span className="mt-[8px] w-2 h-2 rounded-full bg-red-500 shrink-0" />
-                    <span className="text-gray-700 text-base font-medium">
-                      Currently unavailable — {dynamicMessage}
-                    </span>
-                  </li>
-                ) : current_projects === 0 ? (
-                  <li className="flex items-start gap-2">
-                    <span className="mt-[8px] w-2 h-2 rounded-full bg-green-500 shrink-0" />
-                    <span className="text-gray-700 text-base font-medium">
-                      Available for new projects
-                    </span>
-                  </li>
-                ) : remainingSlots > 0 ? (
-                  <li className="flex items-start gap-2 group relative">
-                    <span className="mt-[8px] w-2 h-2 rounded-full bg-green-500 shrink-0" />
-                    <span className="text-gray-700 text-base font-medium">
-                      Available for new projects ({remainingSlots} slot{remainingSlots !== 1 ? "s" : ""} left)
-                    </span>
-                    <span className="absolute left-0 top-full mt-1 z-10 text-xs text-white bg-gray-800 px-2 py-1 rounded shadow opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                      Handling {current_projects} of {total_slots} projects
-                    </span>
-                  </li>
-                ) : (
-                  <li className="flex items-start gap-2">
-                    <span className="mt-[8px] w-2 h-2 rounded-full bg-red-500 shrink-0" />
-                    <span className="text-gray-700 text-base font-medium">
-                      Currently unavailable (Handling {current_projects} projects)
-                    </span>
-                  </li>
-                )}
-
-                {open_to_jobs && (
-                  <li className="flex items-start gap-2">
-                    <span className="mt-[8px] w-2 h-2 rounded-full bg-blue-500 shrink-0" />
-                    <span className="text-gray-700 text-base font-medium">
-                      Open to job offers ({job_type})
-                    </span>
-                  </li>
-                )}
-              </ul>
-
-              <div className="mt-6 w-full max-w-3xl mx-auto lg:mx-0 bg-white/40 backdrop-blur-md border border-gray-200 rounded-xl px-6 py-6 shadow-sm">
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6 text-center text-gray-800">
-                  <div className="flex flex-col items-center space-y-1">
-                    <span className="text-2xl sm:text-3xl">🌐</span>
-                    <span className="text-sm sm:text-base font-semibold">{total_built}+ Websites Built</span>
-                  </div>
-
-                  {current_projects > 0 && (
-                    <div className="flex flex-col items-center space-y-1" title="Live projects in development">
-                      <span className="text-2xl sm:text-3xl">🚀</span>
-                      <span className="text-sm sm:text-base font-semibold">{current_projects} Ongoing Projects</span>
-                    </div>
-                  )}
-
-                  <div className="flex flex-col items-center space-y-1">
-                    <span className="text-2xl sm:text-3xl">💼</span>
-                    <span className="text-sm sm:text-base font-semibold">{remainingSlots} Available Slots</span>
-                  </div>
-
-                  <div className="flex flex-col items-center space-y-1">
-                    <span className="text-2xl sm:text-3xl">📅</span>
-                    <span className="text-sm sm:text-base font-semibold">
-                      {yearsOfExperience !== null ? `${yearsOfExperience}+ Years Experience` : "Loading..."}
-                    </span>
-                  </div>
+              {currentRole && (
+                <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <span className="mt-1 h-2.5 w-2.5 rounded-full bg-sky-400" />
+                  <div
+                    className="space-y-1"
+                    dangerouslySetInnerHTML={{ __html: `<p class='font-semibold text-white'>${currentRole}</p>` }}
+                  />
                 </div>
-              </div>
-
-              {remainingSlots <= 3 && (
-                <p className="text-sm text-red-500 font-semibold text-center lg:text-left mt-4 mx-auto lg:mx-0 max-w-3xl">
-                  Bonus Tip: Only {remainingSlots} project slot{remainingSlots !== 1 ? "s" : ""} left — grab yours now!
-                </p>
               )}
+              <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                <span
+                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+                    status_override || remainingSlots <= 0 ? "bg-rose-400" : "bg-emerald-400"
+                  }`}
+                />
+                <div className="space-y-1">
+                  <p className="font-semibold text-white">
+                    {status_override
+                      ? `Currently unavailable — ${dynamicMessage}`
+                      : remainingSlots > 0
+                        ? `Now booking ${remainingSlots} project${remainingSlots === 1 ? "" : "s"}`
+                        : "Currently fully booked"}
+                  </p>
+                  {!status_override && (
+                    <p className="text-slate-300">
+                      Managing {current_projects} of {total_slots} active collaborations.
+                    </p>
+                  )}
+                </div>
+              </div>
+              {open_to_jobs && (
+                <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <span className="mt-1 h-2.5 w-2.5 rounded-full bg-purple-400" />
+                  <div className="space-y-1">
+                    <p className="font-semibold text-white">Open to {job_type.toLowerCase()} roles</p>
+                    <p className="text-slate-300">Let’s talk about crafting your next standout product.</p>
+                  </div>
+                </div>
+              )}
+            </div>
 
-              <div className="pt-6 sm:pt-8 flex justify-center sm:justify-start space-x-5">
-                <a href="https://github.com/NomanKhaliq1" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-black" aria-label="GitHub">
-                  <FaGithub size={22} />
+            <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center">
+              <a
+                href="#contact"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky-400 via-violet-500 to-purple-600 px-7 py-3 text-sm font-semibold text-white shadow-xl shadow-violet-500/30 transition hover:shadow-violet-500/50"
+              >
+                Let’s build something unforgettable
+                <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+              </a>
+              {open_to_jobs && (
+                <button
+                  onClick={() => setShowJobModal(true)}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-slate-200 transition hover:border-white/40 hover:bg-white/10"
+                >
+                  Hiring? Let’s chat
+                  <span aria-hidden>•</span>
+                </button>
+              )}
+            </div>
+
+            <div className="mt-8 flex flex-wrap items-center gap-4 text-slate-300">
+              <span className="text-xs uppercase tracking-[0.4em] text-slate-400">Connect</span>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://github.com/NomanKhaliq1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-100 transition hover:border-white/40 hover:bg-white/20"
+                  aria-label="GitHub"
+                >
+                  <FaGithub size={18} />
                 </a>
-                <a href="https://www.linkedin.com/in/nomanghouri-dev/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700" aria-label="LinkedIn">
-                  <FaLinkedin size={22} />
+                <a
+                  href="https://www.linkedin.com/in/nomanghouri-dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-100 transition hover:border-white/40 hover:bg-white/20"
+                  aria-label="LinkedIn"
+                >
+                  <FaLinkedin size={18} />
                 </a>
-                <a href="https://www.instagram.com/nomanghouri2/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-pink-500" aria-label="Instagram">
-                  <FaInstagram size={22} />
+                <a
+                  href="https://www.instagram.com/nomanghouri2/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-100 transition hover:border-white/40 hover:bg-white/20"
+                  aria-label="Instagram"
+                >
+                  <FaInstagram size={18} />
                 </a>
-                <a href="https://twitter.com/nomankhaliq_" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-sky-500" aria-label="Twitter">
-                  <FaTwitter size={22} />
+                <a
+                  href="https://twitter.com/nomankhaliq_"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-100 transition hover:border-white/40 hover:bg-white/20"
+                  aria-label="Twitter"
+                >
+                  <FaTwitter size={18} />
                 </a>
               </div>
+            </div>
 
-              <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-3 sm:space-y-0 w-fit mx-auto sm:mx-0">
-                <a href="#contact" className="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700 transition w-fit text-center">
-                  Let’s Work Together 🤝
-                </a>
-                {open_to_jobs && (
-                  <button onClick={() => setShowJobModal(true)} className="text-indigo-600 font-medium hover:underline text-sm sm:text-base">
-                    Want to offer me a job? Click here →
-                  </button>
+            <div className="mt-10 w-full rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs uppercase tracking-[0.3em] text-slate-400">Shipped</span>
+                  <p className="text-3xl font-semibold text-white">{total_built}+</p>
+                  <p className="text-sm text-slate-300">High-impact websites launched</p>
+                </div>
+                {current_projects > 0 && (
+                  <div className="flex flex-col gap-2">
+                    <span className="text-xs uppercase tracking-[0.3em] text-slate-400">In motion</span>
+                    <p className="text-3xl font-semibold text-white">{current_projects}</p>
+                    <p className="text-sm text-slate-300">Active builds right now</p>
+                  </div>
                 )}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs uppercase tracking-[0.3em] text-slate-400">Open slots</span>
+                  <p className="text-3xl font-semibold text-white">{Math.max(remainingSlots, 0)}</p>
+                  <p className="text-sm text-slate-300">Next availability window</p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs uppercase tracking-[0.3em] text-slate-400">Experience</span>
+                  <p className="text-3xl font-semibold text-white">
+                    {yearsOfExperience !== null ? `${yearsOfExperience}+` : "—"}
+                  </p>
+                  <p className="text-sm text-slate-300">Years crafting digital products</p>
+                </div>
               </div>
             </div>
 
-            <div className="relative w-full max-w-[22rem] sm:max-w-[26rem] md:max-w-[30rem] lg:w-[35rem] h-[30rem] sm:h-[34rem] md:h-[40rem] lg:h-[42rem] mx-auto bg-gradient-to-br from-yellow-400/10 via-orange-200/30 to-white rounded-[2rem] p-2 shadow-2xl hover:scale-105 transition-transform duration-300">
-              <Image src="/noman-khaliq-developer.webp" alt="Noman Khaliq Hero Image" fill className="object-cover rounded-[2rem] border-2 border-white" priority />
-            </div>
+            {remainingSlots <= 3 && remainingSlots > 0 && (
+              <p className="mt-4 text-sm font-medium text-rose-300">
+                Only {remainingSlots} project slot{remainingSlots === 1 ? "" : "s"} left for this quarter.
+              </p>
+            )}
           </div>
 
-          {/* Job Offer Modal */}
-          {open_to_jobs && showJobModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4 transition-opacity duration-300 ease-out animate-fadeIn">
-              <div className="relative">
-                <button onClick={() => setShowJobModal(false)} className="absolute -top-5 -right-5 w-10 h-10 rounded-full bg-foreground text-white hover:opacity-90 flex items-center justify-center shadow-lg z-10" aria-label="Close Modal">
-                  <span className="text-lg">×</span>
-                </button>
-                <div className="bg-white rounded-xl max-w-lg w-full p-6 shadow-xl text-center animate-modalIn">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Interested in Hiring Me?</h2>
-                  <p className="mt-4 text-gray-600">
-                    I&apos;m open to remote full-time roles in React, Next.js, WordPress, or UI-focused web development.<br />
-                    If you have an opportunity, let’s connect!
-                  </p>
-                  <a href="mailto:youremail@example.com?subject=Full-Time Job Opportunity for Noman"
-                    className="inline-block mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700 transition">
-                    Send Job Offer 📩
-                  </a>
-                </div>
+          <div className="relative flex w-full max-w-md justify-center lg:w-[40%]">
+            <div className="absolute -top-10 right-10 h-32 w-32 rounded-full bg-purple-500/30 blur-3xl" />
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-3 shadow-[0_30px_80px_-30px_rgba(15,23,42,0.8)]">
+              <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.15),_transparent_60%)]" />
+              <Image
+                src="/noman-khaliq-developer.webp"
+                alt="Noman Khaliq Hero Image"
+                fill
+                className="rounded-[1.6rem] object-cover"
+                priority
+              />
+              <div className="absolute bottom-4 left-1/2 w-[85%] -translate-x-1/2 rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur">
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-200">Focused on</p>
+                <p className="mt-1 text-sm font-semibold text-white">
+                  React • Next.js • TailwindCSS • WordPress
+                </p>
               </div>
             </div>
-          )}
-
+          </div>
         </div>
+
+        {/* Job Offer Modal */}
+        {open_to_jobs && showJobModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-4">
+            <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/10 bg-slate-900/90 p-8 text-center shadow-2xl backdrop-blur">
+              <button
+                onClick={() => setShowJobModal(false)}
+                className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-slate-300 transition hover:border-white/30 hover:text-white"
+                aria-label="Close Modal"
+              >
+                ×
+              </button>
+              <h2 className="text-2xl font-semibold text-white">Interested in hiring me?</h2>
+              <p className="mt-4 text-sm leading-relaxed text-slate-300">
+                I’m open to remote opportunities focused on React, Next.js, WordPress, and product engineering. Let’s discuss how
+                I can help your team move faster.
+              </p>
+              <a
+                href="mailto:youremail@example.com?subject=Full-Time Job Opportunity for Noman"
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky-400 via-violet-500 to-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-500/40 transition hover:shadow-violet-500/60"
+              >
+                Send job offer 📩
+              </a>
+            </div>
+          </div>
+        )}
       </section>
     </FadeInOnView>
   );

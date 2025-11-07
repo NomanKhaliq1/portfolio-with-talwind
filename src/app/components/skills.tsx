@@ -53,73 +53,83 @@ const Skills = () => {
   }, []);
 
   return (
-    <section id="skills" className="py-20">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-6">
-          <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
-            Skills
+    <section id="skills" className="relative overflow-hidden py-24">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.18),_transparent_60%)]" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-white/5 to-transparent" />
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+        <div className="flex flex-col items-center text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.4em] text-slate-200">
+            Skillset
           </span>
-        </div>
-        <div className="text-center mb-8">
-          <h2 className="text-20/28 font-regular text-gray-600">
-            The skills, tools and technologies I am really good at:
+          <h2 className="mt-6 max-w-2xl text-3xl font-semibold text-white sm:text-4xl">
+            A curated toolkit for crafting fast, immersive, and scalable interfaces
           </h2>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-300">
+            From design systems to data orchestration, these are the frameworks and tools I lean on to ship experiences that feel
+            effortless.
+          </p>
         </div>
 
         {(ANIMATIONS_ENABLED ? (
           <motion.div
             ref={ref}
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-10 mt-10"
+            className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             variants={{
               hidden: {},
               visible: {
-                transition: { staggerChildren: 0.1 },
+                transition: { staggerChildren: 0.12 },
               },
             }}
           >
             {skills.map((skill, index) => (
               <motion.div
                 key={index}
-                className="flex flex-col items-center text-center space-y-2"
+                className="group flex items-center gap-4 rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur transition hover:border-white/30 hover:bg-white/10"
                 variants={{
-                  hidden: { opacity: 0, y: 20 },
+                  hidden: { opacity: 0, y: 24 },
                   visible: { opacity: 1, y: 0 },
                 }}
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.3 }}
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
               >
-                <div className="w-20 h-20 flex items-center justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
                   <Image
                     src={skill.src}
                     alt={skill.alt}
-                    width={64}
-                    height={64}
-                    className="w-full h-full object-contain"
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 object-contain"
                   />
                 </div>
-                <span className="text-gray-600 font-medium text-sm">{skill.label}</span>
+                <div className="text-left">
+                  <p className="text-sm font-semibold text-white">{skill.label}</p>
+                  <p className="mt-1 text-xs text-slate-300">Crafted with intention, tuned for performance.</p>
+                </div>
               </motion.div>
             ))}
           </motion.div>
         ) : (
-          <div
-            ref={ref}
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-10 mt-10"
-          >
+          <div ref={ref} className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {skills.map((skill, index) => (
-              <div key={index} className="flex flex-col items-center text-center space-y-2">
-                <div className="w-20 h-20 flex items-center justify-center">
+              <div
+                key={index}
+                className="group flex items-center gap-4 rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur transition hover:border-white/30 hover:bg-white/10"
+              >
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
                   <Image
                     src={skill.src}
                     alt={skill.alt}
-                    width={64}
-                    height={64}
-                    className="w-full h-full object-contain"
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 object-contain"
                   />
                 </div>
-                <span className="text-gray-600 font-medium text-sm">{skill.label}</span>
+                <div className="text-left">
+                  <p className="text-sm font-semibold text-white">{skill.label}</p>
+                  <p className="mt-1 text-xs text-slate-300">Crafted with intention, tuned for performance.</p>
+                </div>
               </div>
             ))}
           </div>

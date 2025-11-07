@@ -30,74 +30,72 @@ const Header = () => {
 
   return (
     <header
-      className={`w-full bg-white font-montserrat fixed top-0 z-50 transition-shadow duration-300 ${
-        isScrolled ? "shadow-md" : ""
+      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+        isScrolled ? "backdrop-blur-xl bg-slate-900/80 shadow-lg shadow-sky-900/10" : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0">
-            <Link className="text-gray-700 uppercase font-bold" href="/">
-              &lt;Noman Khaliq /&gt;
-            </Link>
-          </div>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex space-x-8 font-normal">
-            {["about", "work", "testimonials", "contact"].map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className="text-gray-700 hover:text-gray-900 hover:underline underline-offset-4 transition-all duration-200 capitalize"
-              >
-                {section}
-              </button>
-            ))}
-          </nav>
-
-          {/* Mobile Menu Toggle */}
-          <div className="md:hidden">
-            <button
-              className="text-gray-700 hover:text-gray-900 focus:outline-none p-2"
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-2xl bg-gradient-to-br from-sky-400 via-violet-500 to-purple-600 shadow-lg shadow-purple-500/40" />
+          <Link className="text-sm font-semibold tracking-widest text-slate-100 uppercase" href="/">
+            &lt;Noman Khaliq /&gt;
+          </Link>
         </div>
 
-        {/* Mobile Nav */}
-        <div
-          className={`md:hidden transition-all duration-300 ease-in-out ${
-            isMenuOpen
-              ? "max-h-64 opacity-100"
-              : "max-h-0 opacity-0 overflow-hidden"
-          }`}
-        >
-          <div className="px-2 pt-2 pb-3 space-y-1 font-normal">
-            {["home", "about", "work", "contact"].map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className="block w-full text-left px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors duration-200 capitalize"
-              >
-                {section}
-              </button>
-            ))}
-          </div>
+        {/* Desktop Nav */}
+        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+          {["about", "work", "testimonials", "contact"].map((section) => (
+            <button
+              key={section}
+              onClick={() => scrollToSection(section)}
+              className="group relative capitalize transition-colors duration-200 hover:text-white"
+            >
+              <span>{section}</span>
+              <span className="absolute inset-x-0 -bottom-2 h-0.5 scale-x-0 bg-gradient-to-r from-sky-400 via-violet-500 to-purple-600 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            </button>
+          ))}
+        </nav>
+
+        {/* Mobile Menu Toggle */}
+        <div className="md:hidden">
+          <button
+            className="rounded-full border border-white/10 p-2 text-slate-100 transition hover:border-white/30 hover:bg-white/5"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Nav */}
+      <div
+        className={`md:hidden overflow-hidden border-t border-white/5 bg-slate-900/90 backdrop-blur-xl transition-all duration-300 ${
+          isMenuOpen ? "max-h-64" : "max-h-0"
+        }`}
+      >
+        <div className="space-y-1 px-4 py-4 text-sm font-medium text-slate-200">
+          {["home", "about", "work", "testimonials", "contact"].map((section) => (
+            <button
+              key={section}
+              onClick={() => scrollToSection(section)}
+              className="flex w-full items-center rounded-lg px-3 py-2 capitalize transition hover:bg-white/10"
+            >
+              {section}
+            </button>
+          ))}
         </div>
       </div>
     </header>

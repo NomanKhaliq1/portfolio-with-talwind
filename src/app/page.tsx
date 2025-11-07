@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen text-slate-100">
         <HeroSection />
 
         <AboutSection />
@@ -26,15 +26,11 @@ export default function Home() {
         </FadeInOnView>
 
         <FadeInOnView>
-          <section id="work" className="bg-white">
-            <ProjectShowcase />
-          </section>
+          <ProjectShowcase />
         </FadeInOnView>
 
         <FadeInOnView>
-          <section id="testimonials" className="bg-gray-50">
-            <TestimonialSlider />
-          </section>
+          <TestimonialSlider />
         </FadeInOnView>
       </main>
     </>

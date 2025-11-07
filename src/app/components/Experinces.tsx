@@ -48,54 +48,70 @@ const ExperienceSection: FC = () => {
   }, []);
 
   return (
-    <div className="px-6 py-20 bg-gray-50">
-      <div className="text-center mb-6">
-        <span className="inline-block px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
-          Experience
-        </span>
-      </div>
+    <section id="experience" className="relative overflow-hidden py-24">
+      <div className="absolute inset-x-0 top-0 -z-10 h-48 bg-gradient-to-b from-white/10 to-transparent" />
+      <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.4em] text-slate-200">
+            Experience
+          </span>
+          <h2 className="mt-6 text-3xl font-semibold text-white sm:text-4xl">
+            Partnerships that shaped my craft
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-slate-300">
+            A snapshot of meaningful collaborations where design, engineering, and business impact intersected.
+          </p>
+        </div>
 
-      <p className="text-center text-gray-600 mb-8">
-        Here is a quick summary of my most recent experiences:
-      </p>
+        <div className="mt-16 space-y-10">
+          {experiences.map((experience, index) => (
+            <div
+              key={index}
+              className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur transition hover:border-white/30 hover:bg-white/10 sm:p-10"
+            >
+              <div className="absolute left-8 top-0 hidden h-full w-0.5 bg-gradient-to-b from-sky-400 to-purple-500 sm:block" />
+              <div className="flex flex-col gap-8 sm:flex-row sm:items-start">
+                <div className="flex flex-col gap-4 sm:w-1/3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
+                      <Image
+                        src={experience.logo}
+                        alt={experience.company}
+                        width={80}
+                        height={80}
+                        className="h-12 w-12 object-contain"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-white">{experience.company}</p>
+                      <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{experience.date}</p>
+                    </div>
+                  </div>
+                  {experience.date.toLowerCase().includes("present") && (
+                    <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
+                      Currently contributing
+                    </span>
+                  )}
+                  <p className="text-sm font-medium text-slate-300">{experience.title}</p>
+                </div>
 
-      <div className="max-w-4xl mx-auto space-y-6">
-        {experiences.map((experience, index) => (
-          <div
-            key={index}
-            className="flex flex-col md:flex-row items-stretch p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition"
-          >
-            <div className="flex-1">
-              <h3 className="text-xl font-bold">{experience.title}</h3>
-              <ul className="list-disc text-[14px] text-gray-600 pl-5 mt-2">
-                {experience.description.map((point, i) => (
-                  <li key={i}>{point}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex flex-row md:flex-col items-start md:items-end justify-between mt-4 md:mt-0 md:ml-6 flex-shrink-0 w-full md:w-auto">
-              <Image
-                src={experience.logo}
-                alt={experience.company}
-                width={128}
-                height={64}
-                className="object-contain md:mb-2"
-              />
-
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-1 text-sm text-gray-500 mt-2 md:mt-0">
-                <span>{experience.date}</span>
-                {experience.date.toLowerCase().includes("present") && (
-                  <span className="text-green-600 font-medium text-xs bg-green-100 px-2 py-1 rounded-full">
-                    Currently Working
-                  </span>
-                )}
+                <div className="sm:w-2/3">
+                  <ul className="space-y-3 text-sm leading-relaxed text-slate-300">
+                    {experience.description.map((point, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="mt-1 inline-flex h-1.5 w-1.5 rounded-full bg-gradient-to-r from-sky-400 to-purple-500" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

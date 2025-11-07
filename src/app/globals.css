@@ -3,10 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0f172a;
+  --foreground: #f8fafc;
   --font-montserrat: 'Montserrat', sans-serif;
-  --accent-purple: #7c3aed; /* added for custom purple */
+  --accent-purple: #8b5cf6;
+  --accent-blue: #38bdf8;
+  --accent-emerald: #34d399;
 }
 
 @keyframes wave {
@@ -26,17 +28,11 @@
   transform-origin: 70% 70%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ffffff;
-    --foreground: #171717;
-    /* optionally override --accent-purple here */
-  }
-}
-
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.2), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.25), transparent 50%),
+    var(--background);
   font-family: var(--font-montserrat);
 }
 
