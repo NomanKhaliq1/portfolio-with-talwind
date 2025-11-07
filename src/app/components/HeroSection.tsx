@@ -47,7 +47,7 @@ const HeroSection = () => {
   const [yearsOfExperience, setYearsOfExperience] = useState<number | null>(null);
   const [currentRole, setCurrentRole] = useState<string | null>(null);
 
-  // ✅ Detect visitor timezone automatically
+  // Detect visitor timezone automatically
   const userTimeZone =
     typeof Intl !== "undefined"
       ? Intl.DateTimeFormat().resolvedOptions().timeZone
